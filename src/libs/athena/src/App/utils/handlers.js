@@ -1,8 +1,5 @@
 import $ from 'jquery';
 import {
-  // $adder,
-  // $widget,
-  // winWidth,
   getText,
  } from './utils';
 
@@ -51,7 +48,6 @@ export const annoteHandler = (
 
   return action === 'note' ?
     $widget.animate({
-      // top: winHeight / 2,
       left: winWidth - $widget.width(),
     },
       250,
