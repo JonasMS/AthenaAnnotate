@@ -1,8 +1,8 @@
 import React from 'react'
 
-const AnnotateText = ({text}) => (
+const AnnotateText = ({target}) => (
   <div className="widget-annotateText">
-    {text}
+    {target}
   </div>
 )
 

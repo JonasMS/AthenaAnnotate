@@ -1,13 +1,13 @@
 import React from 'react'
 import { annoteHandler } from '../utils/handlers'
 
-const Adder = ({state}) => (
+const Adder = ({widget}) => (
   <div className='adder'>
     <button
       class='adderBtn'
       id='highlightBtn'
       onClick={ () =>
-        annoteHandler(state, 'highlight')
+        annoteHandler(widget, 'highlight')
       }
     >
       H
@@ -16,7 +16,7 @@ const Adder = ({state}) => (
       class='adderBtn'
       id='addNoteBtn'
       onClick={ () =>
-        annoteHandler(state, 'note')
+        annoteHandler(widget, 'note')
       }
     >
       N

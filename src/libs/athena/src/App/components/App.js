@@ -13,7 +13,8 @@ export default class App extends Component {
 
     this.state = {
       annotation: {
-        text: ''
+        target: '',
+        body: ''
       }
     }
   };
@@ -32,13 +33,13 @@ export default class App extends Component {
   render () {
     let state = this.state;
     const widget = this;
-    const { text } = state.annotation;
+    const { target } = state.annotation;
     console.log('state: ', state);
     return (
       <div>
         <div className="widget">
-          <AnnotateText text={text} />
-          <AnnotateInput />
+          <AnnotateText target={target} />
+          <AnnotateInput widget={widget} />
           <button
             id='submitBtn'
             onClick={() =>
@@ -48,7 +49,7 @@ export default class App extends Component {
             Submit
           </button>
         </div>
-        <Adder state={widget} />
+        <Adder widget={widget} />
       </div>
     )
   }

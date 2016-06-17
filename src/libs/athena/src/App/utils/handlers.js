@@ -13,8 +13,13 @@ export const annoteHandler = (
       const $widget = $('.widget');
       const selText = getText();
 
+      console.log('widg:', widget);
+
       widget.setState({
-        annotation: {text: selText}
+        annotation: {
+          target: selText,
+          body: widget.state.annotation.body
+        }
       });
 
       action === 'note' ?
@@ -48,21 +53,25 @@ export const adderHandler = ($adder) => {
     $adder.hide();
 };
 
-export const submitHandler = () => {
+export const submitHandler = (widget) => {
   const $widget = $('.widget');
   const winWidth = $(window).width();
+
   //create annotation
   //send annotation to server / db
+
   $.ajax({
     url: 'http://localhost:3000/api/create',
     type: 'POST',
     dataType: 'json',
-    data: {text: 'test'},
+    data: widget.state.annotation,
     success: function(data) {
-      console.log('success on client');
+      widget.setState({
+        target: '',
+        body: ''
+      });
     }
   });
-
 
   $widget.animate({
       left: winWidth
