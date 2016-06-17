@@ -1,27 +1,29 @@
-import React from 'react'
-import { annoteHandler } from '../utils/handlers'
+import React from 'react';
+import { annoteHandler } from '../utils/handlers';
 
-const Adder = ({widget}) => (
-  <div className='adder'>
+const Adder = ({ widget }) => (
+  <div className="adder">
     <button
-      class='adderBtn'
-      id='highlightBtn'
-      onClick={ () =>
+      className="adderBtn"
+      onClick={() =>
         annoteHandler(widget, 'highlight')
       }
     >
       H
     </button>
     <button
-      class='adderBtn'
-      id='addNoteBtn'
-      onClick={ () =>
+      className="adderBtn"
+      onClick={() =>
         annoteHandler(widget, 'note')
       }
     >
       N
     </button>
   </div>
-)
+);
 
-export default Adder
+Adder.propTypes = {
+  widget: React.PropTypes.object.isRequired,
+};
+
+export default Adder;

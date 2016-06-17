@@ -1,11 +1,10 @@
-import React, { Component } from 'react'
-import $ from 'jquery'
-import initialize from '../utils/initialize'
-import { adderHandler, submitHandler } from '../utils/handlers'
+import React, { Component } from 'react';
+import $ from 'jquery';
+import { adderHandler, submitHandler } from '../utils/handlers';
 
-import AnnotateText from './AnnotateText'
-import AnnotateInput from './AnnotateInput'
-import Adder from './Adder'
+import AnnotateText from './AnnotateText';
+import AnnotateInput from './AnnotateInput';
+import Adder from './Adder';
 
 export default class App extends Component {
   constructor (props) {
@@ -14,24 +13,24 @@ export default class App extends Component {
     this.state = {
       annotation: {
         target: '',
-        body: ''
-      }
-    }
-  };
+        body: '',
+      },
+    };
+  }
 
   componentDidMount () {
     $('body').on('mouseup', () => {
-        adderHandler($('.adder'));
+      adderHandler($('.adder'));
     });
 
     $('.widget').offset({
       top: 0,
-      left: $(window).width()
+      left: $(window).width(),
     });
-}
+  }
 
   render () {
-    let state = this.state;
+    const state = this.state;
     const widget = this;
     const { target } = state.annotation;
     console.log('state: ', state);
@@ -41,7 +40,7 @@ export default class App extends Component {
           <AnnotateText target={target} />
           <AnnotateInput widget={widget} />
           <button
-            id='submitBtn'
+            id="submitBtn"
             onClick={() =>
               submitHandler(widget)
             }
@@ -51,6 +50,6 @@ export default class App extends Component {
         </div>
         <Adder widget={widget} />
       </div>
-    )
+    );
   }
 }
