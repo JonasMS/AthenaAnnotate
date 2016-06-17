@@ -6,6 +6,7 @@
   "scripts": {
     "clean": "rm -rf build",
     "build": "webpack --progress",
+    "athena": "webpack --config src/athena/webpack.config.js --progress",
     "watch": "npm run build -- --watch",
     "start": "node src/server/server.js",
     "test": ""
