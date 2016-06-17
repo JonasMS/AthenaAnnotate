@@ -48,9 +48,21 @@ export const adderHandler = ($adder) => {
     $adder.hide();
 };
 
-export const submitHandler = (widget) => {
+export const submitHandler = () => {
+  const $widget = $('.widget');
+  const winWidth = $(window).width();
   //create annotation
   //send annotation to server / db
+  $.ajax({
+    url: 'http://localhost:3000/api/create',
+    type: 'POST',
+    dataType: 'json',
+    data: {text: 'test'},
+    success: function(data) {
+      console.log('success on client');
+    }
+  });
+
 
   $widget.animate({
       left: winWidth
