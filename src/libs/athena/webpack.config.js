@@ -1,7 +1,7 @@
 var path = require('path');
 var PATHS = {
-  app: path.join(__dirname, 'src/client'),
-  build: path.join(__dirname, 'build')
+  app: path.join(__dirname, 'src'),
+  build: path.join(__dirname, '../../../build/libs')
 };
 require('dotenv').config({ silent: true });
 
@@ -11,7 +11,7 @@ module.exports = {
   },
   output: {
     path: PATHS.build,
-    filename: 'webapp.js'
+    filename: 'athena.js'
   },
   devtool: 'inline-sourcemap',
   module: {
