@@ -5,7 +5,7 @@ const changeLocation = (url) => {
   window.location = url;
 };
 
-const Article = ({ onNoteDelete, url, notes, onNoteEdit }) => (
+const Article = ({ onNoteDelete, url, notes, onNoteEdit,editText }) => (
   <li
     // onClick={onClick}
   >
@@ -16,6 +16,7 @@ const Article = ({ onNoteDelete, url, notes, onNoteEdit }) => (
       notes={notes}
       onNoteDelete={onNoteDelete}
       onNoteEdit={onNoteEdit}
+      editText={editText}
     />
   </li>
 );

@@ -1,7 +1,7 @@
 import React, { Proptypes } from 'react';
 import Note from './Note';
 
-const NoteList = ({ onNoteDelete, notes, onNoteEdit }) => (
+const NoteList = ({ onNoteDelete, notes, onNoteEdit, editText }) => (
   <ul>
 		{notes.map(note => (
       <Note
@@ -9,6 +9,7 @@ const NoteList = ({ onNoteDelete, notes, onNoteEdit }) => (
         {...note}
         onNoteDelete={() => onNoteDelete(note.id)}
         onNoteEdit={onNoteEdit}
+        editText={editText}
 			/>
     ))}
   </ul>

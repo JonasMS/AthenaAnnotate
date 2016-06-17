@@ -24,3 +24,11 @@ export const editNote = (id) => {
     id,
   };
 };
+
+export const editText = (id, text) => {
+  return {
+    type: 'EDIT_TEXT',
+    id,
+    text,
+  };
+};

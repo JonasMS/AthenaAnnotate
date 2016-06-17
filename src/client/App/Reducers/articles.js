@@ -3,18 +3,25 @@ const note = (state, action) => {
     case 'DELETE_NOTE':
       if (state.id !== action.id) {
         // window.console.log('not matching id');
-        return state;
+        return true;
       } else {
         // window.console.log('matching id');
-        return Object.assign({}, state, {
-          text: 'deleted!',
-        });
+        return false;
       }
     case 'EDIT_NOTE':
       if (state.id !== action.id) {
         return state;
       } else {
         return Object.assign({}, state, {
+          edit: !state.edit,
+        });
+      }
+    case 'EDIT_TEXT':
+      if (state.id !== action.id) {
+        return state;
+      } else {
+        return Object.assign({}, state, {
+          text: action.text,
           edit: !state.edit,
         });
       }
@@ -27,10 +34,14 @@ const notes = (state = [], action) => {
   switch (action.type) {
     case 'DELETE_NOTE':
       // window.console.log('in here');
-      return state.map(n =>
+      return state.filter(n =>
         note(n, action)
       );
     case 'EDIT_NOTE':
+      return state.map(n =>
+        note(n, action)
+      );
+    case 'EDIT_TEXT':
       return state.map(n =>
         note(n, action)
       );
@@ -55,6 +66,9 @@ const article = (state, action) => {
     case 'EDIT_NOTE':
       return Object.assign({}, state, {
         notes: notes(state.notes, action) });
+    case 'EDIT_TEXT':
+      return Object.assign({}, state, {
+        notes: notes(state.notes, action) });
     default:
       return state;
   }
@@ -73,6 +87,10 @@ const articles = (state = [], action) => {
         article(a, action)
       );
     case 'EDIT_NOTE':
+      return state.map(a =>
+        article(a, action)
+      );
+    case 'EDIT_TEXT':
       return state.map(a =>
         article(a, action)
       );

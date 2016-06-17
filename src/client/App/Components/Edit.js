@@ -1,20 +1,37 @@
 import React, { PropTypes } from 'react';
 
-const Edit = ({ text, edit, onCancel, id }) => (
+let textarea = '';
+
+const handleText = (event) => {
+  textarea = event.target.value;
+  window.console.log(textarea);
+}
+
+const Edit = ({ text, edit, onCancel, id, editText }) => (
   <div>
-  <textarea
-    defaultValue={text}
-    // onClick={onClick}
-  />
-  <div>
-    <button>
-      Save
-    </button>
-    <button
-      onClick={() => onCancel(id)}>
-      Cancel
-    </button>
-  </div>
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        editText(id, textarea);
+      }}
+    >
+      <textarea
+        defaultValue={text}
+        onChange={handleText}
+        // onClick={onClick}
+      />
+      <button type="submit">
+        Save
+      </button>
+      <button
+        onClick={(e) => {
+          e.preventDefault();
+          onCancel(id);
+        }}
+      >
+        Cancel
+      </button>
+    </form>
   </div>
 );
 

@@ -18,6 +18,10 @@ const mapDispatchToProps = (dispatch) => {
     onNoteEdit: (id) => {
       dispatch(actions.editNote(id));
     },
+    editText: (id, text) => {
+      window.console.log('editing');
+      dispatch(actions.editText(id, text));
+    },
   };
 };
 
