@@ -10,6 +10,14 @@ const note = (state, action) => {
           text: 'deleted!',
         });
       }
+    case 'EDIT_NOTE':
+      if (state.id !== action.id) {
+        return state;
+      } else {
+        return Object.assign({}, state, {
+          edit: !state.edit,
+        });
+      }
     default:
       return state;
   }
@@ -19,6 +27,10 @@ const notes = (state = [], action) => {
   switch (action.type) {
     case 'DELETE_NOTE':
       // window.console.log('in here');
+      return state.map(n =>
+        note(n, action)
+      );
+    case 'EDIT_NOTE':
       return state.map(n =>
         note(n, action)
       );
@@ -40,6 +52,9 @@ const article = (state, action) => {
       // window.console.log('in the delete note');
       return Object.assign({}, state, {
         notes: notes(state.notes, action) });
+    case 'EDIT_NOTE':
+      return Object.assign({}, state, {
+        notes: notes(state.notes, action) });
     default:
       return state;
   }
@@ -54,6 +69,10 @@ const articles = (state = [], action) => {
     case 'DELETE_NOTE':
       // window.console.log('in the articles reducer');
       // window.console.log(state);
+      return state.map(a =>
+        article(a, action)
+      );
+    case 'EDIT_NOTE':
       return state.map(a =>
         article(a, action)
       );

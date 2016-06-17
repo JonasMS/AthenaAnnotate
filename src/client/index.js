@@ -14,10 +14,12 @@ const fakeArticles = [
       {
         id: 0,
         text: 'Some text here',
+        edit: false,
       },
       {
         id: 1,
         text: 'Some other text here',
+        edit: false,
       },
     ],
   },
@@ -28,10 +30,12 @@ const fakeArticles = [
       {
         id: 2,
         text: 'Some more text here',
+        edit: false,
       },
       {
         id: 3,
         text: 'Some other more text here',
+        edit: false,
       },
     ],
   },

@@ -1,13 +1,14 @@
 import React from 'react';
 import Article from './Article';
 
-const ArticleList = ({ articles, onNoteClick }) => (
+const ArticleList = ({ articles, onNoteDelete, onNoteEdit }) => (
   <ul>
 		{articles.map(article => (
 			<Article
         key={article.id}
         {...article}
-        onClick={onNoteClick}
+        onNoteDelete={onNoteDelete}
+        onNoteEdit={onNoteEdit}
 			/>
 		))}
   </ul>

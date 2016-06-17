@@ -17,3 +17,10 @@ export const deleteNote = (id) => {
     id,
   };
 };
+
+export const editNote = (id) => {
+  return {
+    type: 'EDIT_NOTE',
+    id,
+  };
+};
