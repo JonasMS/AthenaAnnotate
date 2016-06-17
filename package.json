@@ -5,9 +5,11 @@
   "license": "MIT",
   "scripts": {
     "clean": "rm -rf build",
-    "build": "webpack --progress",
-    "athena": "webpack --config src/athena/webpack.config.js --progress",
-    "watch": "npm run build -- --watch",
+    "build-app": "webpack --progress",
+    "build-athena": "webpack --config src/libs/athena/webpack.config.js --progress",
+    "build": "npm run build-app && npm run build-athena",
+    "watch-app": "npm run build-app -- --watch",
+    "watch-athena": "npm run build-athena -- --watch",
     "start": "node src/server/server.js",
     "test": ""
   },
