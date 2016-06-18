@@ -3,6 +3,14 @@ import {
   getText,
  } from './utils';
 
+export const docHookHandler = (e, widget) => {
+  console.log('in hookHandler');
+  widget.setState({
+    target: e.target.value,
+    body: '',
+  });
+};
+
 export const submitHandler = (widget) => {
   const $widget = $('.widget');
   const winWidth = $(window).width();
