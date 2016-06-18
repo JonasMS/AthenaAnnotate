@@ -4,27 +4,24 @@ const note = (state, action) => {
       if (state.id !== action.id) {
         // window.console.log('not matching id');
         return true;
-      } else {
-        // window.console.log('matching id');
-        return false;
       }
+      // window.console.log('matching id');
+      return !window.confirm('Are you sure you want to delete this note?');
     case 'EDIT_NOTE':
       if (state.id !== action.id) {
         return state;
-      } else {
-        return Object.assign({}, state, {
-          edit: !state.edit,
-        });
       }
+      return Object.assign({}, state, {
+        edit: !state.edit,
+      });
     case 'EDIT_TEXT':
       if (state.id !== action.id) {
         return state;
-      } else {
-        return Object.assign({}, state, {
-          text: action.text,
-          edit: !state.edit,
-        });
       }
+      return Object.assign({}, state, {
+        text: action.text,
+        edit: !state.edit,
+      });
     default:
       return state;
   }
@@ -33,7 +30,6 @@ const note = (state, action) => {
 const notes = (state = [], action) => {
   switch (action.type) {
     case 'DELETE_NOTE':
-      // window.console.log('in here');
       return state.filter(n =>
         note(n, action)
       );
