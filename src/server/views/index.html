@@ -7,6 +7,19 @@
   </head>
   <body>
     <div id="app"></div>
+    <div class="ex" data-id="1" onclick="noteClick()">Click Me</div>
     <script type="text/javascript" src="/webapp.js"></script>
   </body>
 </html>
+
+<script>
+  var noteClick = function() {
+    //target class docHook
+    var docHook = document.getElementsByClassName('docHook')[0];
+    console.log(docHook);
+    //set value to 'test'
+    docHook.value = 'test';
+    docHook.onchange();
+  }
+
+</script>
