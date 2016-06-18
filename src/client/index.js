@@ -13,12 +13,14 @@ const fakeArticles = [
     notes: [
       {
         id: 0,
-        text: 'Some text here',
+        text: 'This is some text from the article',
+        note: 'Some text here',
         edit: false,
       },
       {
         id: 1,
-        text: 'Some other text here',
+        text: 'This is some more text from the article',
+        note: 'Some other text here',
         edit: false,
       },
     ],
@@ -29,12 +31,14 @@ const fakeArticles = [
     notes: [
       {
         id: 2,
-        text: 'Some more text here',
+        text: 'This is some other text from the article',
+        note: 'Some more text here',
         edit: false,
       },
       {
         id: 3,
-        text: 'Some other more text here',
+        text: 'This is some text from the article',
+        note: 'Some other more text here',
         edit: false,
       },
     ],

@@ -1,10 +1,10 @@
-import React from'react';
+import React from 'react';
 import VisibleArticleList from '../Containers/VisibleArticleList';
 
 const App = () => (
-	<div>
-		<VisibleArticleList />
-	</div>
-)
+  <div>
+    <VisibleArticleList />
+  </div>
+);
 
 export default App;

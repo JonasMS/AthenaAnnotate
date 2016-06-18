@@ -2,28 +2,25 @@ import { connect } from 'react-redux';
 import ArticleList from '../Components/ArticleList';
 import * as actions from '../Actions';
 
-const mapStatetoProps = (state) => {
-  return {
+const mapStatetoProps = (state) => (
+  {
     articles: state.articles,
-  };
-};
+  }
+);
 
-const mapDispatchToProps = (dispatch) => {
-  return {
+const mapDispatchToProps = (dispatch) => (
+  {
     onNoteDelete: (id) => {
-      // window.console.log('something was clicked');
-      // window.console.log(actions.deleteNote);
       dispatch(actions.deleteNote(id));
     },
     onNoteEdit: (id) => {
       dispatch(actions.editNote(id));
     },
-    editText: (id, text) => {
-      window.console.log('editing');
-      dispatch(actions.editText(id, text));
+    editText: (id, note) => {
+      dispatch(actions.editText(id, note));
     },
-  };
-};
+  }
+);
 
 const VisibleArticleList = connect(
 	mapStatetoProps,

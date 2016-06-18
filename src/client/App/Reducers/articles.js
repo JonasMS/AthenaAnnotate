@@ -6,7 +6,8 @@ const note = (state, action) => {
         return true;
       }
       // window.console.log('matching id');
-      return !window.confirm('Are you sure you want to delete this note?');
+      return false;
+      // !window.confirm('Are you sure you want to delete this note?');
     case 'EDIT_NOTE':
       if (state.id !== action.id) {
         return state;
@@ -19,7 +20,7 @@ const note = (state, action) => {
         return state;
       }
       return Object.assign({}, state, {
-        text: action.text,
+        note: action.note,
         edit: !state.edit,
       });
     default:
