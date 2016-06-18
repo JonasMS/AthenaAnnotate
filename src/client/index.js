@@ -3,7 +3,7 @@ import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 import Reducers from './App/Reducers';
-import App from './App/Components/App';
+import Main from './App/Components/Main';
 
 const fakeArticles = {
   articles: [
@@ -53,7 +53,7 @@ let store = createStore(Reducers, fakeArticles);
 
 render(
   <Provider store={store}>
-    <App />
+    <Main />
   </Provider>,
   document.getElementById('app')
 );
