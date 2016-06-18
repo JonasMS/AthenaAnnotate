@@ -1,10 +1,9 @@
 import React, { PropTypes } from 'react';
-import Edit from './Edit';
+import NoteEditor from '../Containers/NoteEditor';
 
-const Note = ({ onNoteDelete, onNoteEdit, note, edit, id, editText, text }) => (
+const Note = ({ onNoteDelete, onNoteEdit, onSaveEdit, note, edit, id, text }) => (
   <li
     className="card grey darken-1 white-text"
-    // onClick={onClick}
   >
     {text}
     <p>
@@ -14,7 +13,11 @@ const Note = ({ onNoteDelete, onNoteEdit, note, edit, id, editText, text }) => (
       className="card-action"
     >
       {edit ?
-        <Edit note={note} onCancel={onNoteEdit} id={id} editText={editText} />
+        <NoteEditor
+          noteText={note}
+          onCancel={() => onNoteEdit(id)}
+          onSave={(txt) => onSaveEdit(id, txt)}
+        />
         : null}
       <button
         className="waves-effect waves-light btn-floating"
@@ -35,10 +38,10 @@ const Note = ({ onNoteDelete, onNoteEdit, note, edit, id, editText, text }) => (
 Note.propTypes = {
   onNoteDelete: PropTypes.func.isRequired,
   onNoteEdit: PropTypes.func.isRequired,
+  onSaveEdit: PropTypes.func.isRequired,
   note: PropTypes.string.isRequired,
   edit: PropTypes.bool.isRequired,
   id: PropTypes.number.isRequired,
-  editText: PropTypes.func.isRequired,
   text: PropTypes.string.isRequired,
 };
 

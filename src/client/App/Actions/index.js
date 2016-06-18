@@ -25,10 +25,17 @@ export const editNote = (id) => (
   }
 );
 
-export const editText = (id, note) => (
+export const editText = (text) => (
   {
     type: 'EDIT_TEXT',
+    text,
+  }
+);
+
+export const saveEdit = (id, text) => (
+  {
+    type: 'SAVE_EDIT',
     id,
-    note,
+    text,
   }
 );

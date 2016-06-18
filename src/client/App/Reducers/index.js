@@ -1,10 +1,12 @@
 import { combineReducers } from 'redux';
-// import notes from './notes';
+import notes from './notes';
 import articles from './articles';
+import editor from './editor';
 
-const ArticlesApp = combineReducers({
+const Reducers = combineReducers({
   articles,
-  // notes,
+  notes,
+  editor,
 });
 
-export default ArticlesApp;
+export default Reducers;

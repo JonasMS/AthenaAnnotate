@@ -1,29 +1,20 @@
 import React, { PropTypes } from 'react';
 
-let textarea = '';
-
-const handleText = (event) => {
-  textarea = event.target.value;
-  // window.console.log(textarea);
-};
-
-const Edit = ({ note, onCancel, id, editText }) => (
+const Editor = ({ noteText, onCancel, editText, onSave, editor }) => (
   <div>
-    <form
-      onSubmit={(e) => {
-        e.preventDefault();
-        editText(id, textarea);
-      }}
-    >
+    <form>
       <textarea
         className="materialize-textarea"
-        defaultValue={note}
-        onChange={handleText}
-        // onClick={onClick}
+        defaultValue={noteText}
+        onChange={(e) => editText(e.target.value)}
       />
       <button
         className="waes-effect waves-light btn"
         type="submit"
+        onClick={(e) => {
+          e.preventDefault();
+          onSave(editor);
+        }}
       >
         Save
       </button>
@@ -31,7 +22,7 @@ const Edit = ({ note, onCancel, id, editText }) => (
         className="waes-effect waves-light btn"
         onClick={(e) => {
           e.preventDefault();
-          onCancel(id);
+          onCancel();
         }}
       >
         Cancel
@@ -40,11 +31,12 @@ const Edit = ({ note, onCancel, id, editText }) => (
   </div>
 );
 
-Edit.propTypes = {
-  note: PropTypes.string.isRequired,
+Editor.propTypes = {
+  noteText: PropTypes.string.isRequired,
   onCancel: PropTypes.func.isRequired,
-  id: PropTypes.number.isRequired,
+  onSave: PropTypes.func.isRequired,
   editText: PropTypes.func.isRequired,
+  editor: PropTypes.string.isRequired,
 };
 
-export default Edit;
+export default Editor;
