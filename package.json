@@ -11,7 +11,8 @@
     "watch-app": "npm run build-app -- --watch",
     "watch-athena": "npm run build-athena -- --watch",
     "start": "node src/server/server.js",
-    "test": ""
+    "test": "",
+    "lint": "eslint src --color"
   },
   "repository": {
     "type": "git",

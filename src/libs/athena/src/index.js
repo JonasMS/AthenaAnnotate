@@ -1,8 +1,9 @@
 import React from 'react';
 import { render } from 'react-dom';
-import * as App from './App';
+import App from './App/components/App';
+import './assets/styles/styles.scss';
 
 render(
-  <App.Container />,
+  <App />,
   document.getElementById('athena')
 );
