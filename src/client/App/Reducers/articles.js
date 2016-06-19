@@ -2,8 +2,8 @@ const article = (state, action) => {
   switch (action.type) {
     case 'LOAD_ARTICLE':
       return {
-        id: action.id,
-        url: action.url,
+        id: state.id,
+        url: state.url,
       };
     default:
       return state;
@@ -13,7 +13,7 @@ const article = (state, action) => {
 const articles = (state = [], action) => {
   switch (action.type) {
     case 'LOAD_ARTICLE':
-      return state.map(a =>
+      return action.articles.map(a =>
         article(a, action)
       );
     default:

@@ -1,5 +1,13 @@
 const note = (state, action) => {
   switch (action.type) {
+    case 'LOAD_NOTE':
+      return {
+        id: state.id,
+        note: state.note,
+        text: state.text,
+        article_id: state.article_id,
+        edit: state.edit,
+      };
     case 'DELETE_NOTE':
       if (state.id !== action.id) {
         return true;
@@ -27,6 +35,10 @@ const note = (state, action) => {
 
 const notes = (state = [], action) => {
   switch (action.type) {
+    case 'LOAD_NOTE':
+      return action.notes.map(n =>
+        note(n, action)
+      );
     case 'DELETE_NOTE':
       return state.filter(n =>
         note(n, action)
