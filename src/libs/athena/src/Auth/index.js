@@ -26,8 +26,15 @@ class Auth extends React.Component {
   }
 
   getLoginStatus() {
-    window.FB.getLoginStatus((response) => {
-      this.setState({ facebookAuthData: response });
+    window.FB.getLoginStatus(res => {
+      console.log(res, '<-- get login status');
+      if (res.status === 'connected') {
+        this.setState({
+          facebookAuthData: res,
+          loggedIn: true,
+          userId: res.authResponse.userID,
+        });
+      }
     });
   }
 
@@ -53,21 +60,27 @@ class Auth extends React.Component {
   }
 
   login() {
-    window.FB.login((response) => {
-      if (response.status === 'connected') {
+    window.FB.login(res => {
+      if (res.status === 'connected') {
+        console.log(res, '<-- login');
         this.setState({
-          facebookAuthData: response,
+          facebookAuthData: res,
           loggedIn: true,
-          userId: response.authResponse.userID,
+          userId: res.authResponse.userID,
         });
+
+        window.FB.api('/me?fields=id,email,name', resp => {
+          console.log(resp, '<-- /me');
+        }, { scope: 'email' });
       }
-    });
+    }, { scope: 'public_profile,email' });
   }
 
   logout() {
-    window.FB.logout((response) => {
+    window.FB.logout(res => {
+      console.log(res, '<-- logout');
       this.setState({
-        facebookAuthData: response,
+        facebookAuthData: res,
         loggedIn: false,
         userId: null,
       });
@@ -77,11 +90,19 @@ class Auth extends React.Component {
   render() {
     return (
       <div>
-        <p> Please Login </p>
-        {!this.state.loggedIn ? <Facebook.Login login={this.login} /> : null}
-        {this.state.loggedIn ? <Facebook.Logout logout={this.logout} /> : null}
-        <p>Facebook logged in: {this.state.loggedIn ? 'true' : 'false'}</p>
-        <p>User ID is: {this.state.userId}</p>
+        <div id="fb-root"></div>
+        {!this.state.loggedIn ?
+          <div>
+            <p> Please Login </p>
+            <Facebook.Login login={this.login} />
+          </div>
+          : null}
+        {this.state.loggedIn ?
+          <div>
+            <p>User ID is: {this.state.userId}</p>
+            <Facebook.Logout logout={this.logout} />
+          </div>
+          : null}
       </div>
     );
   }
