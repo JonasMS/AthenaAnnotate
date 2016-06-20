@@ -13,11 +13,14 @@ const mapDispatchToProps = (dispatch) => (
     onAnnotationDelete: (id) => {
       dispatch(actions.deleteAnnotation(id));
     },
-    onAnnotationEdit: (id) => {
+    onEditBody: (id) => {
       dispatch(actions.editAnnotation(id));
     },
     onSaveEdit: (id, text) => {
       dispatch(actions.saveEdit(id, text));
+    },
+    onDeleteBody: (id) => {
+      dispatch(actions.deleteBody(id));
     },
   }
 );

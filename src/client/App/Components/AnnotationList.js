@@ -1,15 +1,25 @@
 import React, { PropTypes } from 'react';
 import Annotation from './Annotation';
 
-const AnnotationList = ({ id, annotations, onAnnotationDelete, onAnnotationEdit, onSaveEdit }) => {
+const AnnotationList = (
+  {
+    id,
+    annotations,
+    onAnnotationDelete,
+    onEditBody,
+    onSaveEdit,
+    onDeleteBody,
+  }
+) => {
   const Annotations = annotations.filter(annotation => id === annotation.doc_id);
   const annotationList = Annotations.map(annotation => (
     <Annotation
       key={annotation.id}
       {...annotation}
       onAnnotationDelete={() => onAnnotationDelete(annotation.id)}
-      onAnnotationEdit={onAnnotationEdit}
+      onEditBody={onEditBody}
       onSaveEdit={onSaveEdit}
+      onDeleteBody={onDeleteBody}
     />
   ));
   return (
@@ -22,8 +32,9 @@ const AnnotationList = ({ id, annotations, onAnnotationDelete, onAnnotationEdit,
 AnnotationList.propTypes = {
   id: PropTypes.number.isRequired,
   onAnnotationDelete: PropTypes.func.isRequired,
-  onAnnotationEdit: PropTypes.func.isRequired,
+  onEditBody: PropTypes.func.isRequired,
   onSaveEdit: PropTypes.func.isRequired,
+  onDeleteBody: PropTypes.func.isRequired,
   annotations: PropTypes.array.isRequired,
 };
 

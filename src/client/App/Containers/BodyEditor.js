@@ -16,9 +16,9 @@ const mapDispatchToProps = (dispatch) => (
   }
 );
 
-const AnnotationEditor = connect(
+const BodyEditor = connect(
   mapStatetoProps,
   mapDispatchToProps
 )(Editor);
 
-export default AnnotationEditor;
+export default BodyEditor;

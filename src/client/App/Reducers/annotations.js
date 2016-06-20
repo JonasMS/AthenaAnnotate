@@ -28,6 +28,14 @@ const annotation = (state, action) => {
         body: action.body,
         edit: !state.edit,
       });
+    case 'DELETE_BODY':
+      if (state.id !== action.id) {
+        return state;
+      }
+      return Object.assign({}, state, {
+        body: null,
+        edit: !state.edit,
+      });
     default:
       return state;
   }
@@ -48,6 +56,10 @@ const annotations = (state = [], action) => {
         annotation(a, action)
       );
     case 'SAVE_EDIT':
+      return state.map(a =>
+        annotation(a, action)
+      );
+    case 'DELETE_BODY':
       return state.map(a =>
         annotation(a, action)
       );

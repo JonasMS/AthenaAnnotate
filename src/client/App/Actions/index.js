@@ -79,3 +79,10 @@ export const saveEdit = (id, body) => (
     body,
   }
 );
+
+export const deleteBody = (id) => (
+  {
+    type: 'DELETE_BODY',
+    id,
+  }
+);
