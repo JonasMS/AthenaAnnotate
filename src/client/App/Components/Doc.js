@@ -1,26 +1,26 @@
 import React, { PropTypes } from 'react';
-import VisibleNoteList from '../Containers/VisibleNoteList';
+import VisibleAnnotationList from '../Containers/VisibleAnnotationList';
 
 const changeLocation = (url) => {
   window.location = url;
 };
 
-const Article = ({ url, id }) => (
+const Doc = ({ url, id }) => (
   <li
     className="card blue-grey darken-1 white-text"
   >
     <p onClick={() => changeLocation(url)}>
       {url}
     </p>
-    <VisibleNoteList
+    <VisibleAnnotationList
       id={id}
     />
   </li>
 );
 
-Article.propTypes = {
+Doc.propTypes = {
   url: PropTypes.string.isRequired,
   id: PropTypes.number.isRequired,
 };
 
-export default Article;
+export default Doc;

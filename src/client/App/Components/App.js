@@ -4,7 +4,7 @@ import Main from './Main';
 
 class App extends Component {
   componentDidMount() {
-    this.props.loadArticles();
+    this.props.loadDocs();
   }
 
   render() {
@@ -17,7 +17,7 @@ class App extends Component {
 }
 
 App.propTypes = {
-  loadArticles: PropTypes.func.isRequired,
+  loadDocs: PropTypes.func.isRequired,
   loading: PropTypes.bool.isRequired,
 };
 

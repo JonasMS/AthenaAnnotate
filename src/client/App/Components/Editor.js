@@ -1,11 +1,11 @@
 import React, { PropTypes } from 'react';
 
-const Editor = ({ noteText, onCancel, editText, onSave, editor }) => (
+const Editor = ({ body, onCancel, editText, onSave, editor }) => (
   <div>
     <form>
       <textarea
         className="materialize-textarea"
-        defaultValue={noteText}
+        defaultValue={body}
         onChange={(e) => editText(e.target.value)}
       />
       <button
@@ -32,7 +32,7 @@ const Editor = ({ noteText, onCancel, editText, onSave, editor }) => (
 );
 
 Editor.propTypes = {
-  noteText: PropTypes.string.isRequired,
+  body: PropTypes.string.isRequired,
   onCancel: PropTypes.func.isRequired,
   onSave: PropTypes.func.isRequired,
   editText: PropTypes.func.isRequired,

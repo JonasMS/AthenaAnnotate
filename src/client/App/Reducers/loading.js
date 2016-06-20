@@ -1,9 +1,7 @@
 const loading = (state = true, action) => {
   switch (action.type) {
     case 'LOADING':
-      return {
-        loading: action.loading,
-      };
+      return action.loading;
     default:
       return state;
   }

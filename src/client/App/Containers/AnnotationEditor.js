@@ -10,15 +10,15 @@ const mapStatetoProps = (state) => (
 
 const mapDispatchToProps = (dispatch) => (
   {
-    editText: (text) => {
-      dispatch(actions.editText(text));
+    editText: (body) => {
+      dispatch(actions.editText(body));
     },
   }
 );
 
-const NoteEditor = connect(
+const AnnotationEditor = connect(
   mapStatetoProps,
   mapDispatchToProps
 )(Editor);
 
-export default NoteEditor;
+export default AnnotationEditor;

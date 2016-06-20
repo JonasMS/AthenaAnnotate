@@ -1,9 +1,9 @@
 import React from 'react';
-import VisibleArticleList from '../Containers/VisibleArticleList';
+import VisibleDocList from '../Containers/VisibleDocList';
 
 const Main = () => (
   <div>
-    <VisibleArticleList />
+    <VisibleDocList />
   </div>
 );
 

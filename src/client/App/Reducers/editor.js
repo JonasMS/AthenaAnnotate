@@ -1,7 +1,7 @@
 const editor = (state = '', action) => {
   switch (action.type) {
     case 'EDIT_TEXT':
-      return action.text;
+      return action.body;
     default:
       return state;
   }

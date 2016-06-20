@@ -1,20 +1,20 @@
 import { connect } from 'react-redux';
-import ArticleList from '../Components/ArticleList';
+import DocList from '../Components/DocList';
 import * as actions from '../Actions';
 
 const mapStatetoProps = (state) => (
   {
-    articles: state.articles,
+    docs: state.docs,
   }
 );
 
 const mapDispatchToProps = (dispatch) => (
   {
-    onNoteDelete: (id) => {
-      dispatch(actions.deleteNote(id));
+    onAnnotationDelete: (id) => {
+      dispatch(actions.deleteAnnotation(id));
     },
-    onNoteEdit: (id) => {
-      dispatch(actions.editNote(id));
+    onAnnotationEdit: (id) => {
+      dispatch(actions.editAnnotation(id));
     },
     editText: (id, note) => {
       dispatch(actions.editText(id, note));
@@ -22,9 +22,9 @@ const mapDispatchToProps = (dispatch) => (
   }
 );
 
-const VisibleArticleList = connect(
+const VisibleDocList = connect(
 	mapStatetoProps,
 	mapDispatchToProps
-)(ArticleList);
+)(DocList);
 
-export default VisibleArticleList;
+export default VisibleDocList;

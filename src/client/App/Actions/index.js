@@ -1,79 +1,81 @@
-export const loadArticles = (dispatch) => {
+export const loadDocs = (dispatch) => {
   dispatch({ type: 'LOADING', loading: true });
   // DB query here to get articles
   // assume this next line is the results from DB call, and there was some function
   // that organized it into the structure we need for the state
-  const articles = [
+  const docs = [
     {
       id: 0,
       url: 'http://www.google.com',
+      title: 'Some Title',
     },
     {
       id: 1,
       url: 'http://www.yahoo.com',
+      title: 'Some Other Title',
     },
   ];
 
-  const notes = [
+  const annotations = [
     {
       id: 0,
-      text: 'This is some text from the article',
-      note: 'Some text here',
+      target: 'This is some text from the article',
+      body: 'Some text here',
       edit: false,
-      article_id: 0,
+      doc_id: 0,
     },
     {
       id: 1,
-      text: 'This is some more text from the article',
-      note: 'Some other text here',
+      target: 'This is some more text from the article',
+      body: 'Some other text here',
       edit: false,
-      article_id: 0,
+      doc_id: 0,
     },
     {
       id: 2,
-      text: 'This is some other text from the article',
-      note: 'Some more text here',
+      target: 'This is some other text from the article',
+      body: 'Some more text here',
       edit: false,
-      article_id: 1,
+      doc_id: 1,
     },
     {
       id: 3,
-      text: 'This is some more other text from the article',
-      note: 'Some other more text here',
+      target: 'This is some more other text from the article',
+      body: 'Some other more text here',
       edit: false,
-      article_id: 1,
+      doc_id: 1,
     },
   ];
-  dispatch({ type: 'LOAD_ARTICLE', articles });
-  dispatch({ type: 'LOAD_NOTE', notes });
-  dispatch({ tpye: 'LOADING', loading: false });
+  dispatch({ type: 'LOAD_DOC', docs });
+  dispatch({ type: 'LOAD_ANNOTATION', annotations });
+  dispatch({ type: 'LOADING', loading: false });
 };
 
-export const deleteNote = (id) => (
+export const deleteAnnotation = (id) => (
   {
-    type: 'DELETE_NOTE',
+    type: 'DELETE_ANNOTATION',
     id,
   }
 );
 
-export const editNote = (id) => (
+export const editAnnotation = (id) => (
   {
-    type: 'EDIT_NOTE',
+    type: 'EDIT_ANNOTATION',
     id,
   }
 );
 
-export const editText = (text) => (
+export const editText = (body) => (
   {
     type: 'EDIT_TEXT',
-    text,
+    body,
   }
 );
 
-export const saveEdit = (id, text) => (
+export const saveEdit = (id, body) => (
   {
     type: 'SAVE_EDIT',
     id,
-    text,
+    body,
   }
 );

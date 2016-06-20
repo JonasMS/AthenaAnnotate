@@ -1,12 +1,12 @@
 import { combineReducers } from 'redux';
-import notes from './notes';
-import articles from './articles';
+import annotations from './annotations';
+import docs from './docs';
 import editor from './editor';
 import loading from './loading';
 
 const Reducers = combineReducers({
-  articles,
-  notes,
+  docs,
+  annotations,
   editor,
   loading,
 });

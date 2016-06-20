@@ -1,19 +1,19 @@
-const note = (state, action) => {
+const annotation = (state, action) => {
   switch (action.type) {
-    case 'LOAD_NOTE':
+    case 'LOAD_ANNOTATION':
       return {
         id: state.id,
-        note: state.note,
-        text: state.text,
-        article_id: state.article_id,
+        body: state.body,
+        target: state.target,
+        doc_id: state.doc_id,
         edit: state.edit,
       };
-    case 'DELETE_NOTE':
+    case 'DELETE_ANNOTATION':
       if (state.id !== action.id) {
         return true;
       }
       return false;
-    case 'EDIT_NOTE':
+    case 'EDIT_ANNOTATION':
       if (state.id !== action.id) {
         return state;
       }
@@ -25,7 +25,7 @@ const note = (state, action) => {
         return state;
       }
       return Object.assign({}, state, {
-        note: action.text,
+        body: action.body,
         edit: !state.edit,
       });
     default:
@@ -33,27 +33,27 @@ const note = (state, action) => {
   }
 };
 
-const notes = (state = [], action) => {
+const annotations = (state = [], action) => {
   switch (action.type) {
-    case 'LOAD_NOTE':
-      return action.notes.map(n =>
-        note(n, action)
+    case 'LOAD_ANNOTATION':
+      return action.annotations.map(a =>
+        annotation(a, action)
       );
-    case 'DELETE_NOTE':
-      return state.filter(n =>
-        note(n, action)
+    case 'DELETE_ANNOTATION':
+      return state.filter(a =>
+        annotation(a, action)
       );
-    case 'EDIT_NOTE':
-      return state.map(n =>
-        note(n, action)
+    case 'EDIT_ANNOTATION':
+      return state.map(a =>
+        annotation(a, action)
       );
     case 'SAVE_EDIT':
-      return state.map(n =>
-        note(n, action)
+      return state.map(a =>
+        annotation(a, action)
       );
     default:
       return state;
   }
 };
 
-export default notes;
+export default annotations;
