@@ -10,15 +10,15 @@ const mapStatetoProps = (state) => (
 
 const mapDispatchToProps = (dispatch) => (
   {
-    onAnnotationDelete: (id) => {
-      dispatch(actions.deleteAnnotation(id));
+    onDocDelete: (id) => {
+      dispatch(actions.deleteDoc(id));
     },
-    onAnnotationEdit: (id) => {
-      dispatch(actions.editAnnotation(id));
-    },
-    editText: (id, note) => {
-      dispatch(actions.editText(id, note));
-    },
+    // onAnnotationEdit: (id) => {
+    //   dispatch(actions.editAnnotation(id));
+    // },
+    // editText: (id, note) => {
+    //   dispatch(actions.editText(id, note));
+    // },
   }
 );
 

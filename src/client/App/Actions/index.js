@@ -86,3 +86,10 @@ export const deleteBody = (id) => (
     id,
   }
 );
+
+export const deleteDoc = (id) => (
+  {
+    type: 'DELETE_DOC',
+    id,
+  }
+);
