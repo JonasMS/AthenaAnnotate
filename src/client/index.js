@@ -6,6 +6,7 @@ import Reducers from './App/Reducers';
 import Application from './App/Containers/Application';
 
 const initialState = {
+  user: {},
   docs: [],
   annotations: [],
   editor: '',
