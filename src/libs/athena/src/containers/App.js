@@ -33,12 +33,14 @@ App.propTypes = {
   user: PropTypes.object,
 };
 
-const mapStateToProps = (state) => ({
-  user: state.user,
-});
+// const mapStateToProps = (state) => ({
+//   user: state.user,
+// });
 
-const mapDispatchToProps = (dispatch) => ({
-  actions: bindActionCreators(Actions, dispatch),
-});
+// const mapDispatchToProps = (dispatch) => ({
+//   actions: bindActionCreators(Actions, dispatch),
+// });
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+// export default connect(mapStateToProps, mapDispatchToProps)(App);
+
+export default App;
