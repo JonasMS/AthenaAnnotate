@@ -4,6 +4,7 @@ import Main from './Main';
 
 class App extends Component {
   componentDidMount() {
+    // TODO: make the below function take in user_id as argument
     this.props.loadDocs();
   }
 
@@ -11,6 +12,7 @@ class App extends Component {
     const { loading } = this.props;
 
     return (
+      // if its loading from DB, show loading page until its done
       loading ? <Loading /> : <Main />
     );
   }
