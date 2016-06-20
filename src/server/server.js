@@ -28,7 +28,7 @@ express()
   .use(cookieParser())
   .use(express.static(__dirname + '/../../build'))
   .use(session({
-    secret: 'hw-heroku',
+    secret: 'athena annotate',
     resave: false,
     saveUninitialized: false
   }))

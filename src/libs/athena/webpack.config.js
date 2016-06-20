@@ -1,4 +1,5 @@
 var path = require('path');
+var webpack = require('webpack');
 var PATHS = {
   app: path.join(__dirname, 'src'),
   build: path.join(__dirname, '../../../build/libs')
@@ -30,5 +31,8 @@ module.exports = {
         loader: 'json'
       }
     ]
-  }
+  },
+  plugins: [
+    new webpack.EnvironmentPlugin(['FACEBOOK_APP_ID'])
+  ]
 };
