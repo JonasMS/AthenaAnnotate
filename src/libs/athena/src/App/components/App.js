@@ -12,15 +12,17 @@ export default class App extends Component {
     super(props);
 
     this.state = {
-      annotation: {
+      annotation: { // change to curAnnotation
+        id: '',
         target: '',
         body: '',
       },
+      annotations: [],
     };
   }
 
   componentDidMount () {
-    var ex = document.getElementsByClassName('ex')[0];
+    const ex = document.getElementsByClassName('ex')[0];
     console.log(ex);
     ex.addEventListener(
       'click',
@@ -35,7 +37,6 @@ export default class App extends Component {
       top: 0,
       left: $(window).width(),
     });
-
   }
 
   render () {
