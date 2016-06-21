@@ -3,8 +3,8 @@ import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 import Reducers from './App/Reducers';
-// import Application from './App/Containers/Application';
-import { Container } from './App';
+import Application from './App/Containers/Application';
+// import { Container } from './App';
 
 const initialState = {
   listView: false,
@@ -19,7 +19,7 @@ let store = createStore(Reducers, initialState);
 
 render(
   <Provider store={store}>
-    <Container />
+    <Application />
   </Provider>,
   document.getElementById('app')
 );
