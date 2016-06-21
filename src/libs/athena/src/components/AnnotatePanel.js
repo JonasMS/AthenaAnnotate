@@ -1,10 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-const AnnotatePanel = () => (
+const AnnotatePanel = ({ text }) => (
   <div>
     <div className="targetText">
-      <input type="text" />
+      <input
+        type="text"
+        value={text}
+      />
     </div>
     <div className="bodyText">
       <textarea />

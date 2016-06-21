@@ -43,7 +43,7 @@ class App extends Component {
         <div className={widgetClass}>
           {this.props.user ? <AnnotatePanel /> : <AuthPanel />}
         </div>
-        <Adder dispatch={this.props.dispatch} />
+        <Adder />
       </div>
     );
   }

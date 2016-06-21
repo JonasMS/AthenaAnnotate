@@ -1,5 +1,6 @@
 /* global FB */
 import * as types from '../constants/actionTypes';
+import { getText } from '../utils/utils';
 
 export const getLoginStatus = () => {
   window.FB.getLoginStatus(res => {
@@ -31,6 +32,11 @@ export const initFacebook = () => {
 };
 
 export const setWidget = (display) => ({
+  type: types.SET_WIDGET,
   display,
-  type: 'SET_WIDGET',
+});
+
+export const setTarget = () => ({
+  type: types.SET_TARGET,
+  selector: getText(),
 });
