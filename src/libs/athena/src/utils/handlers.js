@@ -28,6 +28,9 @@ export const createHandler = (
   // change state
     // change widget pos
     // change annotation.target
-  dispatch({ type: 'SHOW_WIDGET' });
+  dispatch({
+    type: 'SET_WIDGET',
+    display: 'SHOW',
+  });
 };
 // submitHandler

@@ -33,12 +33,8 @@ const widget = (
 ) => {
   console.log(state);
   switch (action.type) {
-    case types.SHOW_WIDGET:
-      return 'SHOW';
-    case types.HIDE_WIDGET:
-      return Object.assign({}, state, {
-        widget: 'HIDE',
-      });
+    case types.SET_WIDGET:
+      return action.display;
     default:
       return state;
   }
