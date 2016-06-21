@@ -27,10 +27,21 @@ class App extends Component {
       this.props.actions.getLoginStatus();
     }
     // make listener for mouseups
+    const { setWidget } = Actions;
+    // listener for mouseups
     document
     .getElementsByTagName('body')[0]
     .addEventListener('mouseup', () => {
       adderHandler();
+    });
+
+    // listener for esc key
+    window
+    .addEventListener('keydown', e => {
+      console.log(this);
+      if (e.code === 'Escape') {
+        this.props.actions.setWidget('HIDE');
+      }
     });
   }
 
