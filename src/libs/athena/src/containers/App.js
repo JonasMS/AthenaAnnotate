@@ -32,22 +32,8 @@ class App extends Component {
     document
     .getElementsByTagName('body')[0]
     .addEventListener('mouseup', () => {
-      const { actions } = this.props;
-      const sel = window.getSelection();
-      const range = sel.getRangeAt(0);
-      const distance = Math.abs(
-        range.endOffset - range.startOffset
-      );
-
-      if (distance > 0) {
-        if (this.props.adder !== 'SHOW') {
-          actions.setAdder('SHOW');
-        }
-      } else {
-        if (this.props.adder !== 'HIDE') {
-          actions.setAdder('HIDE');
-        }
-      }
+      const { adder, actions } = this.props;
+      actions.setAdder(adder);
     });
 
     // listener for esc key
@@ -63,9 +49,7 @@ class App extends Component {
     });
   }
 
-  render () {
-    console.log('widg:', this.props);
-    console.log(this.state);
+  render() {
     // TODO: cleanup
     let widgetClass = 'widget ';
     widgetClass += this.props.widget === 'HIDE' ?
