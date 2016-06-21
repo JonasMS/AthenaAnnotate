@@ -44,27 +44,32 @@ const annotation = (
   state = {},
   action
 ) => {
+  console.log('anno:', state);
   switch (action.type) {
-    default:
-      return state;
-  }
-};
-
-const target = (
-  state = {},
-  action
-) => {
-  switch (action.type) {
-    case types.SET_TARGET:
+    case 'SET_TARGET':
       return Object.assign({}, state, {
-        exact: action.exact,
-        prefix: action.prefix,
-        suffic: action.suffix,
+        target: action.selector,
       });
     default:
       return state;
   }
 };
+
+// const target = (
+//   state = {},
+//   action
+// ) => {
+//   switch (action.type) {
+//     case types.SET_TARGET:
+//       return Object.assign({}, state, {
+//         exact: action.exact,
+//         prefix: action.prefix,
+//         suffix: action.suffix,
+//       });
+//     default:
+//       return state;
+//   }
+// };
 
 export default combineReducers({
   user,
@@ -72,5 +77,5 @@ export default combineReducers({
   user,
   widget,
   annotation,
-  target,
+  // target,
 });

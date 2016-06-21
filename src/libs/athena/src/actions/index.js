@@ -1,4 +1,5 @@
 import * as types from '../constants/actionTypes';
+import { getText } from '../utils/utils';
 
 export const setUser = userData => ({
   type: types.SET_USER,
@@ -39,6 +40,11 @@ export const logout = () => (
 );
 
 export const setWidget = (display) => ({
+  type: types.SET_WIDGET,
   display,
-  type: 'SET_WIDGET',
+});
+
+export const setTarget = () => ({
+  type: types.SET_TARGET,
+  selector: getText(),
 });

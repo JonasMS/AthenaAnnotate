@@ -2,7 +2,7 @@ import React from 'react';
 import FacebookLogout from './FacebookLogout';
 import { connect } from 'react-redux';
 
-const AnnotatePanel = ({ logout }) => (
+const AnnotatePanel = ({ logout, text }) => (
   <div>
     <h1> AnnotatePanel </h1>
     <div>
@@ -10,7 +10,10 @@ const AnnotatePanel = ({ logout }) => (
         <FacebookLogout logout={logout} />
       </div>
       <div className="targetText">
-        <input type="text" />
+        <input
+          type="text"
+          value={text}
+        />
       </div>
       <div className="bodyText">
         <textarea />
