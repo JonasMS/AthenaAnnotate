@@ -7,7 +7,19 @@ import App from './containers/App';
 import configureStore from './store';
 // import { getLoginStatus } from './actions';
 
-const store = configureStore();
+const store = configureStore({
+  annotation: {
+    body: {
+      lastModified: '',
+      text: '',
+    },
+    target: {
+      exact: '',
+      prefix: '',
+      suffix: '',
+    },
+  },
+});
 
 const user = {
   id: 1,
@@ -21,6 +33,8 @@ render(
   </Provider>,
   document.getElementById('athena')
 );
+
+window.store = store; // for dev purposes
 
 // we need to get user. i can init FB. i can get query for login status.
 // then what? dispatch an action to the store with the user data.
