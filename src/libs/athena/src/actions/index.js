@@ -38,4 +38,7 @@ export const logout = () => (
   )
 );
 
-export const setWidget = (type) => ({ type });
+export const setWidget = (display) => ({
+  display,
+  type: 'SET_WIDGET',
+});
