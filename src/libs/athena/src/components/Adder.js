@@ -3,6 +3,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 // import { createHandler } from '../utils/handlers';
 import * as Actions from '../actions';
+import { getText } from '../utils/utils';
 
 class Adder extends Component {
 
@@ -11,7 +12,7 @@ class Adder extends Component {
 
     if (btn === 'note') {
       // change annotation.target
-      this.props.dispatch(setTarget());
+      this.props.dispatch(setTarget(getText()));
       // TODO: Why is dispatch needed?
       this.props.dispatch(setWidget('SHOW'));
     } else {
@@ -19,7 +20,6 @@ class Adder extends Component {
       // add annotation to annotations
 
     }
-
   }
 
   render () {

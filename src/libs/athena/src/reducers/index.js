@@ -27,7 +27,6 @@ const widget = (
   state = 'HIDE',
   action
 ) => {
-  console.log(state);
   switch (action.type) {
     case types.SET_WIDGET:
       return action.display;
@@ -40,9 +39,27 @@ const annotation = (
   state = {},
   action
 ) => {
-  console.log('anno:', state);
   switch (action.type) {
-    case 'SET_TARGET':
+    case types.CLEAR_ANNOTATION:
+      return Object.assign({}, state, {
+        body: {
+          lastModified: '',
+          text: '',
+        },
+        target: {
+          exact: '',
+          prefix: '',
+          suffix: '',
+        },
+      });
+    case 'UPDATE_BODY':
+      return Object.assign({}, state, {
+        body: {
+          lastModified: Date.now(),
+          text: action.text,
+        },
+      });
+    case types.SET_TARGET:
       return Object.assign({}, state, {
         target: action.selector,
       });
@@ -50,22 +67,6 @@ const annotation = (
       return state;
   }
 };
-
-// const target = (
-//   state = {},
-//   action
-// ) => {
-//   switch (action.type) {
-//     case types.SET_TARGET:
-//       return Object.assign({}, state, {
-//         exact: action.exact,
-//         prefix: action.prefix,
-//         suffix: action.suffix,
-//       });
-//     default:
-//       return state;
-//   }
-// };
 
 export default combineReducers({
   // view,

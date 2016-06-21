@@ -1,6 +1,5 @@
 /* global FB */
 import * as types from '../constants/actionTypes';
-import { getText } from '../utils/utils';
 
 export const getLoginStatus = () => {
   window.FB.getLoginStatus(res => {
@@ -36,7 +35,16 @@ export const setWidget = (display) => ({
   display,
 });
 
-export const setTarget = () => ({
+export const updateBody = (text) => ({
+  type: 'UPDATE_BODY',
+  text,
+});
+
+export const setTarget = (target) => ({
   type: types.SET_TARGET,
-  selector: getText(),
+  selector: target,
+});
+
+export const clearAnnote = () => ({
+  type: types.CLEAR_ANNOTATION,
 });

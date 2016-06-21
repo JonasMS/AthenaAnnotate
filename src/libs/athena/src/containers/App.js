@@ -7,8 +7,8 @@ import AnnotatePanel  from '../components/AnnotatePanel';
 import Adder from '../components/Adder';
 
 import * as Actions from '../actions';
-
 import { adderHandler } from '../utils/handlers';
+
 
 // const style = {
 //   textAlign: 'center',
