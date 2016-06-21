@@ -1,8 +1,13 @@
+/* global FB */
 import React from 'react';
+import FacebookLogin from './FacebookLogin';
 
-const AuthPanel = () => (
+const AuthPanel = ({ login }) => (
   <div>
-    <h1> AuthPanel </h1>
+    <div>
+      <p> Please Login </p>
+      <FacebookLogin login={login} />
+    </div>
   </div>
 );
 
