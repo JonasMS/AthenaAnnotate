@@ -38,9 +38,12 @@ class App extends Component {
     // listener for esc key
     window
     .addEventListener('keydown', e => {
-      console.log(this);
-      if (e.code === 'Escape') {
-        this.props.actions.setWidget('HIDE');
+      const { widget, actions } = this.props;
+      if (
+        e.code === 'Escape' &&
+        widget === 'SHOW'
+      ) {
+        actions.setWidget('HIDE');
       }
     });
   }
