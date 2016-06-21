@@ -1,5 +1,4 @@
 import * as types from '../constants/actionTypes';
-import { getText } from '../utils/utils';
 
 export const setUser = userData => ({
   type: types.SET_USER,
@@ -44,7 +43,16 @@ export const setWidget = (display) => ({
   display,
 });
 
-export const setTarget = () => ({
+export const updateBody = (text) => ({
+  type: 'UPDATE_BODY',
+  text,
+});
+
+export const setTarget = (target) => ({
   type: types.SET_TARGET,
-  selector: getText(),
+  selector: target,
+});
+
+export const clearAnnote = () => ({
+  type: types.CLEAR_ANNOTATION,
 });

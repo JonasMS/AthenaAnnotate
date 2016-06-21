@@ -1,28 +1,25 @@
 import FacebookLogout from './FacebookLogout';
 import React, { Component } from 'react';
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import fetch from 'isomorphic-fetch';
 // import babel-polyfill
 require('es6-promise').polyfill();
+import * as Actions from '../actions';
+import { saveAnnote } from '../utils/annotation';
 
 class AnnotatePanel extends Component {
 
   submitHandler () {
-    const { annotation } = this.props;
+    const { annotation, actions } = this.props;
+    // const { clearAnnotation } = Actions;
+
     // send annotation object to server
-    fetch('http://localhost:3000/api/create', {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(annotation),
-    })
-    .then(res => {
-      if (res.status >= 400) {
-        throw new Error('bad response on create')
-      }
-    });
+    saveAnnote(annotation);
+    // update annotations
+    // update annotation
+    actions.clearAnnote();
+    // hide widget
   }
 
   render () {
@@ -35,7 +32,16 @@ class AnnotatePanel extends Component {
           />
         </div>
         <div className="bodyText">
-          <textarea />
+          <textarea
+            value={
+              this.props.annotation.body.text
+            }
+            onChange={(e) =>
+              this.props.actions.updateBody(
+                e.target.value
+              )
+            }
+          />
         </div>
         <button
           className="submitBtn"
@@ -53,15 +59,17 @@ class AnnotatePanel extends Component {
 const mapStateToProps = (state) => ({
   annotation: state.annotation,
   exact: state.annotation.target.exact,
+});
 
+const mapDispatchToProps = (dispatch) => ({
+  actions: bindActionCreators(Actions, dispatch),
 });
 
 AnnotatePanel.propTypes = {
   exact: React.PropTypes.string.isRequired,
 };
 
-const mapStateToProps = (state) => ({
-  text: state.annotation.target.exact,
-});
-
-export default connect(mapStateToProps)(AnnotatePanel);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AnnotatePanel);
