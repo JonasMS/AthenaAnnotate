@@ -9,6 +9,8 @@ import Adder from '../components/Adder';
 import * as Actions from '../actions';
 import { initFB } from '../../../common/auth';
 
+import { adderHandler } from '../utils/handlers';
+
 // const style = {
 //   textAlign: 'center',
 //   width: '500px',
@@ -23,6 +25,11 @@ class App extends Component {
   componentDidMount() {
     initFB().then(() => {
       this.props.actions.getLoginStatus();
+    // make listener for mouseups
+    document
+    .getElementsByTagName('body')[0]
+    .addEventListener('mouseup', () => {
+      adderHandler();
     });
   }
 
