@@ -7,5 +7,6 @@ export const SET_WIDGET = 'SET_WIDGET';
 
 // annotation
 export const CLEAR_ANNOTATION = 'CLEAR_ANNOTATION';
+export const UPDATE_BODY = 'UPDATE_BODY';
 export const SET_TARGET = 'SET_TARGET';
 

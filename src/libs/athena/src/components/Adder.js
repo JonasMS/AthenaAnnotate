@@ -11,10 +11,11 @@ class Adder extends Component {
     const { setWidget, setTarget } = Actions;
 
     if (btn === 'note') {
+      const { actions } = this.props;
       // change annotation.target
-      this.props.dispatch(setTarget(getText()));
+      actions.setTarget(getText());
       // TODO: Why is dispatch needed?
-      this.props.dispatch(setWidget('SHOW'));
+      actions.setWidget('SHOW');
     } else {
       // create annotation
       // add annotation to annotations
