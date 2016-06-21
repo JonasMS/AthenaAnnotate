@@ -10,8 +10,8 @@ const mapStateToProps = (state) => (
 
 const mapDispatchToProps = (dispatch) => (
   {
-    loadDocs: () => {
-      actions.loadDocs(dispatch);
+    loadDocs: (filter) => {
+      actions.loadDocs(dispatch, filter);
     },
   }
 );

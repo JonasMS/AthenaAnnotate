@@ -1,4 +1,7 @@
-export const loadDocs = (dispatch) => {
+export const loadDocs = (dispatch, filter) => {
+  // filter will determine which set of docs to load
+  // options will be following feed or personal feed
+
   dispatch({ type: 'LOADING', loading: true });
   // DB query here to get articles
   // assume this next line is the results from DB call, and there was some function

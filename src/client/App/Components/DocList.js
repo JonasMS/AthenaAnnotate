@@ -10,9 +10,11 @@ const DocList = ({ docs, onDocDelete }) => {
     />
       ));
   return (
-    <ul>
-      {docList}
-    </ul>
+    <div className="col s6">
+      <ul>
+        {docList}
+      </ul>
+    </div>
   );
 };
 
