@@ -96,3 +96,9 @@ export const deleteDoc = (id) => (
     id,
   }
 );
+
+export const switchView = () => (
+  {
+    type: 'SWITCH_VIEW',
+  }
+);

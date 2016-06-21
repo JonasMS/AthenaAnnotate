@@ -6,7 +6,7 @@ import Reducers from './App/Reducers';
 import Application from './App/Containers/Application';
 
 const initialState = {
-  view: '',
+  listView: false,
   user: {},
   docs: [],
   annotations: [],
