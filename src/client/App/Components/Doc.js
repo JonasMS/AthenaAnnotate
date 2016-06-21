@@ -5,7 +5,7 @@ const changeLocation = (url) => {
   window.location = url;
 };
 
-const Doc = ({ url, id, onDocDelete }) => (
+const Doc = ({ url, id, onDocDelete, listView }) => (
   <li
     className="card blue-grey darken-1 white-text"
   >
@@ -18,9 +18,8 @@ const Doc = ({ url, id, onDocDelete }) => (
     >
       <i className="material-icons">delete</i>
     </button>
-    <VisibleAnnotationList
-      id={id}
-    />
+    {listView}
+    {listView ? null : <VisibleAnnotationList id={id} />}
   </li>
 );
 
@@ -28,6 +27,7 @@ Doc.propTypes = {
   url: PropTypes.string.isRequired,
   id: PropTypes.number.isRequired,
   onDocDelete: PropTypes.func.isRequired,
+  listView: PropTypes.bool.isRequired,
 };
 
 export default Doc;

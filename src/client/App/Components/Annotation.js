@@ -21,7 +21,7 @@ const Annotation = (
     {!!body ?
       <div>
         <p>
-          {body}
+          {!edit ? body : null}
         </p>
         <div
           className="card-action"
@@ -34,12 +34,14 @@ const Annotation = (
               onDelete={() => onDeleteBody(id)}
             />
             : null}
-          <button
-            className="waves-effect waves-light btn-floating"
-            onClick={() => onEditBody(id)}
-          >
-            <i className="material-icons">mode_edit</i>
-          </button>
+          {!edit ?
+            <button
+              className="waves-effect waves-light btn-floating"
+              onClick={() => onEditBody(id)}
+            >
+              <i className="material-icons">mode_edit</i>
+            </button>
+            : null}
         </div>
       </div>
     : null}

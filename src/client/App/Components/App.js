@@ -1,9 +1,11 @@
 import React, { Component, PropTypes } from 'react';
 import Loading from './Loading';
 import Main from './Main';
+import Sidebar from './Sidebar';
 
 class App extends Component {
   componentDidMount() {
+    // TODO: make the below function take in user_id as argument
     this.props.loadDocs();
   }
 
@@ -11,7 +13,10 @@ class App extends Component {
     const { loading } = this.props;
 
     return (
-      loading ? <Loading /> : <Main />
+      <div className="row">
+        <Sidebar />
+        {loading ? <Loading /> : <Main />}
+      </div>
     );
   }
 }
