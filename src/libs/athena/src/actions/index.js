@@ -55,7 +55,6 @@ export const setAdder = adder => {
   };
 };
 
-
 // widget actions
 export const setWidget = (display) => ({
   type: types.SET_WIDGET,

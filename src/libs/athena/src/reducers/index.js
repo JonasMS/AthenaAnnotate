@@ -64,7 +64,7 @@ const annotation = (
           suffix: '',
         },
       });
-    case 'UPDATE_BODY':
+    case types.UPDATE_BODY:
       return Object.assign({}, state, {
         body: {
           lastModified: Date.now(),
