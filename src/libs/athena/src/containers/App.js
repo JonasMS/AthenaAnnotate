@@ -8,6 +8,8 @@ import Adder from '../components/Adder';
 
 import * as Actions from '../actions';
 
+import { adderHandler } from '../utils/handlers';
+
 // const style = {
 //   textAlign: 'center',
 //   width: '500px',
@@ -19,7 +21,14 @@ import * as Actions from '../actions';
 // };
 
 class App extends Component {
-  componentDidMount() {}
+  componentDidMount() {
+    // make listener for mouseups
+    document
+    .getElementsByTagName('body')[0]
+    .addEventListener('mouseup', () => {
+      adderHandler();
+    });
+  }
 
   render() {
     return (
