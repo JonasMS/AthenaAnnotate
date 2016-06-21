@@ -22,6 +22,7 @@ class AnnotatePanel extends Component {
   }
 
   render () {
+    const { annotation, actions } = this.props;
     return (
       <div>
         <div className="targetText">
@@ -33,10 +34,10 @@ class AnnotatePanel extends Component {
         <div className="bodyText">
           <textarea
             value={
-              this.props.annotation.body.text
+              annotation.body.text
             }
             onChange={(e) =>
-              this.props.actions.updateBody(
+              actions.updateBody(
                 e.target.value
               )
             }
