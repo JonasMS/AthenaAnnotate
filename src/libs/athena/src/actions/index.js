@@ -39,10 +39,29 @@ export const logout = () => (
 );
 
 // adder actions
-export const setAdder = (display) => ({
-  type: 'SET_ADDER',
-  display,
-});
+export const setAdder = adder => {
+  const sel = window.getSelection();
+  const range = sel.getRangeAt(0);
+  const distance = Math.abs(
+    range.endOffset - range.startOffset
+  );
+  let display = adder;
+
+  if (distance > 0) {
+    if (adder !== 'SHOW') {
+      display = 'SHOW';
+    }
+  } else {
+    if (adder !== 'HIDE') {
+      display = 'HIDE';
+    }
+  }
+
+  return {
+    type: 'SET_ADDER',
+    display,
+  };
+};
 
 
 // widget actions
