@@ -58,10 +58,13 @@ const mapStateToProps = (state) => ({
   widget: state.widget,
 });
 
-// const mapDispatchToProps = (dispatch) => ({
-//   actions: bindActionCreators(Actions, dispatch),
-// });
+const mapDispatchToProps = (dispatch) => ({
+  actions: bindActionCreators(Actions, dispatch),
+});
 
-export default connect(mapStateToProps)(App);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(App);
 
 // export default App;

@@ -3,5 +3,6 @@ export const SHOW_ANNOTATE_PANEL = 'SHOW_ANNOTATE_PANEL';
 
 export const SET_TARGET = 'SET_TARGET';
 
+export const SET_WIDGET = 'SET_WIDGET';
 export const SHOW_WIDGET = 'SHOW_WIDGET';
 export const HIDE_WIDGET = 'HIDE_WIDGET';
