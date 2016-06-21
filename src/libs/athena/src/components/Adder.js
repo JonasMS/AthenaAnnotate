@@ -26,12 +26,12 @@ class Adder extends Component {
     return (
       <div className="adder">
         <button
-          className="adderButton"
+          className="adderBtn"
           onClick={() =>
             this.createHandler('highlight')}
         >H</button>
         <button
-          className="adderButton"
+          className="adderBtn"
           onClick={() =>
            this.createHandler('note')}
         >N</button>
