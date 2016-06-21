@@ -15,14 +15,49 @@ const user = (state = {}, action) => {
 //       return state;
 //   }
 // };
-const annotation = (state = {}, action) => {
+const user = (
+  state = {},
+  action
+) => {
+  switch (action.type) {
+    case 'SET_USER':
+      return action.user;
+    default:
+      return state;
+  }
+};
+
+const widget = (
+  state = 'HIDE',
+  action
+) => {
+  console.log(state);
+  switch (action.type) {
+    case types.SHOW_WIDGET:
+      return 'SHOW';
+    case types.HIDE_WIDGET:
+      return Object.assign({}, state, {
+        widget: 'HIDE',
+      });
+    default:
+      return state;
+  }
+};
+
+const annotation = (
+  state = {},
+  action
+) => {
   switch (action.type) {
     default:
       return state;
   }
 };
 
-const target = (state = {}, action) => {
+const target = (
+  state = {},
+  action
+) => {
   switch (action.type) {
     case types.SET_TARGET:
       return Object.assign({}, state, {
@@ -38,6 +73,8 @@ const target = (state = {}, action) => {
 export default combineReducers({
   user,
   // view,
+  user,
+  widget,
   annotation,
   target,
 });

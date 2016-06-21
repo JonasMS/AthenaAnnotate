@@ -25,5 +25,15 @@
   }
 }
 
+.widget_hide {
+  left: 100%;
+  transition-duration: 1s;
+}
+
+.widget_show {
+  left: 70%;
+  transition-duration: 1s;
+}
+
 
 
