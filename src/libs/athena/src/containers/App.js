@@ -34,14 +34,22 @@ class App extends Component {
   }
 
   render() {
+    console.log('widg:', this.props);
+    console.log(this.state);
+    // TODO: cleanup
+    let widgetClass = 'widget ';
+    widgetClass += this.props.widget === 'HIDE' ?
+      'widget_hide' : 'widget_show';
+
     const { user, actions: { login, logout } } = this.props;
+
     return (
       <div>
-        <div className="widget">
+        <div className={widgetClass}>
           <div id="fb-root"></div>
           {this.props.user ? <AnnotatePanel /> : <AuthPanel />}
         </div>
-        <Adder />
+        <Adder dispatch={this.props.dispatch} />
       </div>
     );
   }
@@ -53,7 +61,10 @@ App.propTypes = {
   actions: PropTypes.object,
 };
 
-const mapStateToProps = ({ user }) => ({ user });
+const mapStateToProps = (state) => ({
+  user: state.user,
+  widget: state.widget,
+});
 
 const mapDispatchToProps = (dispatch) => ({
   actions: bindActionCreators(Actions, dispatch),

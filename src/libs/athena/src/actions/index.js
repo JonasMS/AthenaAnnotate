@@ -38,3 +38,4 @@ export const logout = () => (
   )
 );
 
+export const setWidget = (type) => ({ type });

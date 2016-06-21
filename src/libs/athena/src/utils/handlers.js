@@ -1,5 +1,5 @@
 // docHookHandler
-// adderHandler
+
 export const adderHandler = () => {
   const sel = window.getSelection();
   const range = sel.getRangeAt(0);
@@ -10,7 +10,7 @@ export const adderHandler = () => {
     document
     .getElementsByClassName('adder')[0];
 
-  console.log(sel);
+  // console.log(sel);
 
   // activate widgetController
   adder.style.display = distance > 0 ?
@@ -19,4 +19,15 @@ export const adderHandler = () => {
   return adder;
 };
 // createHandler
+export const createHandler = (
+  type,
+  dispatch
+) => {
+  // create annotation
+
+  // change state
+    // change widget pos
+    // change annotation.target
+  dispatch({ type: 'SHOW_WIDGET' });
+};
 // submitHandler
