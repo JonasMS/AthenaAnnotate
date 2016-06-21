@@ -30,13 +30,22 @@ export const initFacebook = () => {
   }(document, 'script', 'facebook-jssdk'));
 };
 
+// adder actions
+export const setAdder = (display) => ({
+  type: 'SET_ADDER',
+  display,
+});
+
+
+// widget actions
 export const setWidget = (display) => ({
   type: types.SET_WIDGET,
   display,
 });
 
+// annotation actions
 export const updateBody = (text) => ({
-  type: 'UPDATE_BODY',
+  type: types.UPDATE_BODY,
   text,
 });
 

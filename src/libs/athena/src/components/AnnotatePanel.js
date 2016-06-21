@@ -16,9 +16,8 @@ class AnnotatePanel extends Component {
     // send annotation object to server
     saveAnnote(annotation);
     // update annotations
-    // update annotation
     actions.clearAnnote();
-    // hide widget
+    // TODO: hide widget
   }
 
   render () {
@@ -50,7 +49,7 @@ class AnnotatePanel extends Component {
 
     );
   }
-};
+}
 
 const mapStateToProps = (state) => ({
   annotation: state.annotation,

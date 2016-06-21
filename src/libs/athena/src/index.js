@@ -18,6 +18,7 @@ const widget = 'HIDE';
 const store = configureStore({
   user,
   widget, // access state in App
+  adder: 'HIDE',
   annotation: {
     body: {
       lastModified: '',
