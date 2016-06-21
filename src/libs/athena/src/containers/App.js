@@ -25,6 +25,7 @@ class App extends Component {
   componentDidMount() {
     initFB().then(() => {
       this.props.actions.getLoginStatus();
+    }
     // make listener for mouseups
     document
     .getElementsByTagName('body')[0]
@@ -33,7 +34,7 @@ class App extends Component {
     });
   }
 
-  render() {
+  render () {
     console.log('widg:', this.props);
     console.log(this.state);
     // TODO: cleanup
@@ -49,7 +50,7 @@ class App extends Component {
           <div id="fb-root"></div>
           {this.props.user ? <AnnotatePanel /> : <AuthPanel />}
         </div>
-        <Adder dispatch={this.props.dispatch} />
+        <Adder />
       </div>
     );
   }

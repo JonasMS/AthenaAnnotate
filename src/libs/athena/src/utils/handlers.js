@@ -21,16 +21,14 @@ export const adderHandler = () => {
 // createHandler
 export const createHandler = (
   type,
-  dispatch
+  action
 ) => {
+  console.log('action: ', action);
   // create annotation
 
   // change state
     // change widget pos
     // change annotation.target
-  dispatch({
-    type: 'SET_WIDGET',
-    display: 'SHOW',
-  });
+  action('SHOW');
 };
 // submitHandler
