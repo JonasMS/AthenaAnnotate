@@ -19,12 +19,6 @@ const style = {
 };
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-
-    window.store = props.store;
-  }
-
   componentDidMount() {
     initFB().then(() => {
       this.props.actions.getLoginStatus();

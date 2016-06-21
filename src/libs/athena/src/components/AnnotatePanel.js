@@ -12,4 +12,8 @@ const AnnotatePanel = ({ logout }) => (
   </div>
 );
 
+AnnotatePanel.propTypes = {
+  logout: React.PropTypes.func.isRequired,
+};
+
 export default AnnotatePanel;

@@ -5,11 +5,7 @@ import { Provider } from 'react-redux';
 import configureStore from './store';
 import App from './containers/App';
 
-const initialState = {
-  user: {},
-};
-
-const store = configureStore(initialState);
+const store = configureStore();
 
 render(
   <Provider store={store}>
@@ -17,5 +13,3 @@ render(
   </Provider>,
   document.getElementById('athena')
 );
-
-window.store =   store;
