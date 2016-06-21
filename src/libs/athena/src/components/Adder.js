@@ -1,11 +1,28 @@
 import React from 'react';
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { createHandler } from '../utils/handlers';
+import * as Actions from '../actions';
 
-const Adder = () => (
+const Adder = ({ actions, dispatch }) => (
   <div className="adder">
-    <button>H</button>
+    <button
+      className="adderButton"
+      onClick={() => createHandler(
+        'highlight',
+        dispatch
+      )}
+    >H</button>
     <button>N</button>
   </div>
 );
 
-export default Adder;
+const mapDispatchToProps = (dispatch) => ({
+  actions: bindActionCreators(Actions, dispatch),
+});
+
+Adder.propTypes = {
+  actions: React.PropTypes.object,
+};
+
+export default connect(mapDispatchToProps)(Adder);

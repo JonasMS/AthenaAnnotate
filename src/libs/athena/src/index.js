@@ -7,7 +7,17 @@ import App from './containers/App';
 import configureStore from './store';
 // import { getLoginStatus } from './actions';
 
+const user = {
+  id: 1,
+  name: 'Jonas Sota',
+  title: 'Student at Hack Reactor',
+};
+
+const widget = 'HIDE';
+
 const store = configureStore({
+  user,
+  widget, // access state in App
   annotation: {
     body: {
       lastModified: '',
@@ -19,17 +29,12 @@ const store = configureStore({
       suffix: '',
     },
   },
+  annotations: [],
 });
-
-const user = {
-  id: 1,
-  name: 'Jonas Sota',
-  title: 'Student at Hack Reactor',
-};
 
 render(
   <Provider store={store}>
-    <App user={user} />
+    <App user={user} widget={widget} />
   </Provider>,
   document.getElementById('athena')
 );

@@ -31,12 +31,19 @@ class App extends Component {
   }
 
   render() {
+    console.log('widg:', this.props);
+    console.log(this.state);
+    // TODO: cleanup
+    let widgetClass = 'widget ';
+    widgetClass += this.props.widget === 'HIDE' ?
+      'widget_hide' : 'widget_show';
+
     return (
       <div>
-        <div className="widget">
+        <div className={widgetClass}>
           {this.props.user ? <AnnotatePanel /> : <AuthPanel />}
         </div>
-        <Adder />
+        <Adder dispatch={this.props.dispatch} />
       </div>
     );
   }
@@ -46,14 +53,15 @@ App.propTypes = {
   user: PropTypes.object,
 };
 
-// const mapStateToProps = (state) => ({
-//   user: state.user,
-// });
+const mapStateToProps = (state) => ({
+  user: state.user,
+  widget: state.widget,
+});
 
 // const mapDispatchToProps = (dispatch) => ({
 //   actions: bindActionCreators(Actions, dispatch),
 // });
 
-// export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(mapStateToProps)(App);
 
-export default App;
+// export default App;

@@ -30,3 +30,4 @@ export const initFacebook = () => {
   }(document, 'script', 'facebook-jssdk'));
 };
 
+export const setWidget = (type) => ({ type });
