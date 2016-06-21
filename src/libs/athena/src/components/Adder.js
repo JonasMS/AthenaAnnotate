@@ -23,8 +23,12 @@ class Adder extends Component {
   }
 
   render () {
+    let adderClass = 'adder';
+    adderClass += this.props.adder === 'HIDE' ?
+      ' adder_hide' : ' adder_show';
+
     return (
-      <div className="adder">
+      <div className={adderClass}>
         <button
           className="adderBtn"
           onClick={() =>
@@ -40,6 +44,9 @@ class Adder extends Component {
   }
 }
 
+const mapStateToProps = (state) => ({
+  adder: state.adder,
+});
 
 const mapDispatchToProps = (dispatch) => ({
   actions: bindActionCreators(Actions, dispatch),
@@ -49,4 +56,7 @@ Adder.propTypes = {
   actions: React.PropTypes.object,
 };
 
-export default connect(mapDispatchToProps)(Adder);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Adder);

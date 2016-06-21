@@ -27,6 +27,18 @@ const user = (
   }
 };
 
+const adder = (
+  state = 'HIDE',
+  action
+) => {
+  switch (action.type) {
+    case 'SET_ADDER':
+      return action.display;
+    default:
+      return state;
+  }
+};
+
 const widget = (
   state = 'HIDE',
   action
@@ -72,11 +84,22 @@ const annotation = (
   }
 };
 
+const annotations = (
+  state = [],
+  action
+) => {
+  switch (action.type) {
+    default:
+      return state;
+  }
+};
+
 export default combineReducers({
   user,
   // view,
+  adder,
   user,
   widget,
   annotation,
-  // target,
+  annotations,
 });
