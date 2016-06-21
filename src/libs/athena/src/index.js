@@ -34,7 +34,7 @@ const store = configureStore({
 
 render(
   <Provider store={store}>
-    <App user={user} widget={widget} />
+    <App user={user} />
   </Provider>,
   document.getElementById('athena')
 );
