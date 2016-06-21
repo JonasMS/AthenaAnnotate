@@ -8,8 +8,8 @@ import Adder from '../components/Adder';
 
 import * as Actions from '../actions';
 import { initFB } from '../../../common/auth';
-
 import { adderHandler } from '../utils/handlers';
+
 
 // const style = {
 //   textAlign: 'center',
