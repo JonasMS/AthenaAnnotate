@@ -22,11 +22,21 @@ import { adderHandler } from '../utils/handlers';
 
 class App extends Component {
   componentDidMount() {
-    // make listener for mouseups
+    const { setWidget } = Actions;
+    // listener for mouseups
     document
     .getElementsByTagName('body')[0]
     .addEventListener('mouseup', () => {
       adderHandler();
+    });
+
+    // listener for esc key
+    window
+    .addEventListener('keydown', e => {
+      console.log(this);
+      if (e.code === 'Escape') {
+        this.props.actions.setWidget('HIDE');
+      }
     });
   }
 
