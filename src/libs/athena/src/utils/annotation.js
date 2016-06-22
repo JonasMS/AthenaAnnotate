@@ -2,7 +2,7 @@ import fetch from 'isomorphic-fetch';
 // import babel-polyfill
 require('es6-promise').polyfill();
 
-const createAnnote = ({
+export const createAnnote = ({
   annotation,
   annotations,
   user,
