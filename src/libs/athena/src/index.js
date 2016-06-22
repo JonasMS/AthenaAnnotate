@@ -5,31 +5,33 @@ import { Provider } from 'react-redux';
 import configureStore from './store';
 import App from './containers/App';
 
-const user = {
-  id: 1,
-  name: 'Jonas Sota',
-  title: 'Student at Hack Reactor',
-};
+// const user = {
+//   id: 1,
+//   name: 'Jonas Sota',
+//   title: 'Student at Hack Reactor',
+// };
 
 const widget = 'HIDE';
 
-const store = configureStore({
-  user,
-  widget, // access state in App
-  adder: 'HIDE',
-  annotation: {
-    body: {
-      lastModified: '',
-      text: '',
-    },
-    target: {
-      exact: '',
-      prefix: '',
-      suffix: '',
-    },
-  },
-  annotations: [],
-});
+// {
+//   // user,
+//   widget, // access state in App
+//   adder: 'HIDE',
+//   annotation: {
+//     body: {
+//       lastModified: '',
+//       text: '',
+//     },
+//     target: {
+//       exact: '',
+//       prefix: '',
+//       suffix: '',
+//     },
+//   },
+//   annotations: [],
+// }
+
+const store = configureStore();
 
 render(
   <Provider store={store}>

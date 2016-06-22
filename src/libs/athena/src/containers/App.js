@@ -11,24 +11,11 @@ import { initFB } from '../../../common/auth';
 import { adderHandler } from '../utils/handlers';
 import { setWidgClass } from '../utils/utils';
 
-
-// const style = {
-//   textAlign: 'center',
-//   width: '500px',
-//   height: '500px',
-//   backgroundColor: 'lightblue',
-//   position: 'absolute',
-//   top: 0,
-//   right: 0,
-// };
-
 class App extends Component {
   componentDidMount() {
     initFB().then(() => {
       this.props.actions.getLoginStatus();
-    }
-    // make listener for mouseups
-    const { setWidget } = Actions;
+    });
     // listener for mouseups
     document
     .getElementsByTagName('body')[0]
@@ -61,7 +48,9 @@ class App extends Component {
       <div>
         <div className={widgetClass}>
           <div id="fb-root"></div>
-          {this.props.user ? <AnnotatePanel /> : <AuthPanel />}
+          {user && user.id ?
+            <AnnotatePanel logout={logout} /> :
+            <AuthPanel login={login} />}
         </div>
         <Adder />
       </div>

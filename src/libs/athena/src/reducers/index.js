@@ -1,10 +1,17 @@
 import { combineReducers } from 'redux';
 import * as types from '../constants/actionTypes';
 
-const user = (state = {}, action) => {
+const user = (
+  state = {},
+  action
+) => {
   switch (action.type) {
     case types.SET_USER:
       return Object.assign({}, state, action.data);
+    default:
+      return state;
+  }
+};
 // not used now
 // const view = (state = '', action) => {
 //   switch (action.type) {
@@ -15,17 +22,18 @@ const user = (state = {}, action) => {
 //       return state;
 //   }
 // };
-const user = (
-  state = {},
-  action
-) => {
-  switch (action.type) {
-    case 'SET_USER':
-      return action.user;
-    default:
-      return state;
-  }
-};
+
+// const user = (
+//   state = {},
+//   action
+// ) => {
+//   switch (action.type) {
+//     case 'SET_USER':
+//       return action.user;
+//     default:
+//       return state;
+//   }
+// };
 
 const adder = (
   state = 'HIDE',
@@ -52,7 +60,17 @@ const widget = (
 };
 
 const annotation = (
-  state = {},
+  state = {
+    body: {
+      lastModified: '',
+      text: '',
+    },
+    target: {
+      exact: '',
+      prefix: '',
+      suffix: '',
+    },
+  },
   action
 ) => {
   switch (action.type) {
@@ -96,9 +114,7 @@ const annotations = (
 
 export default combineReducers({
   user,
-  // view,
   adder,
-  user,
   widget,
   annotation,
   annotations,
