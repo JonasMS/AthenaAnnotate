@@ -6,6 +6,7 @@ import AuthPanel from '../components/AuthPanel';
 import AnnotatePanel  from '../components/AnnotatePanel';
 
 import * as Actions from '../actions';
+import { initFB } from '../../../common/auth';
 
 const style = {
   textAlign: 'center',
@@ -18,12 +19,22 @@ const style = {
 };
 
 class App extends Component {
-  componentDidMount() {}
+  componentDidMount() {
+    initFB().then(() => {
+      this.props.actions.getLoginStatus();
+    });
+  }
 
   render() {
+    const { user, actions: { login, logout } } = this.props;
     return (
       <div style={style}>
-        {this.props.user ? <AnnotatePanel /> : <AuthPanel />}
+        <div id="fb-root"></div>
+        {
+          user && user.id
+          ? <AnnotatePanel logout={logout} />
+          : <AuthPanel login={login} />
+        }
       </div>
     );
   }
@@ -31,16 +42,14 @@ class App extends Component {
 
 App.propTypes = {
   user: PropTypes.object,
+  store: PropTypes.object,
+  actions: PropTypes.object,
 };
 
-// const mapStateToProps = (state) => ({
-//   user: state.user,
-// });
+const mapStateToProps = ({ user }) => ({ user });
 
-// const mapDispatchToProps = (dispatch) => ({
-//   actions: bindActionCreators(Actions, dispatch),
-// });
+const mapDispatchToProps = (dispatch) => ({
+  actions: bindActionCreators(Actions, dispatch),
+});
 
-// export default connect(mapStateToProps, mapDispatchToProps)(App);
-
-export default App;
+export default connect(mapStateToProps, mapDispatchToProps)(App);

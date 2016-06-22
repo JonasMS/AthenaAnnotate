@@ -1,32 +1,40 @@
-/* global FB */
 import * as types from '../constants/actionTypes';
 
-export const getLoginStatus = () => {
-  window.FB.getLoginStatus(res => {
-    return dispatch => {
+export const setUser = userData => ({
+  type: types.SET_USER,
+  data: userData,
+});
 
-    };
-  });
-};
+const getUserData = dispatch => (
+  window.FB.api(
+    '/me?fields=id,email,name',
+    resp => dispatch(setUser(resp)),
+    { scope: 'email' }
+  )
+);
 
-export const initFacebook = () => {
-  window.fbAsyncInit = () => {
-    FB.init({
-      appId: process.env.FACEBOOK_APP_ID,
-      cookie: true,
-      xfbml: true,
-      version: 'v2.6',
-    });
+export const getLoginStatus = () =>
+  dispatch => window.FB.getLoginStatus(() => getUserData(dispatch));
 
-    getLoginStatus();
-  };
+export const login = () => (
+  dispatch => (
+    window.FB.login(res => {
+      if (res.status === 'connected') {
+        return getUserData(dispatch);
+      }
+      return undefined;
+    }, { scope: 'public_profile,email' })
+  )
+);
 
-  (function(d, s, id) {
-    const fjs = d.getElementsByTagName(s)[0];
-    if (d.getElementById(id)) { return; }
-    const js = d.createElement(s); js.id = id;
-    js.src = '//connect.facebook.net/en_US/sdk.js';
-    fjs.parentNode.insertBefore(js, fjs);
-  }(document, 'script', 'facebook-jssdk'));
-};
+export const logout = () => (
+  dispatch => (
+    window.FB.logout(() => (
+      dispatch(setUser({
+        id: null,
+        accessToken: null,
+      }))
+    ))
+  )
+);
 

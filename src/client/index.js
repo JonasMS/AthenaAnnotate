@@ -4,6 +4,7 @@ import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 import Reducers from './App/Reducers';
 import Application from './App/Containers/Application';
+// import { Container } from './App';
 
 const initialState = {
   listView: false,

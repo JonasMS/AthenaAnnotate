@@ -1,17 +1,15 @@
 import { combineReducers } from 'redux';
 import * as types from '../constants/actionTypes';
 
-// not used now
-const view = (state = '', action) => {
+const user = (state = {}, action) => {
   switch (action.type) {
-    case types.SHOW_AUTH_PANEL:
-      return action;
-    case types.SHOW_ANNOTATE_PANEL:
+    case types.SET_USER:
+      return Object.assign({}, state, action.data);
     default:
       return state;
   }
 };
 
 export default combineReducers({
-  view,
+  user,
 });
