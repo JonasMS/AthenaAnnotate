@@ -143,9 +143,13 @@ export const saveAnnote = data => (
           'bad response on create'
         );
       } else {
-        console.log(res.body);
+        return res.json();
         // TODO: update annotations
       }
+    })
+    .then(annote => {
+      dispatch(addAnnote(annote));
+      console.log(annote);
     });
   }
 );
