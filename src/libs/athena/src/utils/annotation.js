@@ -2,16 +2,40 @@ import fetch from 'isomorphic-fetch';
 // import babel-polyfill
 require('es6-promise').polyfill();
 
-export const createAnnotation = () => {
-  const sel = window.getSelection();
-  const range = sel.getRangeAt(0);
+const createAnnote = ({
+  annotation,
+  annotations,
+  user,
+}) => {
   const url = window.location.href;
+  const annoteId =
+  'annote' + annotations.length + '/';
+  const {
+    exact,
+    prefix,
+    suffix,
+  } = annotation.target;
+
+  return Object.assign({}, annotation, {
+    id: url + annoteId + user.id,
+    createdAt: Date.now(),
+    target: {
+      source: url,
+      selector: {
+        exact,
+        prefix,
+        suffix,
+      },
+    },
+  });
 };
 
-export const saveAnnote = (
-  annotation
-) => {
-  console.log(annotation);
+export const saveAnnote = (data) => {
+  // create full annotation
+  const annotation = createAnnote(data);
+
+  // console.log(annotation);
+
   fetch('http://localhost:3000/api/create', {
     method: 'POST',
     headers: {
