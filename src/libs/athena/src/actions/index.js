@@ -1,8 +1,9 @@
 import fetch from 'isomorphic-fetch';
+require('es6-promise').polyfill();
 import * as types from '../constants/actionTypes';
 import { getText } from '../utils/utils';
 import { getUserFromFB } from '../../../common/auth';
-
+import { createAnnote } from '../utils/annotation';
 export const failedRequest = error =>
   ({ type: types.ERR_FAILED_REQUEST, data: error });
 
@@ -113,6 +114,34 @@ export const adderHandler = btn => (
       dispatch(setTarget(getText()));
       // TODO: save annotation ?
     }
+  }
+);
+
+export const saveAnnote = data => (
+  dispatch => {
+    // create full annotation
+    const annotation = createAnnote(data);
+
+    // console.log(annotation);
+
+    fetch('http://localhost:3000/api/create', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(annotation),
+    })
+    .then(res => {
+      if (res.status >= 400) {
+        throw new Error(
+          'bad response on create'
+        );
+      } else {
+        console.log(res.body);
+        // TODO: update annotations
+      }
+    });
   }
 );
 

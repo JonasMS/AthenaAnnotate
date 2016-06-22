@@ -2,11 +2,11 @@ import FacebookLogout from './FacebookLogout';
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import fetch from 'isomorphic-fetch';
+// import fetch from 'isomorphic-fetch';
 // import babel-polyfill
-require('es6-promise').polyfill();
+// require('es6-promise').polyfill();
 import * as Actions from '../actions';
-import { saveAnnote } from '../utils/annotation';
+// import { saveAnnote } from '../utils/annotation';
 
 class AnnotatePanel extends Component {
 
@@ -18,7 +18,8 @@ class AnnotatePanel extends Component {
       actions,
        } = this.props;
     // send annotation object to server
-    saveAnnote({
+    console.log(actions);
+    actions.saveAnnote({
       annotation,
       annotations,
       user,
