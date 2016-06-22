@@ -8,6 +8,7 @@ import {
 import { saveAnnote } from '../utils/annotation';
 import FacebookLogout from './FacebookLogout';
 
+import * as Actions from '../actions';
 
 class AnnotatePanel extends Component {
   constructor(props) {
