@@ -19,6 +19,7 @@ const createAnnote = ({
   return Object.assign({}, annotation, {
     id: url + annoteId + user.id,
     createdAt: Date.now(),
+    creator: user.id,
     target: {
       source: url,
       selector: {
@@ -49,8 +50,11 @@ export const saveAnnote = (data) => {
       throw new Error(
         'bad response on create'
       );
+    } else {
+      // TODO: update annotations
     }
   });
+  return annotation;
 };
 // modifyAnnotation
 // getAnnotationIdx

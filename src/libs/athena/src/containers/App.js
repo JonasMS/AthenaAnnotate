@@ -9,6 +9,7 @@ import Adder from '../components/Adder';
 import * as Actions from '../actions';
 import { initFB } from '../../../common/auth';
 import { adderHandler } from '../utils/handlers';
+import { saveAnnote } from '../utils/annotation';
 import { setWidgClass } from '../utils/utils';
 
 class App extends Component {
@@ -27,7 +28,13 @@ class App extends Component {
     // listener for esc key
     window
     .addEventListener('keydown', e => {
-      const { widget, actions } = this.props;
+      const {
+        annotation,
+        annotations,
+        user,
+        widget,
+        actions,
+      } = this.props;
       console.log(e.code);
       // console.log(e.getModifierState())
       if (
@@ -35,11 +42,18 @@ class App extends Component {
         widget === 'SHOW'
       ) {
         actions.setWidget('HIDE');
-      } else if (
-        e.getModifierState('Shift') &&
-        e.code === 'KeyN'
-      ) {
-        actions.adderHandler('note');
+      } else if (e.getModifierState('Shift')) {
+        if (e.code === 'KeyN') {
+          actions.adderHandler('note');
+        } else if (e.code === 'KeyH') {
+          actions.adderHandler('highlight');
+          saveAnnote({
+            annotation,
+            annotations,
+            user,
+          });
+          actions.clearAnnote();
+        }
       }
     });
   }
@@ -72,6 +86,8 @@ App.propTypes = {
 
 const mapStateToProps = (state) => ({
   user: state.user,
+  annotation: state.annotation,
+  annotations: state.annotations,
   widget: state.widget,
   adder: state.adder,
 });

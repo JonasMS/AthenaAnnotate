@@ -85,14 +85,20 @@ export const clearAnnote = () => ({
   type: types.CLEAR_ANNOTATION,
 });
 
+export const addAnnote = annote => ({
+  type: 'ADD_ANNOTE',
+  annote,
+});
+
 export const adderHandler = btn => (
   dispatch => {
     if (btn === 'note') {
       dispatch(setTarget(getText()));
       dispatch(setWidget('SHOW'));
-    } else {
+    } else if (btn === 'hightlight') {
       // create annotation
-      // add annotation to annotations
+      dispatch(setTarget(getText()));
+      // TODO: save annotation ?
     }
   }
 );
