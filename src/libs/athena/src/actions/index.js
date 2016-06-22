@@ -1,4 +1,5 @@
 import * as types from '../constants/actionTypes';
+import { getText } from '../utils/utils';
 
 export const setUser = userData => ({
   type: types.SET_USER,
@@ -83,3 +84,16 @@ export const setTarget = (target) => ({
 export const clearAnnote = () => ({
   type: types.CLEAR_ANNOTATION,
 });
+
+export const adderHandler = btn => (
+  dispatch => {
+    if (btn === 'note') {
+      dispatch(setTarget(getText()));
+      dispatch(setWidget('SHOW'));
+    } else {
+      // create annotation
+      // add annotation to annotations
+    }
+  }
+);
+

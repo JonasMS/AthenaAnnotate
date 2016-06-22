@@ -28,11 +28,18 @@ class App extends Component {
     window
     .addEventListener('keydown', e => {
       const { widget, actions } = this.props;
+      console.log(e.code);
+      // console.log(e.getModifierState())
       if (
         e.code === 'Escape' &&
         widget === 'SHOW'
       ) {
         actions.setWidget('HIDE');
+      } else if (
+        e.getModifierState('Shift') &&
+        e.code === 'KeyN'
+      ) {
+        actions.adderHandler('note');
       }
     });
   }
@@ -48,7 +55,7 @@ class App extends Component {
       <div>
         <div className={widgetClass}>
           <div id="fb-root"></div>
-          {user && user.id ?
+          {/*user && user.id*/true ?
             <AnnotatePanel logout={logout} /> :
             <AuthPanel login={login} />}
         </div>
