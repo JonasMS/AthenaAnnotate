@@ -1,9 +1,11 @@
 import fetch from 'isomorphic-fetch';
 require('es6-promise').polyfill();
 import * as types from '../constants/actionTypes';
+import * as options from '../constants/fetchOptions';
 import { getText } from '../utils/utils';
 import { getUserFromFB } from '../../../common/auth';
 import { createAnnote } from '../utils/annotation';
+import { checkStatus, createPOST, parseJSON } from '../utils/fetch';
 export const failedRequest = error =>
   ({ type: types.ERR_FAILED_REQUEST, data: error });
 
@@ -119,29 +121,15 @@ export const adderHandler = btn => (
 
 export const saveAnnote = data => (
   dispatch => {
-    // create full annotation
+    // create full annotation object
     const annotation = createAnnote(data);
 
-    // console.log(annotation);
-
-    fetch('http://localhost:3000/api/create', {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(annotation),
-    })
-    .then(res => {
-      if (res.status >= 400) {
-        throw new Error(
-          'bad response on create'
-        );
-      } else {
-        return res.json();
-        // TODO: update annotations
-      }
-    })
+    fetch(
+      options.API_CREATE,
+      createPOST(annotation)
+    )
+    .then(checkStatus)
+    .then(parseJSON)
     .then(annote => {
       dispatch(addAnnote(annote));
       console.log(annote);
