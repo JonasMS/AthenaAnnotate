@@ -42,7 +42,6 @@ class App extends Component {
 
 App.propTypes = {
   user: PropTypes.object,
-  store: PropTypes.object,
   actions: PropTypes.object,
 };
 

@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
+import FacebookLogout from '../../../libs/athena/src/components/FacebookLogout';
 
-const Sidebar = () => (
+const Sidebar = ({ logout }) => (
   <div className="col s2 offset-s2">
     <ul>
       <li>
@@ -16,7 +17,12 @@ const Sidebar = () => (
         <a>Help</a>
       </li>
     </ul>
+    <FacebookLogout logout={logout} />
   </div>
 );
+
+Sidebar.propTypes = {
+  login: PropTypes.func.isRequired,
+};
 
 export default Sidebar;
