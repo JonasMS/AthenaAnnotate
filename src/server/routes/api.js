@@ -7,7 +7,8 @@ router.get('/api/athena', function(req, res) {
 });
 router.post('/api/create', function(req, res) {
   console.log(req.body);
-  res.end();
+  // res.end(JSON.stringify('some string'));
+  res.end(JSON.stringify(req.body));
 });
 
 module.exports = router;

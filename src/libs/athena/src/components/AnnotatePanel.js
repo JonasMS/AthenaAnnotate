@@ -18,7 +18,6 @@ class AnnotatePanel extends Component {
       actions,
        } = this.props;
     // send annotation object to server
-    console.log(actions);
     actions.saveAnnote({
       annotation,
       annotations,
