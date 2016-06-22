@@ -10,11 +10,18 @@ import { saveAnnote } from '../utils/annotation';
 class AnnotatePanel extends Component {
 
   submitHandler () {
-    const { annotation, actions } = this.props;
-    // const { clearAnnotation } = Actions;
-
+    const {
+      annotation,
+      annotations,
+      user,
+      actions,
+       } = this.props;
     // send annotation object to server
-    saveAnnote(annotation);
+    saveAnnote({
+      annotation,
+      annotations,
+      user,
+    });
     // update annotations
     actions.clearAnnote();
     // TODO: hide widget
@@ -54,6 +61,8 @@ class AnnotatePanel extends Component {
 
 const mapStateToProps = (state) => ({
   annotation: state.annotation,
+  annotations: state.annotations,
+  user: state.user,
   exact: state.annotation.target.exact,
 });
 
