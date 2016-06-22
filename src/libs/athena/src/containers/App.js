@@ -8,9 +8,8 @@ import Adder from '../components/Adder';
 
 import * as Actions from '../actions';
 import { initFB } from '../../../common/auth';
-import { adderHandler } from '../utils/handlers';
-import { saveAnnote } from '../utils/annotation';
 import { setWidgClass } from '../utils/utils';
+import { shortcutHandler } from '../utils/panel';
 
 class App extends Component {
   componentDidMount() {
@@ -25,36 +24,10 @@ class App extends Component {
       actions.setAdder(adder);
     });
 
-    // listener for esc key
+    // listener for shortcut keys
     window
     .addEventListener('keydown', e => {
-      const {
-        annotation,
-        annotations,
-        user,
-        widget,
-        actions,
-      } = this.props;
-      console.log(e.code);
-      // console.log(e.getModifierState())
-      if (
-        e.code === 'Escape' &&
-        widget === 'SHOW'
-      ) {
-        actions.setWidget('HIDE');
-      } else if (e.getModifierState('Shift')) {
-        if (e.code === 'KeyN') {
-          actions.adderHandler('note');
-        } else if (e.code === 'KeyH') {
-          actions.adderHandler('highlight');
-          saveAnnote({
-            annotation,
-            annotations,
-            user,
-          });
-          actions.clearAnnote();
-        }
-      }
+      shortcutHandler(e, this.props);
     });
   }
 
