@@ -1,21 +1,10 @@
 import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
-import { createStore } from 'redux';
-import Reducers from './App/Reducers';
 import Application from './App/Containers/Application';
-// import { Container } from './App';
+import configureStore from './App/Store';
 
-const initialState = {
-  listView: false,
-  user: {},
-  docs: [],
-  annotations: [],
-  editor: '',
-  loading: false,
-};
-
-let store = createStore(Reducers, initialState);
+let store = configureStore();
 
 render(
   <Provider store={store}>
@@ -23,3 +12,5 @@ render(
   </Provider>,
   document.getElementById('app')
 );
+
+window.store = store;

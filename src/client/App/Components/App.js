@@ -1,28 +1,41 @@
 import React, { Component, PropTypes } from 'react';
 import Loading from './Loading';
-import Main from './Main';
 import Sidebar from './Sidebar';
+import Splash from './Splash';
+import VisibleDocList from '../Containers/VisibleDocList';
+import { initFB } from '../../../libs/common/auth';
 
 class App extends Component {
   componentDidMount() {
-    // TODO: make the below function take in user_id as argument
-    this.props.loadDocs();
+    initFB().then(() => {
+      this.props.actions.getLoginStatus();
+      this.props.actions.loadDocs(this.props.user);
+    });
   }
 
   render() {
-    const { loading } = this.props;
-
+    const { user, loading, actions: { login, logout } } = this.props;
     return (
-      <div className="row">
-        <Sidebar />
-        {loading ? <Loading /> : <Main />}
+      <div>
+        <div id="fb-root"></div>
+        {
+          user && user.id
+          ?
+            <div className="row">
+              <Sidebar user={user} logout={logout} />
+              {loading ? <Loading /> : <VisibleDocList />}
+            </div>
+          :
+            <Splash login={login} />
+        }
       </div>
     );
   }
 }
 
 App.propTypes = {
-  loadDocs: PropTypes.func.isRequired,
+  user: PropTypes.object,
+  actions: PropTypes.object,
   loading: PropTypes.bool.isRequired,
 };
 

@@ -1,18 +1,18 @@
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import App from '../Components/App';
 import * as actions from '../Actions';
 
-const mapStateToProps = (state) => (
+const mapStateToProps = ({ user, loading }) => (
   {
-    loading: state.loading,
+    user,
+    loading,
   }
 );
 
 const mapDispatchToProps = (dispatch) => (
   {
-    loadDocs: (filter) => {
-      actions.loadDocs(dispatch, filter);
-    },
+    actions: bindActionCreators(actions, dispatch),
   }
 );
 
