@@ -7,7 +7,7 @@ import AnnotatePanel  from '../components/AnnotatePanel';
 import Adder from '../components/Adder';
 
 import * as Actions from '../actions';
-import { adderHandler } from '../utils/handlers';
+import { setWidgClass } from '../utils/utils';
 
 
 // const style = {
@@ -44,10 +44,9 @@ class App extends Component {
   }
 
   render() {
-    // TODO: cleanup
-    let widgetClass = 'widget ';
-    widgetClass += this.props.widget === 'HIDE' ?
-      'widget_hide' : 'widget_show';
+    const widgetClass = setWidgClass(
+      this.props.widget
+    );
 
     return (
       <div>
@@ -78,5 +77,3 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(App);
-
-// export default App;

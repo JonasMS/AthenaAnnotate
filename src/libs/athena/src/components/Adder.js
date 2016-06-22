@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 // import { createHandler } from '../utils/handlers';
 import * as Actions from '../actions';
-import { getText } from '../utils/utils';
+import { getText, setAddClass } from '../utils/utils';
 
 class Adder extends Component {
 
@@ -24,9 +24,9 @@ class Adder extends Component {
   }
 
   render () {
-    let adderClass = 'adder';
-    adderClass += this.props.adder === 'HIDE' ?
-      ' adder_hide' : ' adder_show';
+    const adderClass = setAddClass(
+      this.props.adder
+    );
 
     return (
       <div className={adderClass}>
@@ -34,12 +34,16 @@ class Adder extends Component {
           className="adderBtn"
           onClick={() =>
             this.createHandler('highlight')}
-        >H</button>
+        >
+          H
+        </button>
         <button
           className="adderBtn"
           onClick={() =>
            this.createHandler('note')}
-        >N</button>
+        >
+          N
+        </button>
       </div>
     );
   }

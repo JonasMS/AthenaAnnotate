@@ -19,3 +19,16 @@ export const getText = () => {
     suffix,
   };
 };
+
+export const setWidgClass = (widget) => (
+    widget === 'HIDE' ?
+      'widget widget_hide' :
+      'widget widget_show'
+);
+
+export const setAddClass = (adder) => (
+  adder === 'HIDE' ?
+    'adder adder_hide' :
+    'adder adder_show'
+);
+
