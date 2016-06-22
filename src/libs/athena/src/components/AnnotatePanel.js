@@ -55,7 +55,9 @@ class AnnotatePanel extends Component {
           onClick={() => this.submitHandler()}
         >Submit</button>
         <div>
-          <FacebookLogout logout={logout} />
+          <FacebookLogout
+            logout={actions.logout}
+          />
         </div>
       </div>
 
