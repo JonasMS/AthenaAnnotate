@@ -6,23 +6,33 @@
   background-color: white;
   z-index: 9999999;
 
-  &-annotateText {
+  & .targetText {
     width: 80%;
     height: 70px;
     margin: 20px auto;
     border: 1px solid black;
   }
 
-  &-annotateInputCont {
+  & .bodyText {
     width: 80%;
     height: 300px;
     margin: 20px auto;
 
-    .annotateInput{
+    textarea {
       width: 100%;
       min-height: 200px;
     }
   }
+}
+
+.widget_hide {
+  left: 100%;
+  transition-duration: 0.5s;
+}
+
+.widget_show {
+  left: 70%;
+  transition-duration: 0.5s;
 }
 
 

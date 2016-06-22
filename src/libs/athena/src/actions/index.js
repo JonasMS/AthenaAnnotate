@@ -1,4 +1,5 @@
 import * as types from '../constants/actionTypes';
+import { getText } from '../utils/utils';
 
 export const setUser = userData => ({
   type: types.SET_USER,
@@ -36,5 +37,69 @@ export const logout = () => (
       }))
     ))
   )
+);
+
+// adder actions
+export const setAdder = adder => {
+  const sel = window.getSelection();
+  const range = sel.getRangeAt(0);
+  const distance = Math.abs(
+    range.endOffset - range.startOffset
+  );
+  let display = adder;
+
+  if (distance > 0) {
+    if (adder !== 'SHOW') {
+      display = 'SHOW';
+    }
+  } else {
+    if (adder !== 'HIDE') {
+      display = 'HIDE';
+    }
+  }
+
+  return {
+    type: 'SET_ADDER',
+    display,
+  };
+};
+
+// widget actions
+export const setWidget = (display) => ({
+  type: types.SET_WIDGET,
+  display,
+});
+
+// annotation actions
+export const updateBody = (text) => ({
+  type: types.UPDATE_BODY,
+  text,
+});
+
+export const setTarget = (target) => ({
+  type: types.SET_TARGET,
+  selector: target,
+});
+
+export const clearAnnote = () => ({
+  type: types.CLEAR_ANNOTATION,
+});
+
+export const addAnnote = annote => ({
+  type: 'ADD_ANNOTE',
+  annote,
+});
+
+export const adderHandler = btn => (
+  dispatch => {
+    if (btn === 'note') {
+      dispatch(setTarget(getText()));
+      dispatch(setWidget('SHOW'));
+    } else if (btn === 'hightlight') {
+      // create annotation
+      dispatch(setTarget(getText()));
+      // TODO: save annotation ?
+    }
+  }
 );
 
