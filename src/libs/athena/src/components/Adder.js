@@ -8,8 +8,6 @@ import { getText, setAddClass } from '../utils/utils';
 class Adder extends Component {
 
   createHandler(btn) {
-    const { setWidget, setTarget } = Actions;
-
     if (btn === 'note') {
       const { actions } = this.props;
       // change annotation.target
@@ -28,6 +26,8 @@ class Adder extends Component {
       this.props.adder
     );
 
+    console.log(this.props);
+
     return (
       <div className={adderClass}>
         <button
@@ -40,7 +40,10 @@ class Adder extends Component {
         <button
           className="adderBtn"
           onClick={() =>
-           this.createHandler('note')}
+           this.props.actions
+           .adderHandler(
+            'note'
+          )}
         >
           N
         </button>
@@ -55,6 +58,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   actions: bindActionCreators(Actions, dispatch),
+  dispatch,
 });
 
 Adder.propTypes = {
