@@ -6,6 +6,7 @@ import { getText } from '../utils/utils';
 import { getUserFromFB } from '../../../common/auth';
 import { createAnnote } from '../utils/annotation';
 import { checkStatus, createPOST, parseJSON } from '../utils/fetch';
+import { placeAnnote } from '../engine/index';
 
 export const failedRequest = error => (
   {
@@ -69,9 +70,6 @@ export const setAdder = adder => {
   );
   let display = adder;
 
-  console.log('sel: ', sel);
-  console.log('range: ', range);
-
   if (distance > 0) {
     if (adder !== 'SHOW') {
       display = 'SHOW';
@@ -116,14 +114,17 @@ export const addAnnote = annote => ({
 
 export const adderHandler = btn => (
   dispatch => {
+    const annote = getText();
     if (btn === 'note') {
-      dispatch(setTarget(getText()));
+      dispatch(setTarget(annote));
       dispatch(setWidget('SHOW'));
-    } else if (btn === 'hightlight') {
+    } else if (btn === 'highlight') {
+      console.log('line 110');
       // create annotation
-      dispatch(setTarget(getText()));
+      dispatch(setTarget(annote));
       // TODO: save annotation ?
     }
+    return annote;
   }
 );
 
@@ -139,9 +140,13 @@ export const saveAnnote = data => (
     .then(checkStatus)
     .then(parseJSON)
     .then(annote => {
+      console.log(annotation);
+      placeAnnote(
+        document.getElementsByTagName('body')[0],
+        annotation.target.selector.exact
+      );
       dispatch(addAnnote(annote));
-      console.log(annote);
+      // TODO: clearAnnote here?
     });
   }
 );
-
