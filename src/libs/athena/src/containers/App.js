@@ -14,7 +14,15 @@ import { initFB, getUserFromFB, getUserStatusFromFB } from '../../../common/auth
 
 class App extends Component {
   componentWillMount() {
-    placeAnnote(document, 'Lorem ipsum');
+    // this
+    // .props
+    // .annotations
+    // .forEach( annote => {
+    //   placeAnnote(
+    //     document,
+    //     annote.target.exact
+    //   );
+    // });
   }
 
   componentDidMount() {

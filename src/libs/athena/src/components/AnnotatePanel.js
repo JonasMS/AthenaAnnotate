@@ -23,6 +23,7 @@ class AnnotatePanel extends Component {
       annotations,
       user,
     });
+
     // update annotations
     actions.clearAnnote();
     // TODO: hide widget

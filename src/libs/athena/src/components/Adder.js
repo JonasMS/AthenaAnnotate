@@ -14,7 +14,7 @@ class Adder extends Component {
       actions.setTarget(getText());
       // TODO: Why is dispatch needed?
       actions.setWidget('SHOW');
-    } else {
+    } else if (btn === 'highlight') {
       // create annotation
       // add annotation to annotations
 

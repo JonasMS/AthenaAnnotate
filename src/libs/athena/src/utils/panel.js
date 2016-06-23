@@ -1,5 +1,3 @@
-import { saveAnnote } from '../utils/annotation';
-
 
 export const shortcutHandler = (
   e,
@@ -20,8 +18,10 @@ export const shortcutHandler = (
     ) {
       actions.adderHandler('note');
     } else if (e.code === 'KeyH') {
-      actions.adderHandler('highlight');
-      saveAnnote({
+      annotation.target =
+        actions.adderHandler('highlight');
+
+      actions.saveAnnote({
         annotation,
         annotations,
         user,
