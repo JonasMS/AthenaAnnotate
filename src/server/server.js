@@ -6,8 +6,12 @@ var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var homeRoute = require('./routes/home');
 var apiRoute = require('./routes/api');
+<<<<<<< 5dbee906751a4df0b10589444ca6f371c44ac280
 var Sequelize = require('sequelize');
 var sequelize = new Sequelize('postgres://postgres@localhost:5432/annotate');
+=======
+var specRoute = require('./routes/spec');
+>>>>>>> FEAT - Simple Insert span Tags
 var host;
 var port;
 
@@ -44,6 +48,7 @@ express()
     saveUninitialized: false
   }))
   .use(apiRoute)
+  .use(specRoute)
   .use(homeRoute)
   .listen(port);
 

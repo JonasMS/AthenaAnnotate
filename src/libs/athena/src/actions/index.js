@@ -64,6 +64,9 @@ export const setAdder = adder => {
   );
   let display = adder;
 
+  console.log('sel: ', sel);
+  console.log('range: ', range);
+
   if (distance > 0) {
     if (adder !== 'SHOW') {
       display = 'SHOW';

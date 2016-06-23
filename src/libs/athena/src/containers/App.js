@@ -7,11 +7,16 @@ import AnnotatePanel  from '../components/AnnotatePanel';
 import Adder from '../components/Adder';
 
 import * as Actions from '../actions';
+import { placeAnnote } from '../engine/index';
 import { setWidgClass } from '../utils/utils';
 import { shortcutHandler } from '../utils/panel';
 import { initFB, getUserFromFB, getUserStatusFromFB } from '../../../common/auth';
 
 class App extends Component {
+  componentWillMount() {
+    placeAnnote(document, 'Lorem ipsum');
+  }
+
   componentDidMount() {
     initFB().then(() => {
       getUserStatusFromFB().then(status => {
