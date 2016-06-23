@@ -40,7 +40,22 @@ class App extends Component {
     // listener for shortcut keys
     window
     .addEventListener('keydown', e => {
-      shortcutHandler(e, this.props);
+      const {
+        annotation,
+        annotations,
+        user,
+        widget,
+        actions,
+      } = this.props;
+      shortcutHandler(
+        e, {
+          annotation,
+          annotations,
+          user,
+          widget,
+          actions,
+        }
+      );
     });
   }
 
