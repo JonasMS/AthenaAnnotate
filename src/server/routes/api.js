@@ -66,9 +66,9 @@ router.get('/api/doc', function(req, res) {
 // BOTH - updates an annotation
 router.put('/api/annotations', function(req, res) {
   models.Annotation.update({
-    exact: req.body.target.selector.exact,
-    prefix: req.body.target.selector.prefix,
-    suffix: req.body.target.selector.suffix,
+    // exact: req.body.target.selector.exact,
+    // prefix: req.body.target.selector.prefix,
+    // suffix: req.body.target.selector.suffix,
     text: req.body.body.text
   }, {
     where: { url: req.body.id },

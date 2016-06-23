@@ -3,6 +3,7 @@ require('es6-promise').polyfill();
 
 export * from '../../../libs/athena/src/actions';
 
+// Functions for loading documents and annotations
 const requestDocs = () => (
   {
     type: 'REQUEST_DOCS',
@@ -105,21 +106,21 @@ export const fetchAnnotations = (id) => (
 //   };
 // };
 
-export const deleteAnnotation = (id) => (
+export const deleteAnnotation = id => (
   {
     type: 'DELETE_ANNOTATION',
     id,
   }
 );
 
-export const editAnnotation = (id) => (
+export const editAnnotation = id => (
   {
     type: 'EDIT_ANNOTATION',
     id,
   }
 );
 
-export const editText = (body) => (
+export const editText = body => (
   {
     type: 'EDIT_TEXT',
     body,
@@ -134,14 +135,43 @@ export const saveEdit = (id, body) => (
   }
 );
 
-export const deleteBody = (id) => (
+const deleteBody = id => (
   {
     type: 'DELETE_BODY',
     id,
   }
 );
 
-export const deleteDoc = (id) => (
+const deleteBodyFail = id => (
+  {
+    type: 'DELETE_BODY_FAIL',
+    id,
+  }
+);
+
+export const deleteBodyDB = (id, url) => (
+  dispatch =>
+    fetch('http://localhost:3000/api/annotations', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        body: { text: null },
+        id: url,
+      }),
+    })
+      .then(response => response.json())
+      .then(message => {
+        if (Array.isArray(message)/* deleted */) {
+          return dispatch(deleteBody(id));
+        }
+        return dispatch(deleteBodyFail(id));
+      })
+
+);
+
+export const deleteDoc = id => (
   {
     type: 'DELETE_DOC',
     id,
