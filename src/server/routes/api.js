@@ -22,7 +22,7 @@ router.get('/api/athena', function(req, res) {
   res.sendFile(path.join(__dirname, '../../../build/libs/athena.js'));
 });
 
-// creates an annotation for a given Doc and User
+// EXTENSION - creates an annotation for a given Doc and User
 router.post('/api/create', function(req, res) {
   models.Doc.findOrCreate({
     where: { url: req.body.target.source },
@@ -56,7 +56,26 @@ router.post('/api/create', function(req, res) {
   });
 });
 
-// updates an annotation
+// EXTENSION - loads Annotations for a given Doc for a given User
+router.get('/api/doc', function(req, res) {
+  models.Annotation.findAll({
+    include: [{
+      model: models.User
+    }, {
+      model: models.Doc
+    }],
+    where: {
+      UserId: req.query.UserId,
+      DocId: req.query.DocId
+    }
+  }).then(function(annotations) {
+    annotationConstructor(annotations, res);
+  }).catch(function(err) {
+    res.send(err);
+  });
+});
+
+// BOTH - updates an annotation
 router.put('/api/annotations', function(req, res) {
   models.Annotation.update({
     exact: req.body.target.selector.exact,
@@ -80,7 +99,7 @@ router.put('/api/annotations', function(req, res) {
   });
 });
 
-// finds or creates User
+// BOTH - finds or creates User
 router.post('/api/users', function(req, res) {
   models.User.findOrCreate({
     where: { facebookId: req.body.facebookId, name: req.body.name }
@@ -91,7 +110,7 @@ router.post('/api/users', function(req, res) {
   });
 });
 
-// updates a User's info
+// WEB APP - updates a User's info
 router.put('/api/users', function(req, res) {
   models.User.update({
     name: req.body.name,
@@ -106,42 +125,24 @@ router.put('/api/users', function(req, res) {
   });
 });
 
-// loads all Annotations for a given User
+// WEB APP - loads all Annotations for a given User
 router.get('/api/annotations', function(req, res) {
   models.Annotation.findAll({
-    include: [{
-      model: models.User
-    }],
+    // include: [{
+    //   model: models.User
+    // }],
     where: {
       UserId: req.query.UserId
     }
   }).then(function(annotations) {
-    annotationConstructor(annotations, res);
+    res.send(annotations);
+    // annotationConstructor(annotations, res);
   }).catch(function(err) {
     res.send(err);
   });
 });
 
-// loads Annotations for a given Doc for a given User
-router.get('/api/doc', function(req, res) {
-  models.Annotation.findAll({
-    include: [{
-      model: models.User
-    }, {
-      model: models.Doc
-    }],
-    where: {
-      UserId: req.query.UserId,
-      DocId: req.query.DocId
-    }
-  }).then(function(annotations) {
-    annotationConstructor(annotations, res);
-  }).catch(function(err) {
-    res.send(err);
-  });
-});
-
-// loads Docs for a given User
+// WEB APP - loads Docs for a given User
 router.get('/api/docs', function(req, res) {
   models.Annotation.findAll({
     include: [{
