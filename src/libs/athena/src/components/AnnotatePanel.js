@@ -30,6 +30,7 @@ class AnnotatePanel extends Component {
       annotations,
     });
 
+    // update annotations
     actions.clearAnnote();
     this.props.close();
   }
