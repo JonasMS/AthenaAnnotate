@@ -6,6 +6,7 @@ var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var homeRoute = require('./routes/home');
 var apiRoute = require('./routes/api');
+var specRoute = require('./routes/spec');
 var host;
 var port;
 
@@ -33,6 +34,7 @@ express()
     saveUninitialized: false
   }))
   .use(apiRoute)
+  .use(specRoute)
   .use(homeRoute)
   .listen(port);
 

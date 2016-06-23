@@ -26,8 +26,6 @@ class Adder extends Component {
       this.props.adder
     );
 
-    console.log(this.props);
-
     return (
       <div className={adderClass}>
         <button

@@ -8,10 +8,15 @@ import Adder from '../components/Adder';
 
 import * as Actions from '../actions';
 import { initFB } from '../../../common/auth';
+import { placeAnnote } from '../engine/index';
 import { setWidgClass } from '../utils/utils';
 import { shortcutHandler } from '../utils/panel';
 
 class App extends Component {
+  componentWillMount() {
+    placeAnnote(document, 'Lorem ipsum');
+  }
+
   componentDidMount() {
     initFB().then(() => {
       this.props.actions.getLoginStatus();
