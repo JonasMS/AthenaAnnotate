@@ -7,7 +7,7 @@ export const initFB = () => (
         xfbml: true,
         version: 'v2.6',
       });
-      resolve();
+      return resolve();
     };
 
     (function(d, s, id) {
@@ -19,3 +19,21 @@ export const initFB = () => (
     }(document, 'script', 'facebook-jssdk'));
   })
 );
+
+export const getUserStatusFromFB = () => {
+  return new Promise(resolve => {
+    window.FB.getLoginStatus(res => {
+      return res ? resolve(res.status) : resolve(undefined);
+    });
+  });
+};
+
+export const getUserFromFB = () => {
+  return new Promise(resolve => {
+    window.FB.api(
+      '/me?fields=id,email,name',
+      res => resolve(res),
+      { scope: 'email' }
+    );
+  });
+};

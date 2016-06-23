@@ -4,7 +4,7 @@ import docs from './docs';
 import editor from './editor';
 import loading from './loading';
 import listView from './listView';
-import user from './user';
+import user from '../../../libs/athena/src/reducers/user';
 
 const Reducers = combineReducers({
   docs,

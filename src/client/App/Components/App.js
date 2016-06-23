@@ -3,14 +3,23 @@ import Loading from './Loading';
 import Sidebar from './Sidebar';
 import Splash from './Splash';
 import VisibleDocList from '../Containers/VisibleDocList';
-import { initFB } from '../../../libs/common/auth';
+import { initFB, getUserFromFB, getUserStatusFromFB } from '../../../libs/common/auth';
 
 class App extends Component {
   componentDidMount() {
-    initFB().then(() => {
-      this.props.actions.getLoginStatus();
-      this.props.actions.loadDocs(this.props.user);
-    });
+    initFB()
+      .then(() => getUserStatusFromFB())
+      .then(status => {
+        if (status === 'connected') {
+          getUserFromFB()
+            .then(user => {
+              if (user) {
+                this.props.actions.getUserFromDB(user);
+                this.props.actions.loadDocs(this.props.user);
+              }
+            });
+        }
+      });
   }
 
   render() {
