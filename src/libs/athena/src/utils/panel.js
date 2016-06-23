@@ -1,29 +1,34 @@
-
 export const shortcutHandler = (
-  e,
-  props
+  e, {
+    annotation,
+    annotations,
+    user,
+    widget,
+    actions: {
+      adderHandler,
+      setWidget,
+    },
+  }
 ) => {
-  const {
-        widget,
-        actions,
-      } = props;
-
   if (e.getModifierState('Shift')) {
     if (
       e.code === 'KeyN' &&
       widget === 'HIDE'
     ) {
-      actions.adderHandler('note');
+      adderHandler('note');
     } else if (e.code === 'KeyH') {
-      actions.adderHandler(
-        'highlight',
-        props
+      adderHandler(
+        'highlight', {
+          annotation,
+          annotations,
+          user,
+        }
       );
     }
   } else if (
     e.code === 'Escape' &&
     widget === 'SHOW'
   ) {
-    actions.setWidget('HIDE');
+    setWidget('HIDE');
   }
 };

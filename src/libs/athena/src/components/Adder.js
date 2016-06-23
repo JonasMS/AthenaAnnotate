@@ -8,13 +8,21 @@ import { setAddClass } from '../utils/utils';
 class Adder extends Component {
 
   createHandler(btn) {
-    const { actions } = this.props;
+    const {
+      annotation,
+      annotations,
+      user,
+      actions,
+    } = this.props;
     if (btn === 'note') {
       actions.adderHandler('note');
     } else if (btn === 'highlight') {
       actions.adderHandler(
-        'highlight',
-        this.props
+        'highlight', {
+          annotation,
+          annotations,
+          user,
+        }
       );
     }
   }
@@ -50,6 +58,9 @@ class Adder extends Component {
 
 const mapStateToProps = (state) => ({
   adder: state.adder,
+  user: state.user,
+  annotation: state.annotation,
+  annotations: state.annotations,
 });
 
 const mapDispatchToProps = (dispatch) => ({

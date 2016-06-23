@@ -136,21 +136,21 @@ export const saveAnnote = data => (
   }
 );
 
-export const adderHandler = (btn, props) => (
+export const adderHandler = (btn, data) => (
   dispatch => {
     const selector = getText();
     if (btn === 'note') {
       dispatch(setTarget(selector));
       dispatch(setWidget('SHOW'));
     } else if (btn === 'highlight') {
-      const { annotation } = props;
+      const { annotation } = data;
       annotation.target = selector;
 
       dispatch(setTarget(selector));
       dispatch(saveAnnote({
         annotation,
-        annotations: props.annotations,
-        user: props.user,
+        annotations: data.annotations,
+        user: data.user,
       }));
     }
     return selector;

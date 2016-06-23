@@ -60,6 +60,27 @@ class App extends Component {
     // .addEventListener('keydown', e => {
     //   shortcutHandler(e, this.props);
     // });
+
+    // listener for shortcut keys
+    // window
+    // .addEventListener('keydown', e => {
+    //   const {
+    //     annotation,
+    //     annotations,
+    //     user,
+    //     widget,
+    //     actions,
+    //   } = this.props;
+    //   shortcutHandler(
+    //     e, {
+    //       annotation,
+    //       annotations,
+    //       user,
+    //       widget,
+    //       actions,
+    //     }
+    //   );
+    // });
   }
 
   componentWillUnmount() {
