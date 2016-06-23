@@ -5,7 +5,8 @@ module.exports = function(sequelize, DataTypes) {
     name: DataTypes.STRING,
     facebookId: {
       type: DataTypes.STRING,
-      unique: true
+      unique: true,
+      allowNull: false
     },
     email: {
       type: DataTypes.STRING,

@@ -16,7 +16,8 @@ module.exports = {
       },
       facebookId: {
         type: Sequelize.STRING,
-        unique: true
+        unique: true,
+        allowNull: false
       },
       email: {
         type: Sequelize.STRING,

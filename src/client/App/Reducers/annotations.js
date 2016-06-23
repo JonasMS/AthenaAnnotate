@@ -1,12 +1,12 @@
 const annotation = (state, action) => {
   switch (action.type) {
-    case 'LOAD_ANNOTATION':
+    case 'LOAD_ANNOTATIONS':
       return {
         id: state.id,
-        body: state.body,
-        target: state.target,
-        doc_id: state.doc_id,
-        edit: state.edit,
+        body: state.text,
+        target: state.exact,
+        doc_id: state.DocId,
+        edit: false,
       };
     case 'DELETE_ANNOTATION':
       if (state.id !== action.id) {
@@ -43,7 +43,7 @@ const annotation = (state, action) => {
 
 const annotations = (state = [], action) => {
   switch (action.type) {
-    case 'LOAD_ANNOTATION':
+    case 'LOAD_ANNOTATIONS':
       return action.annotations.map(a =>
         annotation(a, action)
       );

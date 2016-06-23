@@ -15,11 +15,15 @@ class App extends Component {
             .then(user => {
               if (user) {
                 this.props.actions.getUserFromDB(user);
-                this.props.actions.loadDocs(this.props.user);
               }
             });
         }
       });
+  }
+
+  componentDidUpdate() {
+    this.props.actions.fetchDocs(this.props.user.id);
+    this.props.actions.fetchAnnotations(this.props.user.id);
   }
 
   render() {

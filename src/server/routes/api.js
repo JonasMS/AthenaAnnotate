@@ -91,7 +91,9 @@ router.put('/api/annotations', function(req, res) {
 router.post('/api/users', function(req, res) {
   models.User.findOrCreate({
     where: {
-      facebookId: req.body.id,
+      facebookId: req.body.id
+    },
+    defaults: {
       name: req.body.name,
       email: req.body.email
     }

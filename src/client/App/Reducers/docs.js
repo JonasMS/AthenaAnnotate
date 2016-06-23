@@ -1,9 +1,11 @@
 const doc = (state, action) => {
   switch (action.type) {
-    case 'LOAD_DOC':
+    case 'LOAD_DOCS':
       return {
         id: state.id,
         url: state.url,
+        image: state.image,
+        title: state.title,
       };
     case 'DELETE_DOC':
       if (action.id !== state.id) {
@@ -17,7 +19,7 @@ const doc = (state, action) => {
 
 const docs = (state = [], action) => {
   switch (action.type) {
-    case 'LOAD_DOC':
+    case 'LOAD_DOCS':
       return action.docs.map(a =>
         doc(a, action)
       );
