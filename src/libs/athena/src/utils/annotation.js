@@ -9,7 +9,7 @@ export const createAnnote = ({
 }) => {
   const url = window.location.href;
   const annoteId =
-  'annote' + annotations.length + '/';
+    'annote' + annotations.length + '/';
   const {
     exact,
     prefix,
