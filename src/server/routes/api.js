@@ -4,19 +4,7 @@ var router = new Router();
 var models = require('../models/index');
 var annotationConstructor = require('../utils/annotationConstructor');
 var listOfDocs = require('../utils/listOfDocs');
-
-router.post('/api/users', function(req, res) {
-  var user = {
-    id: req.body.id,
-    facebook: {
-      id: req.body.id,
-      name: req.body.name,
-      email: req.body.email,
-    }
-  };
-  console.log(req.body, '<-- from /api/users');
-  res.json(user);
-});
+var userConstructor = require('../utils/userConstructor');
 
 router.get('/api/athena', function(req, res) {
   res.sendFile(path.join(__dirname, '../../../build/libs/athena.js'));
@@ -102,9 +90,13 @@ router.put('/api/annotations', function(req, res) {
 // BOTH - finds or creates User
 router.post('/api/users', function(req, res) {
   models.User.findOrCreate({
-    where: { facebookId: req.body.facebookId, name: req.body.name }
+    where: {
+      facebookId: req.body.id,
+      name: req.body.name,
+      email: req.body.email
+    }
   }).then(function(user) {
-    res.json(user[0]);
+    userConstructor(user[0], res);
   }).catch(function(err) {
     res.send(err);
   });

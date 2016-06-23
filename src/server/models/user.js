@@ -6,6 +6,10 @@ module.exports = function(sequelize, DataTypes) {
     facebookId: {
       type: DataTypes.STRING,
       unique: true
+    },
+    email: {
+      type: DataTypes.STRING,
+      unique: true
     }
   }, {
     classMethods: {
