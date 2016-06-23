@@ -1,6 +1,9 @@
-export const SET_USER = 'SET_USER';
-export const SHOW_AUTH_PANEL = 'SHOW_AUTH_PANEL';
-export const SHOW_ANNOTATE_PANEL = 'SHOW_ANNOTATE_PANEL';
+// error
+export const ERR_FAILED_REQUEST = 'ERR_FAILED_REQUEST';
+
+// user
+export const SAVE_USER_TO_DB = 'SAVE_USER_TO_DB';
+export const SAVE_USER_TO_STORE = 'SAVE_USER_TO_STORE';
 
 // widget
 export const SET_WIDGET = 'SET_WIDGET';

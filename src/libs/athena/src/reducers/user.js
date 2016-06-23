@@ -1,8 +1,8 @@
-import { SET_USER } from '../../../libs/athena/src/constants/actionTypes';
+import { SAVE_USER_TO_STORE } from '../constants/actionTypes';
 
 const user = (state = {}, action) => {
   switch (action.type) {
-    case SET_USER:
+    case SAVE_USER_TO_STORE:
       return Object.assign({}, state, action.data);
     default:
       return state;

@@ -1,29 +1,43 @@
+import fetch from 'isomorphic-fetch';
 import * as types from '../constants/actionTypes';
 import { getText } from '../utils/utils';
+import { getUserFromFB } from '../../../common/auth';
 
-export const setUser = userData => ({
-  type: types.SET_USER,
+export const failedRequest = error =>
+  ({ type: types.ERR_FAILED_REQUEST, data: error });
+
+export const saveUserToStore = userData => ({
+  type: types.SAVE_USER_TO_STORE,
   data: userData,
 });
 
-const getUserData = dispatch => (
-  window.FB.api(
-    '/me?fields=id,email,name',
-    resp => dispatch(setUser(resp)),
-    { scope: 'email' }
-  )
-);
+export const getUserFromDB = fbUser => {
+  const payload = JSON.stringify(fbUser);
 
-export const getLoginStatus = () =>
-  dispatch => window.FB.getLoginStatus(() => getUserData(dispatch));
+  return dispatch => {
+    fetch('/api/users', {
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/json',
+        'Content-length': payload.length,
+      },
+      credentials: 'same-origin',
+      body: payload,
+    })
+    .then(res => res.json())
+    .then(res => {
+      return dispatch(saveUserToStore(res));
+    })
+    .catch(err => dispatch(failedRequest(err)));
+  };
+};
 
 export const login = () => (
   dispatch => (
     window.FB.login(res => {
       if (res.status === 'connected') {
-        return getUserData(dispatch);
+        getUserFromFB().then(user => dispatch(getUserFromDB(user)));
       }
-      return undefined;
     }, { scope: 'public_profile,email' })
   )
 );
@@ -31,9 +45,8 @@ export const login = () => (
 export const logout = () => (
   dispatch => (
     window.FB.logout(() => (
-      dispatch(setUser({
+      dispatch(getUserFromDB({
         id: null,
-        accessToken: null,
       }))
     ))
   )
