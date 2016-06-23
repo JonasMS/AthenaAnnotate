@@ -45,7 +45,7 @@ export const login = () => (
 export const logout = () => (
   dispatch => (
     window.FB.logout(() => (
-      dispatch(getUserFromDB({
+      dispatch(saveUserToStore({
         id: null,
       }))
     ))

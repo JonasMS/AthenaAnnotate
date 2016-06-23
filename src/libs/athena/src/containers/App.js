@@ -51,7 +51,7 @@ class App extends Component {
       <div>
         <div className={widgetClass}>
           <div id="fb-root"></div>
-          {/* user && user.id */true ?
+            {user && user.id ?
             <AnnotatePanel logout={logout} /> :
             <AuthPanel login={login} />}
         </div>
