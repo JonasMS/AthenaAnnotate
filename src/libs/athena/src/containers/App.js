@@ -14,7 +14,15 @@ import { shortcutHandler } from '../utils/panel';
 
 class App extends Component {
   componentWillMount() {
-    placeAnnote(document, 'Lorem ipsum');
+    // this
+    // .props
+    // .annotations
+    // .forEach( annote => {
+    //   placeAnnote(
+    //     document,
+    //     annote.target.exact
+    //   );
+    // });
   }
 
   componentDidMount() {
