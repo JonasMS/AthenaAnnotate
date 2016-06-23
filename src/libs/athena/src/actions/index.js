@@ -108,22 +108,6 @@ export const addAnnote = annote => ({
   annote,
 });
 
-export const adderHandler = btn => (
-  dispatch => {
-    const annote = getText();
-    if (btn === 'note') {
-      dispatch(setTarget(annote));
-      dispatch(setWidget('SHOW'));
-    } else if (btn === 'highlight') {
-      console.log('line 110');
-      // create annotation
-      dispatch(setTarget(annote));
-      // TODO: save annotation ?
-    }
-    return annote;
-  }
-);
-
 export const saveAnnote = data => (
   dispatch => {
     // create full annotation object
@@ -142,8 +126,30 @@ export const saveAnnote = data => (
         annotation.target.selector.exact
       );
       dispatch(addAnnote(annote));
-      // TODO: clearAnnote here?
+      dispatch(clearAnnote());
     });
+    return annotation;
+  }
+);
+
+export const adderHandler = (btn, props) => (
+  dispatch => {
+    const selector = getText();
+    if (btn === 'note') {
+      dispatch(setTarget(selector));
+      dispatch(setWidget('SHOW'));
+    } else if (btn === 'highlight') {
+      const { annotation } = props;
+      annotation.target = selector;
+
+      dispatch(setTarget(selector));
+      dispatch(saveAnnote({
+        annotation,
+        annotations: props.annotations,
+        user: props.user,
+      }));
+    }
+    return selector;
   }
 );
 

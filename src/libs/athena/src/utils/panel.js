@@ -4,9 +4,6 @@ export const shortcutHandler = (
   props
 ) => {
   const {
-        annotation,
-        annotations,
-        user,
         widget,
         actions,
       } = props;
@@ -18,15 +15,10 @@ export const shortcutHandler = (
     ) {
       actions.adderHandler('note');
     } else if (e.code === 'KeyH') {
-      annotation.target =
-        actions.adderHandler('highlight');
-
-      actions.saveAnnote({
-        annotation,
-        annotations,
-        user,
-      });
-      actions.clearAnnote();
+      actions.adderHandler(
+        'highlight',
+        props
+      );
     }
   } else if (
     e.code === 'Escape' &&
