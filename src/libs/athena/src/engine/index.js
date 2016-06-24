@@ -4,6 +4,37 @@ const tagOpen =
 ;
 const tagClose = '</span>';
 
+export const parseDoc = doc => {
+  let node;
+  let nodes = [];
+  let docText = '';
+  let nodeIterator =
+    document
+    .createNodeIterator(
+      doc,
+      NodeFilter.SHOW_TEXT,
+      null
+    );
+  // iterate over each node
+  node = nodeIterator.nextNode();
+  while (!!node) {
+    // create node object
+    nodes.push(
+      {
+        textNode: node,
+        start: docText.length,
+      }
+    );
+    // concat to allText
+    docText += node.nodeValue;
+    node = nodeIterator.nextNode();
+  }
+  return {
+    docText,
+    nodes,
+  };
+};
+
 
 export const placeAnnote = (node, annote) => {
   const children = node.childNodes;

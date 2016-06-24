@@ -9,13 +9,13 @@ var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var homeRoute = require('./routes/home');
 var apiRoute = require('./routes/api');
+var specRoute = require('./routes/spec');
 var Sequelize = require('sequelize');
 var sequelize = new Sequelize('postgres://postgres@localhost:5432/annotate');
 var privateKey  = fs.readFileSync(__dirname + '/sslcert/server.key', 'utf8');
 var certificate = fs.readFileSync(__dirname + '/sslcert/server.crt', 'utf8');
 var credentials = { key: privateKey, cert: certificate };
 var server = express();
-var specRoute = require('./routes/spec');
 var host;
 var port;
 
