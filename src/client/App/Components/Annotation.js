@@ -12,6 +12,8 @@ const Annotation = (
     id,
     url,
     target,
+    user,
+    filter,
   }
 ) => (
   <li
@@ -27,7 +29,9 @@ const Annotation = (
         <div
           className="card-action"
         >
-          {edit ?
+          {filter !== 'Self' ?
+            <div>{user}</div> : null}
+          {edit && filter === 'Self' ?
             <BodyEditor
               body={body}
               onCancel={() => onEditBody(id)}
@@ -35,7 +39,7 @@ const Annotation = (
               onDelete={() => onDeleteBody(id, url)}
             />
             : null}
-          {!edit ?
+          {!edit && filter === 'Self' ?
             <button
               className="waves-effect waves-light btn-floating"
               onClick={() => onEditBody(id)}
@@ -66,6 +70,8 @@ Annotation.propTypes = {
   id: PropTypes.number.isRequired,
   url: PropTypes.string.isRequired,
   target: PropTypes.string.isRequired,
+  user: PropTypes.string.isRequired,
+  filter: PropTypes.string.isRequired,
 };
 
 export default Annotation;

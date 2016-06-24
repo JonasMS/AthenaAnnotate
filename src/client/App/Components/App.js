@@ -23,12 +23,12 @@ class App extends Component {
 
   componentDidUpdate() {
     // this.props.actions.fetchDocs(this.props.user.id);
-    this.props.actions.fetchAnnotations(this.props.user.id);
+    this.props.actions.fetchAnnotations(this.props.user.id, this.props.filter);
     // this.props.actions.fetchStuff(this.props.user.id);
   }
 
   render() {
-    const { user, loading, actions: { login, logout } } = this.props;
+    const { user, loading, filter, actions: { login, logout, setFilter } } = this.props;
     return (
       <div>
         <div id="fb-root"></div>
@@ -36,7 +36,7 @@ class App extends Component {
           user && user.id
           ?
             <div className="row">
-              <Sidebar user={user} logout={logout} />
+              <Sidebar user={user} logout={logout} setFilter={setFilter} filter={filter} />
               {loading ? <Loading /> : <VisibleDocList />}
             </div>
           :
@@ -51,6 +51,7 @@ App.propTypes = {
   user: PropTypes.object,
   actions: PropTypes.object,
   loading: PropTypes.bool.isRequired,
+  filter: PropTypes.string,
 };
 
 export default App;

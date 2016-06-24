@@ -5,6 +5,7 @@ import * as actions from '../Actions';
 const mapStatetoProps = (state) => (
   {
     annotations: state.annotations,
+    filter: state.filter,
   }
 );
 

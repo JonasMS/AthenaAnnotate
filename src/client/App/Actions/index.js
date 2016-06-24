@@ -31,6 +31,7 @@ export * from '../../../libs/athena/src/actions';
 //   }
 // );
 
+// To load all annotations based on filter
 const requestAnnotations = () => (
   {
     type: 'REQUEST_ANNOTATIONS',
@@ -44,17 +45,28 @@ const loadAnnotations = (annotations) => (
   }
 );
 
-export const fetchAnnotations = (id) => (
-  dispatch => {
+export const fetchAnnotations = (id, filter, groupId) => {
+  let url;
+  if (filter === 'Discover') {
+    url = `http://localhost:3000/api/discover?UserId=${id}`;
+  } else if (filter === 'Following') {
+    url = `http://localhost:3000/api/following?UserId=${id}`;
+  } else if (filter === 'Groups') {
+    url = `http://localhost:3000/api/groups?GroupId-${groupId}`;
+  } else {
+    url = `http://localhost:3000/api/annotations?UserId=${id}`;
+  }
+  return dispatch => {
     dispatch(requestAnnotations());
-    return fetch(`http://localhost:3000/api/annotations?UserId=${id}`)
+    return fetch(url)
+    // return fetch(`http://localhost:3000/api/annotations?UserId=${id}`)
       .then(response => response.json())
       .then(annotations => {
         dispatch(loadAnnotations(annotations));
       // .catch(err => console.log(err));
       });
-  }
-);
+  };
+};
 
 // To handle deletion of annotations
 export const deleteAnnotation = id => (
@@ -187,5 +199,13 @@ export const deleteDoc = id => (
 export const switchView = () => (
   {
     type: 'SWITCH_VIEW',
+  }
+);
+
+// To handle switching between different lists
+export const setFilter = filter => (
+  {
+    type: 'FILTER',
+    filter,
   }
 );

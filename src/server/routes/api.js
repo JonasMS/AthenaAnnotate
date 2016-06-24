@@ -146,6 +146,28 @@ router.get('/api/annotations', function(req, res) {
   });
 });
 
+// WEB APP - loads all Annotations excluding the User's own
+router.get('/api/discover', function(req, res) {
+  models.Annotation.findAll({
+    include: [{
+      model: models.User
+    }, {
+      model: models.Doc
+    }],
+    where: {
+      UserId: {
+        $notIn: [req.query.UserId]
+      },
+      private: 'Public'
+    },
+    order: [['updatedAt', 'DESC']]
+  }).then(function(annotations) {
+    res.send(annotations);
+  }).catch(function(err) {
+    res.send(err);
+  });
+});
+
 // WEB APP - loads Docs for a given User
 router.get('/api/docs', function(req, res) {
   models.Annotation.findAll({

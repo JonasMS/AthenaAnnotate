@@ -9,6 +9,7 @@ const AnnotationList = (
     onEditBody,
     onSaveEdit,
     onDeleteBody,
+    filter,
   }
 ) => {
   const Annotations = annotations.filter(annotation => id === annotation.doc_id);
@@ -20,6 +21,7 @@ const AnnotationList = (
       onEditBody={onEditBody}
       onSaveEdit={onSaveEdit}
       onDeleteBody={onDeleteBody}
+      filter={filter}
     />
   ));
   return (
@@ -36,6 +38,7 @@ AnnotationList.propTypes = {
   onSaveEdit: PropTypes.func.isRequired,
   onDeleteBody: PropTypes.func.isRequired,
   annotations: PropTypes.array.isRequired,
+  filter: PropTypes.string.isRequired,
 };
 
 export default AnnotationList;
