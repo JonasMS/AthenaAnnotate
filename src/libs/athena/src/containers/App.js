@@ -7,22 +7,16 @@ import AnnotatePanel  from '../components/AnnotatePanel';
 import Adder from '../components/Adder';
 
 import * as Actions from '../actions';
-import { placeAnnote } from '../engine/index';
+import { parseDoc } from '../engine/index';
 import { setWidgClass } from '../utils/utils';
 import { shortcutHandler } from '../utils/panel';
 import { initFB, getUserFromFB, getUserStatusFromFB } from '../../../common/auth';
 
 class App extends Component {
   componentWillMount() {
-    // this
-    // .props
-    // .annotations
-    // .forEach( annote => {
-    //   placeAnnote(
-    //     document,
-    //     annote.target.exact
-    //   );
-    // });
+    console.log(
+      parseDoc(document.body)
+    );
   }
 
   componentDidMount() {
