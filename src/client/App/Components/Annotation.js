@@ -30,7 +30,11 @@ const Annotation = (
           className="card-action"
         >
           {filter !== 'Self' ?
-            <div>{user}</div> : null}
+            <div>
+              {user}
+              <a>follow</a>
+            </div>
+            : null}
           {edit && filter === 'Self' ?
             <BodyEditor
               body={body}
@@ -51,12 +55,13 @@ const Annotation = (
       </div>
     : null}
     </div>
-    <button
-      className="waves-effect waves-light btn-floating"
-      onClick={onAnnotationDelete}
-    >
-      <i className="material-icons">delete</i>
-    </button>
+    {filter !== 'Self' ? null :
+      <button
+        className="waves-effect waves-light btn-floating"
+        onClick={onAnnotationDelete}
+      >
+        <i className="material-icons">delete</i>
+      </button>}
   </li>
 );
 

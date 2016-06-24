@@ -146,7 +146,7 @@ router.get('/api/annotations', function(req, res) {
   });
 });
 
-// WEB APP - loads all Annotations excluding the User's own
+// WEB APP - loads all public Annotations excluding the User's own
 router.get('/api/discover', function(req, res) {
   models.Annotation.findAll({
     include: [{
