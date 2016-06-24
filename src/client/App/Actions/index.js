@@ -3,6 +3,10 @@ require('es6-promise').polyfill();
 
 export * from '../../../libs/athena/src/actions';
 
+// TODO
+// pass a `filter` will determine which set of docs to
+// load options will be following feed or personal feed
+
 // Functions for loading documents and annotations
 const requestDocs = () => (
   {
@@ -50,56 +54,10 @@ export const fetchAnnotations = (id) => (
   }
 );
 
-// TODO
-// pass a `filter` will determine which set of docs to
-// load options will be following feed or personal feed
 // export const loadDocs = () => {
 //   return dispatch => {
 //     dispatch({ type: 'LOADING', loading: true });
 
-//     const docs = [
-//       {
-//         id: 0,
-//         url: 'http://www.google.com',
-//         title: 'Some Title',
-//       },
-//       {
-//         id: 1,
-//         url: 'http://www.yahoo.com',
-//         title: 'Some Other Title',
-//       },
-//     ];
-
-//     const annotations = [
-//       {
-//         id: 0,
-//         target: 'This is some text from the article',
-//         body: 'Some text here',
-//         edit: false,
-//         doc_id: 0,
-//       },
-//       {
-//         id: 1,
-//         target: 'This is some more text from the article',
-//         body: 'Some other text here',
-//         edit: false,
-//         doc_id: 0,
-//       },
-//       {
-//         id: 2,
-//         target: 'This is some other text from the article',
-//         body: 'Some more text here',
-//         edit: false,
-//         doc_id: 1,
-//       },
-//       {
-//         id: 3,
-//         target: 'This is some more other text from the article',
-//         body: 'Some other more text here',
-//         edit: false,
-//         doc_id: 1,
-//       },
-//     ];
 //     dispatch({ type: 'LOAD_DOC', docs });
 //     dispatch({ type: 'LOAD_ANNOTATION', annotations });
 //     dispatch({ type: 'LOADING', loading: false });
@@ -127,7 +85,6 @@ export const deleteAnnotationDB = (id, url) => (
       method: 'DELETE',
     })
       .then(response => {
-        console.log(response);
         if (response.status === 200) {
           return dispatch(deleteAnnotation(id));
         }
