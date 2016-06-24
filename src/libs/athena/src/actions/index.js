@@ -6,8 +6,7 @@ import { getText } from '../utils/utils';
 import { getUserFromFB } from '../../../common/auth';
 import { createAnnote } from '../utils/annotation';
 import { checkStatus, createPOST, parseJSON } from '../utils/fetch';
-import { placeAnnote } from '../engine/index';
-
+import { locateAnnote } from '../engine/index';
 export const failedRequest = error =>
   ({ type: types.ERR_FAILED_REQUEST, data: error });
 
@@ -120,10 +119,10 @@ export const saveAnnote = data => (
     .then(checkStatus)
     .then(parseJSON)
     .then(annote => {
-      console.log(annotation);
-      placeAnnote(
-        document.getElementsByTagName('body')[0],
-        annotation.target.selector.exact
+      console.log('annote: ', annotation);
+      locateAnnote(
+        document.body,
+        annotation
       );
       dispatch(addAnnote(annote));
       dispatch(clearAnnote());

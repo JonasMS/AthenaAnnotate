@@ -1,17 +1,26 @@
 export const getText = () => {
   // suffix: 20 chars after exact
   const sel = window.getSelection();
+  const range = sel.getRangeAt(0);
   const { data } = sel.focusNode;
-  const exStart = sel.focusOffset;
-  const exEnd = sel.anchorOffset;
+  const startOffset = range.startOffset;
+  const endOffset = range.endOffset;
   const exact =
     data
     .substring(
-      exStart,
-      exEnd
+      startOffset,
+      endOffset
      );
-  const prefix = data.substring(exStart - 20, exStart);
-  const suffix = data.substring(exEnd, exEnd + 20);
+  const prefix = data.substring(
+    startOffset - 20,
+    startOffset
+  );
+  const suffix = data.substring(
+    endOffset,
+    endOffset + 20
+  );
+
+  console.log('range: ', range);
 
   return {
     exact,

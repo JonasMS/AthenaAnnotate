@@ -14,18 +14,18 @@ import { initFB, getUserFromFB, getUserStatusFromFB } from '../../../common/auth
 
 class App extends Component {
   componentWillMount() {
-    locateAnnote(
-      document.body,
-      {
-        target: {
-          selector: {
-            prefix: 'non hendrerit sem. ',
-            exact: 'Ut sed hendrerit mauris.',
-            suffix: ' Donec venenatis',
-          },
-        },
-      }
-    );
+    // locateAnnote(
+    //   document.body,
+    //   {
+    //     target: {
+    //       selector: {
+    //         prefix: 'non hendrerit sem. ',
+    //         exact: 'Ut sed hendrerit mauris.',
+    //         suffix: ' Donec venenatis',
+    //       },
+    //     },
+    //   }
+    // );
   }
 
   componentDidMount() {
