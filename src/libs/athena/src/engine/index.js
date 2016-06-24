@@ -84,34 +84,52 @@ export const locateAnnote = (doc, annote) => {
   // find matchIdx
   const reg = new RegExp(regQuery, 'g');
 
+  console.log('reg: ', reg);
+
   const match = reg.exec(docText);
-  console.log(match);
+  console.log('match: ', match);
   // IF match, loop over nodes
   if (match) {
     const matchIdx = match.index;
+    console.log('matchIdx:', matchIdx);
     for (let i = 0; i < nodes.length; i++) {
       node = nodes[i];
       nodeLen = node.textNode.nodeValue.length;
       if (!!matchIdx) {
-        // IF matchIdx is after node, keep going
-        if (
-          matchIdx >
-          node.start + nodeLen
-        ) {
+        if (matchIdx >= node.start + nodeLen) {
           continue;
         }
-        // IF matchIdx occured before node, stop
+
         if (matchIdx < node.start) {
           break;
         }
-        // If matchIdx is within node
+
         console.log(node, node.textNode.nodeValue);
-        // return node;
+          // return node;
         insertAnnote(
           node,
           annote,
           match
         );
+        // // IF matchIdx is after node, keep going
+        // if (matchIdx > node.start + nodeLen - 1) {
+        //   continue;
+        // }
+        // // IF matchIdx occured before node, stop
+        // if (matchIdx < node.start) {
+        //   break;
+        // }
+
+        // If matchIdx is within node
+        // if (matchIdx <= node.start + nodeLen) {
+        //   console.log(node, node.textNode.nodeValue);
+        //   // return node;
+        //   insertAnnote(
+        //     node,
+        //     annote,
+        //     match
+        //   );
+        // }
       }
     }
   } else {

@@ -124,10 +124,10 @@ export const saveAnnote = data => (
     .then(checkStatus)
     .then(parseJSON)
     .then(annote => {
-      console.log(annotation);
-      placeAnnote(
-        document.getElementsByTagName('body')[0],
-        annotation.target.selector.exact
+      console.log('annote: ', annotation);
+      locateAnnote(
+        document.body,
+        annotation
       );
       dispatch(addAnnote(annote));
       dispatch(clearAnnote());
