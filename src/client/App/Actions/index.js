@@ -113,17 +113,18 @@ export const deleteAnnotation = id => (
   }
 );
 
-export const editAnnotation = id => (
-  {
-    type: 'EDIT_ANNOTATION',
-    id,
-  }
-);
-
 export const editText = body => (
   {
     type: 'EDIT_TEXT',
     body,
+  }
+);
+
+// To handle editing of an annotation
+export const editAnnotation = id => (
+  {
+    type: 'EDIT_ANNOTATION',
+    id,
   }
 );
 
@@ -135,6 +136,37 @@ export const saveEdit = (id, body) => (
   }
 );
 
+const saveEditFail = id => (
+  {
+    type: 'SAVE_EDIT_FAIL',
+    id,
+  }
+);
+
+export const editAnnotationDB = (id, body, url) => (
+  dispatch =>
+    fetch('http://localhost:3000/api/annotations', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        body: {
+          text: body,
+        },
+        id: url,
+      }),
+    })
+      .then(response => response.json())
+      .then(annotation => {
+        if (Array.isArray(annotation)) {
+          return dispatch(saveEdit(id, body));
+        }
+        return dispatch(saveEditFail(id));
+      })
+);
+
+// To handle deletion of annotations from the DB
 const deleteBody = id => (
   {
     type: 'DELETE_BODY',
@@ -171,6 +203,7 @@ export const deleteBodyDB = (id, url) => (
 
 );
 
+// To handle deletion of doc for a specific user
 export const deleteDoc = id => (
   {
     type: 'DELETE_DOC',

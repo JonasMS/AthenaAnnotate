@@ -124,7 +124,8 @@ router.get('/api/annotations', function(req, res) {
   models.Annotation.findAll({
     where: {
       UserId: req.query.UserId
-    }
+    },
+    order: [['id', 'ASC']]
   }).then(function(annotations) {
     res.send(annotations);
   }).catch(function(err) {
