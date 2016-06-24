@@ -35,6 +35,90 @@ export const parseDoc = doc => {
   };
 };
 
+export const insertAnnote = (
+  node,
+  annote,
+  match
+) => {
+  const matchIdx = match.index;
+  const {
+    prefix,
+    exact,
+  } = annote.target.selector;
+
+  const startOffset =
+    (matchIdx - node.start) + prefix.length;
+  const endOffset =
+    startOffset + exact.length;
+
+  const tags = document.createElement('span');
+  tags.style.backgroundColor = 'yellow';
+  // make a Range obj
+  const range = document.createRange();
+  range.setStart(node.textNode, startOffset);
+  range.setEnd(node.textNode, endOffset);
+
+  console.log(range);
+  // wrap range w/ Span's
+  range.surroundContents(tags);
+};
+
+export const locateAnnote = (doc, annote) => {
+  const { docText, nodes } = parseDoc(doc);
+  const allLength = docText.length;
+  let node;
+  let nodeLen;
+
+  const {
+    prefix,
+    exact,
+    suffix,
+  } = annote.target.selector;
+  const regQuery =
+    prefix +
+    '\.?' +
+    exact +
+    '\.?' +
+    suffix;
+
+  // find matchIdx
+  const reg = new RegExp(regQuery, 'g');
+
+  const match = reg.exec(docText);
+  console.log(match);
+  // IF match, loop over nodes
+  if (match) {
+    const matchIdx = match.index;
+    for (let i = 0; i < nodes.length; i++) {
+      node = nodes[i];
+      nodeLen = node.textNode.nodeValue.length;
+      if (!!matchIdx) {
+        // IF matchIdx is after node, keep going
+        if (
+          matchIdx >
+          node.start + nodeLen
+        ) {
+          continue;
+        }
+        // IF matchIdx occured before node, stop
+        if (matchIdx < node.start) {
+          break;
+        }
+        // If matchIdx is within node
+        console.log(node, node.textNode.nodeValue);
+        // return node;
+        insertAnnote(
+          node,
+          annote,
+          match
+        );
+      }
+    }
+  } else {
+    console.log('no match');
+    return match;
+  }
+};
 
 export const placeAnnote = (node, annote) => {
   const children = node.childNodes;
