@@ -5,7 +5,7 @@ const changeLocation = (url) => {
   window.location = url;
 };
 
-const Doc = ({ url, id, onDocDelete, listView }) => (
+const Doc = ({ url, id, count, onDocDelete, listView }) => (
   <li
     className="card blue-grey darken-1 white-text"
   >
@@ -19,11 +19,12 @@ const Doc = ({ url, id, onDocDelete, listView }) => (
       <i className="material-icons">delete</i>
     </button>
     {listView}
-    {listView ? null : <VisibleAnnotationList id={id} />}
+    {listView ? <div>{count}</div> : <VisibleAnnotationList id={id} />}
   </li>
 );
 
 Doc.propTypes = {
+  count: PropTypes.number.isRequired,
   url: PropTypes.string.isRequired,
   id: PropTypes.number.isRequired,
   onDocDelete: PropTypes.func.isRequired,

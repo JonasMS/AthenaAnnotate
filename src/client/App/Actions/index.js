@@ -8,28 +8,28 @@ export * from '../../../libs/athena/src/actions';
 // load options will be following feed or personal feed
 
 // Functions for loading documents and annotations
-const requestDocs = () => (
-  {
-    type: 'REQUEST_DOCS',
-  }
-);
+// const requestDocs = () => (
+//   {
+//     type: 'REQUEST_DOCS',
+//   }
+// );
 
-const loadDocs = (docs) => (
-  {
-    type: 'LOAD_DOCS',
-    docs,
-  }
-);
+// const loadDocs = (docs) => (
+//   {
+//     type: 'LOAD_DOCS',
+//     docs,
+//   }
+// );
 
-export const fetchDocs = (id) => (
-  dispatch => {
-    dispatch(requestDocs());
-    return fetch(`http://localhost:3000/api/docs?UserId=${id}`)
-      .then(response => response.json())
-      .then(docs => dispatch(loadDocs(docs)))
-      .catch(err => console.log(err));
-  }
-);
+// export const fetchDocs = (id) => (
+//   dispatch => {
+//     dispatch(requestDocs());
+//     return fetch(`http://localhost:3000/api/docs?UserId=${id}`)
+//       .then(response => response.json())
+//       .then(docs => dispatch(loadDocs(docs)))
+//       .catch(err => console.log(err));
+//   }
+// );
 
 const requestAnnotations = () => (
   {
@@ -49,20 +49,12 @@ export const fetchAnnotations = (id) => (
     dispatch(requestAnnotations());
     return fetch(`http://localhost:3000/api/annotations?UserId=${id}`)
       .then(response => response.json())
-      .then(annotations => dispatch(loadAnnotations(annotations)))
-      .catch(err => console.log(err));
+      .then(annotations => {
+        dispatch(loadAnnotations(annotations));
+      // .catch(err => console.log(err));
+      });
   }
 );
-
-// export const loadDocs = () => {
-//   return dispatch => {
-//     dispatch({ type: 'LOADING', loading: true });
-
-//     dispatch({ type: 'LOAD_DOC', docs });
-//     dispatch({ type: 'LOAD_ANNOTATION', annotations });
-//     dispatch({ type: 'LOADING', loading: false });
-//   };
-// };
 
 // To handle deletion of annotations
 export const deleteAnnotation = id => (

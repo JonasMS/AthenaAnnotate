@@ -19,7 +19,8 @@ router.post('/api/create', function(req, res) {
       source: req.body.target.source,
       exact: req.body.target.selector.exact,
       prefix: req.body.target.selector.prefix,
-      suffix: req.body.target.selector.suffix
+      suffix: req.body.target.selector.suffix,
+      private: req.body.private
     }).then(function(note) {
       models.Annotation.findAll({
         include: [{
@@ -129,10 +130,15 @@ router.put('/api/users', function(req, res) {
 // WEB APP - loads all Annotations for a given User
 router.get('/api/annotations', function(req, res) {
   models.Annotation.findAll({
+    include: [{
+      model: models.User
+    }, {
+      model: models.Doc
+    }],
     where: {
       UserId: req.query.UserId
     },
-    order: [['id', 'ASC']]
+    order: [['updatedAt', 'DESC']]
   }).then(function(annotations) {
     res.send(annotations);
   }).catch(function(err) {

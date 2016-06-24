@@ -22,8 +22,9 @@ class App extends Component {
   }
 
   componentDidUpdate() {
-    this.props.actions.fetchDocs(this.props.user.id);
+    // this.props.actions.fetchDocs(this.props.user.id);
     this.props.actions.fetchAnnotations(this.props.user.id);
+    // this.props.actions.fetchStuff(this.props.user.id);
   }
 
   render() {
