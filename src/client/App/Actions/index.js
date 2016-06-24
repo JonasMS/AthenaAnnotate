@@ -106,6 +106,7 @@ export const fetchAnnotations = (id) => (
 //   };
 // };
 
+// To handle deletion of annotations
 export const deleteAnnotation = id => (
   {
     type: 'DELETE_ANNOTATION',
@@ -113,6 +114,28 @@ export const deleteAnnotation = id => (
   }
 );
 
+const deleteAnnotationFail = id => (
+  {
+    type: 'DELETE_ANNOTATION_FAIL',
+    id,
+  }
+);
+
+export const deleteAnnotationDB = (id, url) => (
+  dispatch =>
+    fetch(`http://localhost:3000/api/annotations?id=${url}`, {
+      method: 'DELETE',
+    })
+      .then(response => {
+        console.log(response);
+        if (response.status === 200) {
+          return dispatch(deleteAnnotation(id));
+        }
+        return dispatch(deleteAnnotationFail(id));
+      })
+);
+
+// To handle editing of text within the annotation editor
 export const editText = body => (
   {
     type: 'EDIT_TEXT',
@@ -128,7 +151,7 @@ export const editAnnotation = id => (
   }
 );
 
-export const saveEdit = (id, body) => (
+const saveEdit = (id, body) => (
   {
     type: 'SAVE_EDIT',
     id,
@@ -211,6 +234,7 @@ export const deleteDoc = id => (
   }
 );
 
+// To handle switching between list and detail card views
 export const switchView = () => (
   {
     type: 'SWITCH_VIEW',

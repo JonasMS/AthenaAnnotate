@@ -87,6 +87,17 @@ router.put('/api/annotations', function(req, res) {
   });
 });
 
+// BOTH - deletes an annotation
+router.delete('/api/annotations', function(req, res) {
+  models.Annotation.destroy({
+    where: { url: req.query.id }
+  }).then(function() {
+    res.send('deleted');
+  }).catch(function() {
+    res.send('error');
+  });
+});
+
 // BOTH - finds or creates User
 router.post('/api/users', function(req, res) {
   models.User.findOrCreate({
