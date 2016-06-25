@@ -3,6 +3,8 @@ export const getText = () => {
   const sel = window.getSelection();
   const range = sel.getRangeAt(0);
   const { data } = sel.focusNode;
+  // TODO: ^ may not work well w/
+  // selection of multiple nodes
   const startOffset = range.startOffset;
   const endOffset = range.endOffset;
   const exact =
