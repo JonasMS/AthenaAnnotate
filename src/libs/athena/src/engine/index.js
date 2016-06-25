@@ -13,7 +13,12 @@ export const parseDoc = doc => {
     .createNodeIterator(
       doc,
       NodeFilter.SHOW_TEXT,
-      null
+      function(node) {
+        return node.parentElement.nodeName.toLowerCase() !==
+          'script' ?
+            NodeFilter.FILTER_ACCEPT :
+            NodeFilter.FILTER_REJECT;
+      }
     );
   // iterate over each node
   node = nodeIterator.nextNode();
@@ -69,6 +74,8 @@ export const locateAnnote = (doc, annote) => {
   let node;
   let nodeLen;
 
+  console.log(annote);
+
   const {
     prefix,
     exact,
@@ -79,7 +86,7 @@ export const locateAnnote = (doc, annote) => {
     '\.?' +
     exact +
     '\.?' +
-    suffix;
+    suffix + '?';
 
   // find matchIdx
   const reg = new RegExp(regQuery, 'g');
