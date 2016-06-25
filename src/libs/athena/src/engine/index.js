@@ -1,3 +1,5 @@
+import Athena from './element';
+
 const tagOpen =
   '<span ' +
   'style="background-color: yellow;">'
@@ -65,7 +67,10 @@ export const insertAnnote = (
 
   console.log(range);
   // wrap range w/ Span's
-  range.surroundContents(tags);
+  const athena = new Athena;
+  const cb = function() { console.log('clicked!!'); };
+  athena.addListener(cb);
+  range.surroundContents(athena);
 };
 
 export const locateAnnote = (doc, annote) => {
