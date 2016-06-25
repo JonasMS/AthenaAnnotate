@@ -22,7 +22,7 @@ export const getText = () => {
     endOffset + 20
   );
 
-  console.log('range: ', range);
+  // console.log('range: ', range);
 
   return {
     exact,

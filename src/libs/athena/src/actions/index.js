@@ -69,7 +69,7 @@ export const setAdder = adder => {
     range.endOffset - range.startOffset
   );
 
-  console.log('range: ', range);
+  // console.log('range: ', range);
   let display = adder;
 
   if (distance > 0) {
@@ -126,7 +126,7 @@ export const saveAnnote = data => (
     .then(checkStatus)
     .then(parseJSON)
     .then(annote => {
-      console.log('annote: ', annotation);
+      // console.log('annote: ', annotation);
       locateAnnote(
         document.body,
         annotation
