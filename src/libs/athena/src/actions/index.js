@@ -68,6 +68,8 @@ export const setAdder = adder => {
   const distance = Math.abs(
     range.endOffset - range.startOffset
   );
+
+  console.log('range: ', range);
   let display = adder;
 
   if (distance > 0) {
