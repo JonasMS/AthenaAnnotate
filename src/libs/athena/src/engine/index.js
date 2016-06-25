@@ -1,10 +1,13 @@
 import Athena from './element';
 
+// returns a string docText that contains all
+// textNodes and an array of nodes that
+// correspond to each substring
 export const parseDoc = doc => {
-  let node;
-  let nodes = [];
   let docText = '';
-  let nodeIterator =
+  let node;
+  const nodes = [];
+  const nodeIterator =
     document
     .createNodeIterator(
       doc,
@@ -36,6 +39,9 @@ export const parseDoc = doc => {
   };
 };
 
+// returns range
+// wraps the selected text in a custom
+// html element
 export const insertAnnote = (
   node,
   annote,
@@ -57,7 +63,7 @@ export const insertAnnote = (
   range.setStart(node.textNode, startOffset);
   range.setEnd(node.textNode, endOffset);
 
-  console.log(range);
+  // console.log(range);
 
   // wrap selection in athena-annote tag
   const athena = new Athena;
@@ -66,14 +72,17 @@ export const insertAnnote = (
   };
   athena.addListener(cb);
   range.surroundContents(athena);
+  return range;
 };
 
+// should return the location of a given
+// annote within a given node
 export const locateAnnote = (doc, annote) => {
   const { docText, nodes } = parseDoc(doc);
   let node;
   let nodeLen;
 
-  console.log(annote);
+  // console.log(annote);
 
   const {
     prefix,
@@ -90,14 +99,14 @@ export const locateAnnote = (doc, annote) => {
   // find matchIdx
   const reg = new RegExp(regQuery, 'g');
 
-  console.log('reg: ', reg);
+  // console.log('reg: ', reg);
 
   const match = reg.exec(docText);
-  console.log('match: ', match);
+  // console.log('match: ', match);
   // IF match, loop over nodes
   if (match) {
     const matchIdx = match.index;
-    console.log('matchIdx:', matchIdx);
+    // console.log('matchIdx:', matchIdx);
     for (let i = 0; i < nodes.length; i++) {
       node = nodes[i];
       nodeLen = node.textNode.nodeValue.length;
@@ -110,7 +119,7 @@ export const locateAnnote = (doc, annote) => {
           break;
         }
 
-        console.log(node, node.textNode.nodeValue);
+        // console.log(node, node.textNode.nodeValue);
           // return node;
         insertAnnote(
           node,
