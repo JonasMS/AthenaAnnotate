@@ -138,7 +138,16 @@ export const saveAnnote = data => (
   }
 );
 
-export const adderHandler = (btn, data) => (
+// fetch annotations for a specific
+// user and URL
+export const getAnnotes = (user) => {
+  const url = window.location.href;
+};
+
+export const adderHandler = (
+  btn,
+  data
+) => (
   dispatch => {
     const selector = getText();
     if (btn === 'note') {
