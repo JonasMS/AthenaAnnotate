@@ -1,5 +1,26 @@
 import Athena from './element';
 
+
+// helper function
+const createRegQuery = selector => {
+  let query = '';
+  const {
+    prefix,
+    exact,
+    suffix,
+  } = selector;
+
+
+  query += !!prefix ?
+    prefix + '\.?' : '';
+  query += (exact + '\.?');
+  query += !!suffix ?
+    suffix + '?' : '';
+
+  return query;
+};
+
+
 // returns a string docText that contains all
 // textNodes and an array of nodes that
 // correspond to each substring
@@ -84,17 +105,8 @@ export const locateAnnote = (doc, annote) => {
 
   // console.log(annote);
 
-  const {
-    prefix,
-    exact,
-    suffix,
-  } = annote.target.selector;
-  const regQuery =
-    prefix +
-    '\.?' +
-    exact +
-    '\.?' +
-    suffix + '?';
+  const { selector } = annote.target;
+  const regQuery = createRegQuery(selector);
 
   // find matchIdx
   const reg = new RegExp(regQuery, 'g');
