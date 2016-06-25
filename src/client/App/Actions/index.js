@@ -62,6 +62,7 @@ export const fetchAnnotations = (id, filter, groupId) => {
     // return fetch(`http://localhost:3000/api/annotations?UserId=${id}`)
       .then(response => response.json())
       .then(annotations => {
+        console.log(annotations);
         dispatch(loadAnnotations(annotations));
       // .catch(err => console.log(err));
       });
@@ -208,4 +209,53 @@ export const setFilter = filter => (
     type: 'FILTER',
     filter,
   }
+);
+
+// To handle following a user
+const toggleFollowUser = (userId) => (
+  {
+    type: 'TOGGLE_FOLLOW_USER',
+    userId,
+  }
+);
+
+export const followUser = (userId, id) => (
+  dispatch =>
+    fetch('http://localhost:3000/api/follow', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        id,
+        userId,
+      }),
+    })
+      .then(response => response.json())
+      .then(res => {
+        if (res.UserId) {
+          dispatch(toggleFollowUser(userId));
+        } else {
+          console.log('failure!');
+        }
+      })
+);
+
+// To handle loading followers
+const loadFollowing = (following) => (
+  {
+    type: 'LOAD_FOLLOWING',
+    following,
+  }
+);
+
+export const loadFollowingDB = (id) => (
+  dispatch =>
+    fetch(`http://localhost:3000/api/follow?UserId=${id}`)
+      .then(response => response.json())
+      .then(users => {
+        console.log(users);
+        dispatch(loadFollowing(users));
+      })
+      .catch(err => console.log(err))
 );

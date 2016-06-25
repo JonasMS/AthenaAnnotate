@@ -168,6 +168,20 @@ router.get('/api/discover', function(req, res) {
   });
 });
 
+// WEB aPP - loads all Annotations form users that User is following
+// router.get('/api/following', function(req, res) {
+//   models.Annotation.findAll({
+//     include: [{
+//       model: models.User
+//     }, {
+//       model: models.Doc
+//     }],
+//     where: {
+//       UserId
+//     }
+//   })
+// })
+
 // WEB APP - loads Docs for a given User
 router.get('/api/docs', function(req, res) {
   models.Annotation.findAll({
@@ -185,3 +199,58 @@ router.get('/api/docs', function(req, res) {
 });
 
 module.exports = router;
+
+// BOTH - toggles following a User
+router.post('/api/follow', function(req, res) {
+  models.Follows.findAll({
+    where: {
+      UserId: req.body.id,
+      followsId: req.body.userId
+    }, attributes: ['id']
+  }).then(function(join) {
+    if (join.length === 0) {
+      models.Follows.create({
+        UserId: req.body.id,
+        followsId: req.body.userId
+      }).then(function(newjoin) {
+        res.send(newjoin);
+      }).catch(function(err) {
+        res.send(err);
+      });
+    } else {
+      models.Follows.destroy({
+        where: {
+          id: join[0].id
+        }
+      }).then(function() {
+        res.send(JSON.stringify({ UserId: 'deleted' }));
+      }).catch(function() {
+        res.send(JSON.stringify({ failure: 'failure' }));
+      });
+    }
+  }).catch(function() {
+  });
+});
+
+// BOTH - loads a list of userIds that a user is following
+router.get('/api/follow', function(req, res) {
+  models.Follows.findAll({
+    include: [{
+      model: models.User,
+      as: 'follows'
+    }],
+    where: {
+      UserId: req.query.UserId
+    }
+    // attributes: ['followsId']
+  }).then(function(users) {
+    console.log(users);
+    res.send(users.map(function(user) {
+      return user.dataValues.follows;
+    }));
+    // res.send(users);
+  }).catch(function(err) {
+    console.log(err);
+    res.send(err);
+  });
+});

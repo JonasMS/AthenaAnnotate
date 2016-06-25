@@ -12,8 +12,11 @@ const Annotation = (
     id,
     url,
     target,
-    user,
+    userName,
     filter,
+    userId,
+    followUser,
+    user,
   }
 ) => (
   <li
@@ -31,8 +34,8 @@ const Annotation = (
         >
           {filter !== 'Self' ?
             <div>
-              {user}
-              <a>follow</a>
+              {userName}
+              <a onClick={() => followUser(userId, user.id)}>follow</a>
             </div>
             : null}
           {edit && filter === 'Self' ?
@@ -75,8 +78,11 @@ Annotation.propTypes = {
   id: PropTypes.number.isRequired,
   url: PropTypes.string.isRequired,
   target: PropTypes.string.isRequired,
-  user: PropTypes.string.isRequired,
+  userName: PropTypes.string.isRequired,
+  userId: PropTypes.number.isRequired,
   filter: PropTypes.string.isRequired,
+  followUser: PropTypes.func.isRequired,
+  user: PropTypes.object.isRequired,
 };
 
 export default Annotation;

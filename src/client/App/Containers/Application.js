@@ -3,11 +3,12 @@ import { bindActionCreators } from 'redux';
 import App from '../Components/App';
 import * as actions from '../Actions';
 
-const mapStateToProps = ({ user, loading, filter }) => (
+const mapStateToProps = ({ user, loading, filter, following }) => (
   {
     user,
     loading,
     filter,
+    following,
   }
 );
 

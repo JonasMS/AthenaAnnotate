@@ -9,7 +9,8 @@ const annotation = (state, action) => {
         url: state.url,
         edit: false,
         deleteFail: false,
-        user: state.User.name,
+        userName: state.User.name,
+        userId: state.User.id,
       };
     case 'DELETE_ANNOTATION':
       if (state.id !== action.id) {

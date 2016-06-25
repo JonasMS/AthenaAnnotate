@@ -11,7 +11,7 @@ const Sidebar = ({ logout, setFilter }) => (
         <a onClick={() => setFilter('Discover')}>Discover</a>
       </li>
       <li>
-        <a>Following</a>
+        <a onClick={() => setFilter('Following')}>Following</a>
       </li>
       <li>
         <a>Groups</a>

@@ -6,6 +6,7 @@ const mapStatetoProps = (state) => (
   {
     annotations: state.annotations,
     filter: state.filter,
+    user: state.user,
   }
 );
 
@@ -22,6 +23,9 @@ const mapDispatchToProps = (dispatch) => (
     },
     onDeleteBody: (id, url) => {
       dispatch(actions.deleteBodyDB(id, url));
+    },
+    followUser: (userId, id) => {
+      dispatch(actions.followUser(userId, id));
     },
   }
 );

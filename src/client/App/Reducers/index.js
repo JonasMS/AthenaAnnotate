@@ -5,6 +5,7 @@ import editor from './editor';
 import loading from './loading';
 import listView from './listView';
 import filter from './filter';
+import following from './following';
 import user from '../../../libs/athena/src/reducers/user';
 
 const Reducers = combineReducers({
@@ -15,6 +16,7 @@ const Reducers = combineReducers({
   listView,
   user,
   filter,
+  following,
 });
 
 export default Reducers;
