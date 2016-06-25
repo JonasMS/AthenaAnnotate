@@ -1,3 +1,5 @@
+// TODO: move to engine?
+
 import fetch from 'isomorphic-fetch';
 // import babel-polyfill
 require('es6-promise').polyfill();
@@ -33,4 +35,3 @@ export const createAnnote = ({
 
 // modifyAnnotation
 // getAnnotationIdx
-// modifyAnnotation
