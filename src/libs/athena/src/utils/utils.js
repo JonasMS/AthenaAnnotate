@@ -3,26 +3,47 @@ export const getText = () => {
   const sel = window.getSelection();
   const range = sel.getRangeAt(0);
   const { data } = sel.focusNode;
+  // const data = range.cloneContents().textContent;
   // TODO: ^ may not work well w/
   // selection of multiple nodes
-  const startOffset = range.startOffset;
-  const endOffset = range.endOffset;
-  const exact =
-    data
+  const { startOffset } = range;
+  const { endOffset } = range;
+  console.log('getText: ', sel);
+  console.log('getText: ', range);
+
+  const exact = range.cloneContents().textContent;
+
+  const prefix =
+    range
+    .startContainer
+    .textContent
     .substring(
-      startOffset,
-      endOffset
-     );
-  const prefix = data.substring(
     startOffset - 20,
     startOffset
-  );
-  const suffix = data.substring(
-    endOffset,
-    endOffset + 20
-  );
+    );
 
-  // console.log('range: ', range);
+  const suffix =
+    range
+    .endContainer
+    .textContent
+    .substring(
+      endOffset,
+      endOffset + 20
+    );
+  // const exact =
+  //   text
+  //   .substring(
+  //     startOffset,
+  //     endOffset
+  //    );
+  // const prefix = data.substring(
+  //   startOffset - 20,
+  //   startOffset
+  // );
+  // const suffix = data.substring(
+  //   endOffset,
+  //   endOffset + 20
+  // );
 
   return {
     exact,
