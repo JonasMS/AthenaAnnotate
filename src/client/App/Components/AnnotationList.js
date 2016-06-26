@@ -16,7 +16,7 @@ const AnnotationList = (
     <Annotation
       key={annotation.id}
       {...annotation}
-      onAnnotationDelete={() => onAnnotationDelete(annotation.id)}
+      onAnnotationDelete={() => onAnnotationDelete(annotation.id, annotation.url)}
       onEditBody={onEditBody}
       onSaveEdit={onSaveEdit}
       onDeleteBody={onDeleteBody}

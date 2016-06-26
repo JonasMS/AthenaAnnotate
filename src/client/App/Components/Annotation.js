@@ -10,6 +10,7 @@ const Annotation = (
     body,
     edit,
     id,
+    url,
     target,
   }
 ) => (
@@ -30,8 +31,8 @@ const Annotation = (
             <BodyEditor
               body={body}
               onCancel={() => onEditBody(id)}
-              onSave={(txt) => onSaveEdit(id, txt)}
-              onDelete={() => onDeleteBody(id)}
+              onSave={(txt) => onSaveEdit(id, txt, url)}
+              onDelete={() => onDeleteBody(id, url)}
             />
             : null}
           {!edit ?
@@ -63,6 +64,7 @@ Annotation.propTypes = {
   body: PropTypes.string,
   edit: PropTypes.bool.isRequired,
   id: PropTypes.number.isRequired,
+  url: PropTypes.string.isRequired,
   target: PropTypes.string.isRequired,
 };
 

@@ -12,7 +12,8 @@ module.exports = function(annotations, res) {
       id: {
         $in: docIds
       }
-    }
+    },
+    order: [['id', 'DESC']]
   }).then(function(docs) {
     res.send(docs);
   }).catch(function(err) {

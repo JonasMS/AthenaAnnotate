@@ -1,12 +1,14 @@
 const annotation = (state, action) => {
   switch (action.type) {
-    case 'LOAD_ANNOTATION':
+    case 'LOAD_ANNOTATIONS':
       return {
         id: state.id,
-        body: state.body,
-        target: state.target,
-        doc_id: state.doc_id,
-        edit: state.edit,
+        body: state.text,
+        target: state.exact,
+        doc_id: state.DocId,
+        url: state.url,
+        edit: false,
+        deleteFail: false,
       };
     case 'DELETE_ANNOTATION':
       if (state.id !== action.id) {
@@ -36,6 +38,13 @@ const annotation = (state, action) => {
         body: null,
         edit: !state.edit,
       });
+    case 'DELETE_BODY_FAIL':
+      if (state.id !== action.id) {
+        return state;
+      }
+      return Object.assign({}, state, {
+        deleteFail: true,
+      });
     default:
       return state;
   }
@@ -43,7 +52,7 @@ const annotation = (state, action) => {
 
 const annotations = (state = [], action) => {
   switch (action.type) {
-    case 'LOAD_ANNOTATION':
+    case 'LOAD_ANNOTATIONS':
       return action.annotations.map(a =>
         annotation(a, action)
       );
@@ -60,6 +69,10 @@ const annotations = (state = [], action) => {
         annotation(a, action)
       );
     case 'DELETE_BODY':
+      return state.map(a =>
+        annotation(a, action)
+      );
+    case 'DELETE_BODY_FAIL':
       return state.map(a =>
         annotation(a, action)
       );

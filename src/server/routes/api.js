@@ -66,9 +66,9 @@ router.get('/api/doc', function(req, res) {
 // BOTH - updates an annotation
 router.put('/api/annotations', function(req, res) {
   models.Annotation.update({
-    exact: req.body.target.selector.exact,
-    prefix: req.body.target.selector.prefix,
-    suffix: req.body.target.selector.suffix,
+    // exact: req.body.target.selector.exact,
+    // prefix: req.body.target.selector.prefix,
+    // suffix: req.body.target.selector.suffix,
     text: req.body.body.text
   }, {
     where: { url: req.body.id },
@@ -87,11 +87,24 @@ router.put('/api/annotations', function(req, res) {
   });
 });
 
+// BOTH - deletes an annotation
+router.delete('/api/annotations', function(req, res) {
+  models.Annotation.destroy({
+    where: { url: req.query.id }
+  }).then(function() {
+    res.send('deleted');
+  }).catch(function() {
+    res.send('error');
+  });
+});
+
 // BOTH - finds or creates User
 router.post('/api/users', function(req, res) {
   models.User.findOrCreate({
     where: {
-      facebookId: req.body.id,
+      facebookId: req.body.id
+    },
+    defaults: {
       name: req.body.name,
       email: req.body.email
     }
@@ -122,7 +135,8 @@ router.get('/api/annotations', function(req, res) {
   models.Annotation.findAll({
     where: {
       UserId: req.query.UserId
-    }
+    },
+    order: [['id', 'ASC']]
   }).then(function(annotations) {
     res.send(annotations);
   }).catch(function(err) {
