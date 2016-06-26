@@ -1,0 +1,2 @@
+export const CREATE_ANNOTE = 'CREATE_ANNOTE';
+export const CREATE_HIGHLIGHT = 'CREATE_HIGHLIGHT';

@@ -3,13 +3,25 @@ import * as types from '../constants/actionTypes';
 import { getText } from '../utils/utils';
 import { getUserFromFB } from '../../../common/auth';
 
-export const failedRequest = error =>
-  ({ type: types.ERR_FAILED_REQUEST, data: error });
+export const failedRequest = error => (
+  {
+    type: types.ERR_FAILED_REQUEST,
+    data: error,
+  }
+);
 
-export const saveUserToStore = userData => ({
-  type: types.SAVE_USER_TO_STORE,
-  data: userData,
-});
+export const showAuthPanel = () => (
+  {
+    type: types.SHOW_AUTH_PANEL,
+  }
+);
+
+export const saveUserToStore = userData => (
+  {
+    type: types.SAVE_USER_TO_STORE,
+    data: userData,
+  }
+);
 
 export const getUserFromDB = fbUser => {
   const payload = JSON.stringify(fbUser);
@@ -25,9 +37,7 @@ export const getUserFromDB = fbUser => {
       body: payload,
     })
     .then(res => res.json())
-    .then(res => {
-      return dispatch(saveUserToStore(res));
-    })
+    .then(res => dispatch(saveUserToStore(res)))
     .catch(err => dispatch(failedRequest(err)));
   };
 };

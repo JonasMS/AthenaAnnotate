@@ -20,20 +20,39 @@ export const initFB = () => (
   })
 );
 
-export const getUserStatusFromFB = () => {
-  return new Promise(resolve => {
-    window.FB.getLoginStatus(res => {
-      return res ? resolve(res.status) : resolve(undefined);
-    });
-  });
-};
+export const getUserStatusFromFB = () => (
+  new Promise(resolve => {
+    window.FB.getLoginStatus(res => (
+      res ? resolve(res.status) : resolve(undefined)
+    ));
+  })
+);
 
-export const getUserFromFB = () => {
-  return new Promise(resolve => {
+export const getUserFromFB = () => (
+  new Promise(resolve => {
     window.FB.api(
       '/me?fields=id,email,name',
       res => resolve(res),
       { scope: 'email' }
     );
-  });
-};
+  })
+);
+
+
+// export const getUserStatusFromFB = () => {
+//   return new Promise(resolve => {
+//     window.FB.getLoginStatus(res => {
+//       return res ? resolve(res.status) : resolve(undefined);
+//     });
+//   });
+// };
+
+// export const getUserFromFB = () => {
+//   return new Promise(resolve => {
+//     window.FB.api(
+//       '/me?fields=id,email,name',
+//       res => resolve(res),
+//       { scope: 'email' }
+//     );
+//   });
+// };
