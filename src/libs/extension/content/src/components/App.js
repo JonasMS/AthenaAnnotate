@@ -57,6 +57,15 @@ class App extends Component {
       type: CREATE_ANNOTE,
       message: 'creating annote!',
     });
+    this.iframe.style = [
+      'position: absolute;',
+      'top: 0;',
+      'right: 0px;',
+      'width: 300px;',
+      'height: 150px;',
+      'border: none;',
+      'transitionDuration: 0.5s;',
+    ].join('');
   }
 
   createHighlight() {
@@ -72,6 +81,15 @@ class App extends Component {
       type: CREATE_HIGHLIGHT,
       message: 'highlighting text!',
     });
+    this.iframe.style = [
+      'position: absolute;',
+      'top: 0;',
+      'right: 0px;',
+      'width: 300px;',
+      'height: 150px;',
+      'border: none;',
+      'transitionDuration: 0.5s;',
+    ].join('');
   }
 
   handleKeyPressEvent(event) {

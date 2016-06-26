@@ -43,6 +43,7 @@ class App extends Component {
             });
         }
       });
+
     // // listener for mouseups
     // document
     // .getElementsByTagName('body')[0]
@@ -67,19 +68,15 @@ class App extends Component {
     return user && user.id;
   }
 
-  createAnnote() {
+  createAnnote(data) {
     if (this.isUserLoggedIn()) {
-      this.props.actions.showAnnotatePanel();
-    } else {
-      this.props.actions.showAuthPanel();
+      console.log(data);
     }
   }
 
-  createHightlight() {
+  createHightlight(data) {
     if (this.isUserLoggedIn()) {
-      this.props.actions.showAnnotatePanel();
-    } else {
-      this.props.actions.showAuthPanel();
+      console.log(data);
     }
   }
 
@@ -87,9 +84,9 @@ class App extends Component {
   handleMessageEvent(event) {
     switch (event.data.type) {
       case CREATE_ANNOTE:
-        return this.createAnnote();
+        return this.createAnnote(event.data);
       case CREATE_HIGHLIGHT:
-        return this.createHightlight();
+        return this.createHightlight(event.data);
       default:
         return undefined;
     }
@@ -102,8 +99,8 @@ class App extends Component {
       <div>
         {
           user && user.id
-            ? <AuthPanel login={login} />
-            : <AnnotatePanel />
+            ? <AnnotatePanel />
+            : <AuthPanel login={login} />
         }
       </div>
     );

@@ -12,14 +12,7 @@ const iframe = document.createElement('iframe');
 iframe.src = `${process.env.ATHENA_HOST}/athena/athena.html`;
 iframe.id = 'athena-app';
 iframe.style = [
-  'position: absolute;',
-  'top: 0;',
-  'right: 0px;',
-  'width: 300px;',
-  'height: 150px;',
-  'border: none;',
-  'transitionDuration: 0.5s',
-  'display: none',
+  'display: none;',
 ].join('');
 
 // document is the site the user is visiting. here we inject our code.
