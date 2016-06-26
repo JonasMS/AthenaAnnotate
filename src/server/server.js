@@ -38,6 +38,7 @@ express()
   .use(bodyParser.json())
   .use(cookieParser())
   .use(express.static(__dirname + '/../../build'))
+  .use(express.static(__dirname + '/../../build/libs'))
   .use(session({
     secret: 'athena annotate',
     resave: false,
