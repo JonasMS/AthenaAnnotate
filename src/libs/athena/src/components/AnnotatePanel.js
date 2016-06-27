@@ -1,86 +1,80 @@
-import FacebookLogout from './FacebookLogout';
-import React, { Component } from 'react';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
-import fetch from 'isomorphic-fetch';
-// import babel-polyfill
-require('es6-promise').polyfill();
-import * as Actions from '../actions';
+import React, { PropTypes, Component } from 'react';
+import {
+  Button,
+  FormGroup,
+  ControlLabel,
+  FormControl,
+  HelpBlock,
+} from 'react-bootstrap';
 import { saveAnnote } from '../utils/annotation';
+import FacebookLogout from './FacebookLogout';
+
 
 class AnnotatePanel extends Component {
+  constructor(props) {
+    super(props);
+    this.submitHandler = this.submitHandler.bind(this);
+  }
 
-  submitHandler () {
+  submitHandler() {
     const {
-      annotation,
-      annotations,
       user,
       actions,
-       } = this.props;
-    // send annotation object to server
-    saveAnnote({
       annotation,
       annotations,
+    } = this.props;
+
+    saveAnnote({
       user,
+      annotation,
+      annotations,
     });
-    // update annotations
+
     actions.clearAnnote();
-    // TODO: hide widget
+    this.props.close();
   }
 
   render () {
-    const { annotation, actions } = this.props;
+    const { close, annotation, actions, exact } = this.props;
+
     return (
       <div>
-        <div className="targetText">
-          <input
-            type="text"
-            value={this.props.exact}
-          />
-        </div>
-        <div className="bodyText">
-          <textarea
-            value={
-              annotation.body.text
-            }
-            onChange={(e) =>
-              actions.updateBody(
-                e.target.value
-              )
-            }
-          />
-        </div>
-        <button
-          className="submitBtn"
-          onClick={() => this.submitHandler()}
-        >Submit</button>
-        <div>
-          <FacebookLogout
-            logout={actions.logout}
-          />
-        </div>
-      </div>
+        <Button onClick={close}> Close </Button>
+        <h1> Annotate Panel </h1>
 
+        <form>
+          <FormGroup controlId="annoteFormId">
+            <ControlLabel>Highlighted Text</ControlLabel>
+            <FormControl
+              type="text"
+              value={exact}
+            />
+            <ControlLabel>Your Note</ControlLabel>
+            <FormControl
+              componentClass="textarea"
+              value={annotation.body.text}
+              onChange={(e) => actions.updateBody(e.target.value)}
+            />
+          </FormGroup>
+        </form>
+        <Button
+          bsStyle="primary"
+          onClick={this.submitHandler}
+        > Submit </Button>
+        <FacebookLogout logout={actions.logout} />
+      </div>
     );
   }
 }
 
-const mapStateToProps = (state) => ({
-  annotation: state.annotation,
-  annotations: state.annotations,
-  user: state.user,
-  exact: state.annotation.target.exact,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  actions: bindActionCreators(Actions, dispatch),
-});
-
 AnnotatePanel.propTypes = {
-  exact: React.PropTypes.string.isRequired,
+  user: PropTypes.object,
+  actions: PropTypes.object,
+  annotation: PropTypes.object,
+  annotations: PropTypes.array,
+  close: PropTypes.func.isRequired,
+  exact: PropTypes.string.isRequired,
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(AnnotatePanel);
+export default AnnotatePanel;
+

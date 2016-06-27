@@ -1,19 +1,17 @@
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as actions from '../actions';
-import App from '../components/App';
+import AnnotatePanel from '../components/AnnotatePanel';
 
 const mapStateToProps = (state) => ({
   user: state.user,
-  panel: state.panel,
-  // annotation: state.annotation,
-  // annotations: state.annotations,
-  // widget: state.widget,
-  // adder: state.adder,
+  annotation: state.annotation,
+  annotations: state.annotations,
+  exact: state.annotation.target.exact,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   actions: bindActionCreators(actions, dispatch),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(AnnotatePanel);

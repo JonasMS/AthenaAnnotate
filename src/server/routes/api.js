@@ -6,9 +6,9 @@ var annotationConstructor = require('../utils/annotationConstructor');
 var listOfDocs = require('../utils/listOfDocs');
 var userConstructor = require('../utils/userConstructor');
 
-router.get('/api/athena', function(req, res) {
-  res.sendFile(path.join(__dirname, '../../../build/libs/athena.js'));
-});
+// router.get('/api/athena', function(req, res) {
+//   res.sendFile(path.join(__dirname, '../../../build/libs/athena.js'));
+// });
 
 // EXTENSION - creates an annotation for a given Doc and User
 router.post('/api/create', function(req, res) {

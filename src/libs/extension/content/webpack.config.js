@@ -2,7 +2,7 @@ const path = require('path');
 const webpack = require('webpack');
 const PATHS = {
   app: path.join(__dirname, 'src'),
-  build: path.join(__dirname, '../../../build/athena'),
+  build: path.join(__dirname, '../../../../build/extension'),
 };
 
 require('dotenv').config({ silent: true });
@@ -13,7 +13,7 @@ module.exports = {
   },
   output: {
     path: PATHS.build,
-    filename: 'athena.js',
+    filename: 'content.js',
   },
   devtool: 'inline-sourcemap',
   module: {
@@ -62,6 +62,6 @@ module.exports = {
     ],
   },
   plugins: [
-    new webpack.EnvironmentPlugin(['FACEBOOK_APP_ID']),
+    new webpack.EnvironmentPlugin(['ATHENA_HOST']),
   ],
 };

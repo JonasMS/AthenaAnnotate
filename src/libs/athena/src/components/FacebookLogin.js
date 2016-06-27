@@ -1,9 +1,10 @@
 import React from 'react';
+import { Button } from 'react-bootstrap';
 
 const FacebookLogin = ({ login }) => (
-  <button onClick={login}>
-     Log Into Facebook
-  </button>
+  <Button bsStyle="primary" onClick={login}>
+    Log Into Facebook
+  </Button>
 );
 
 FacebookLogin.propTypes = {

@@ -1,16 +1,16 @@
 import { combineReducers } from 'redux';
-import adder from './adder';
-import annotation from './annotation';
-import annotations from './annotations';
-import widget from './widget';
 import user from './user';
 import error from './error';
+import adder from './adder';
+import widget from './widget';
+import annotation from './annotation';
+import annotations from './annotations';
 
 export default combineReducers({
   user,
+  error,
   adder,
   widget,
   annotation,
   annotations,
-  error,
 });

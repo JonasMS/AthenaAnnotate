@@ -1,9 +1,11 @@
 import React from 'react';
+import { Button } from 'react-bootstrap';
 import FacebookLogin from './FacebookLogin';
 
-const AuthPanel = ({ login }) => (
+const AuthPanel = ({ login, close }) => (
   <div>
-    <h1> AuthPanel </h1>
+    <Button onClick={close}> Close </Button>
+    <h1> Auth Panel </h1>
     <div>
       <FacebookLogin login={login} />
     </div>
@@ -12,6 +14,7 @@ const AuthPanel = ({ login }) => (
 
 AuthPanel.propTypes = {
   login: React.PropTypes.func.isRequired,
+  close: React.PropTypes.func.isRequired,
 };
 
 export default AuthPanel;
