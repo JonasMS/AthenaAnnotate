@@ -1,12 +1,16 @@
 import React, { PropTypes } from 'react';
 
-const GroupList = ({ leaveGroup, setGroup, group }) => {
+const GroupList = ({ user, leaveGroupDB, setGroup, createGroup, editGroup, setFilter, group }) => {
   const groups = group.groups.map(groupObj => (
     <li
-      onClick={() => setGroup(groupObj.id)}
+      onClick={() => {
+        setGroup(groupObj.id);
+        setFilter('Groups');
+      }}
+      key={groupObj.id}
     >
-      {groupObj.users.name}
-      <button onClick={() => leaveGroup(groupObj.id)}>
+      {groupObj.name}
+      <button onClick={() => leaveGroupDB(groupObj.id, user.id)}>
         X
       </button>
     </li>
@@ -14,14 +18,33 @@ const GroupList = ({ leaveGroup, setGroup, group }) => {
   return (
     <ul>
       {groups}
+      <input
+        placeholder="Group Name"
+        defaultValue={group.edit}
+        onChange={(e) => {
+          e.preventDefault();
+          editGroup(e.target.value);
+        }}
+      />
+      <button
+        onClick={() => {
+          createGroup(group.edit, user.id);
+        }}
+      >
+        Create!
+      </button>
     </ul>
   );
 };
 
 GroupList.propTypes = {
-  leaveGroup: PropTypes.func.isRequired,
+  user: PropTypes.object,
+  leaveGroupDB: PropTypes.func.isRequired,
   setGroup: PropTypes.func.isRequired,
   group: PropTypes.object,
+  createGroup: PropTypes.func.isRequired,
+  editGroup: PropTypes.func.isRequired,
+  setFilter: PropTypes.func.isRequired,
 };
 
 export default GroupList;

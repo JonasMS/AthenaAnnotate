@@ -48,9 +48,10 @@ class App extends Component {
         logout,
         setFilter,
         setGroup,
-        leaveGroup,
+        leaveGroupDB,
         showGroups,
         createGroup,
+        editGroup,
       },
     } = this.props;
     return (
@@ -66,10 +67,11 @@ class App extends Component {
                 setFilter={setFilter}
                 filter={filter}
                 group={group}
-                leaveGroup={leaveGroup}
+                leaveGroupDB={leaveGroupDB}
                 setGroup={setGroup}
                 showGroups={showGroups}
                 createGroup={createGroup}
+                editGroup={editGroup}
               />
               {loading ? <Loading /> : <VisibleDocList />}
             </div>

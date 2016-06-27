@@ -5,9 +5,9 @@ const group = (state = { showGroups: false, loaded: false }, action) => {
         groups: action.groups,
         loaded: true,
       });
-    case 'LEAVE_GROUP':
+    case 'EDIT_GROUP_NAME':
       return Object.assign({}, state, {
-        groups: state.groups.splice(state.groups.indexOf(action.groupId), 1),
+        edit: action.edit,
       });
     case 'SET_GROUP':
       return Object.assign({}, state, {

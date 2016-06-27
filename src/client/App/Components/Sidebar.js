@@ -2,7 +2,17 @@ import React, { PropTypes } from 'react';
 import FacebookLogout from '../../../libs/athena/src/components/FacebookLogout';
 import GroupList from './GroupList';
 
-const Sidebar = ({ user, logout, setFilter, showGroups, leaveGroup, setGroup, group, createGroup }) => (
+const Sidebar = ({
+  user,
+  logout,
+  setFilter,
+  showGroups,
+  leaveGroupDB,
+  setGroup,
+  group,
+  createGroup,
+  editGroup,
+}) => (
   <div className="col s2 offset-s2">
     <ul>
       <li>
@@ -16,18 +26,16 @@ const Sidebar = ({ user, logout, setFilter, showGroups, leaveGroup, setGroup, gr
       </li>
       <li>
         <a onClick={() => showGroups()}>Groups</a>
-        <input
-          placeholder="Group Name"
-        />
-        <button onClick={() => createGroup('GroupName', user.id)}>
-          Create!
-        </button>
         {group.showGroups
           ?
           <GroupList
+            user={user}
             group={group}
-            leaveGroup={leaveGroup}
+            leaveGroupDB={leaveGroupDB}
             setGroup={setGroup}
+            createGroup={createGroup}
+            editGroup={editGroup}
+            setFilter={setFilter}
           />
           :
           null
@@ -51,9 +59,10 @@ Sidebar.propTypes = {
   setFilter: PropTypes.func.isRequired,
   showGroups: PropTypes.func.isRequired,
   setGroup: PropTypes.func.isRequired,
-  leaveGroup: PropTypes.func.isRequired,
+  leaveGroupDB: PropTypes.func.isRequired,
   group: PropTypes.object,
   createGroup: PropTypes.func.isRequired,
+  editGroup: PropTypes.func.isRequired,
 };
 
 export default Sidebar;

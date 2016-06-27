@@ -20,7 +20,8 @@ router.post('/api/create', function(req, res) {
       exact: req.body.target.selector.exact,
       prefix: req.body.target.selector.prefix,
       suffix: req.body.target.selector.suffix,
-      private: req.body.private
+      private: req.body.private,
+      groupId: req.body.groupId
     }).then(function(note) {
       models.Annotation.findAll({
         include: [{
@@ -179,7 +180,7 @@ router.get('/api/following', function(req, res) {
       UserId: req.query.UserId
     }
   }).then(function(users) {
-    console.log(users);
+    // console.log(users);
     models.Annotation.findAll({
       include: [{
         model: models.User
@@ -267,13 +268,13 @@ router.get('/api/follow', function(req, res) {
     }
     // attributes: ['followsId']
   }).then(function(users) {
-    console.log(users);
+    // console.log(users);
     res.send(users.map(function(user) {
       return user.dataValues.follows.id;
     }));
     // res.send(users);
   }).catch(function(err) {
-    console.log(err);
+    // console.log(err);
     res.send(err);
   });
 });
@@ -318,10 +319,59 @@ router.get('/api/groups', function(req, res) {
       UserId: req.query.UserId
     }
   }).then(function(groups) {
-    console.log(groups);
+    // console.log(groups);
     res.send(groups.map(function(group) {
-      return group.dataValues;
+      return group.dataValues.users;
     }));
+  }).catch(function(err) {
+    res.send(err);
+  });
+});
+
+// WEB APP - removes association to a Group - returns list of Groups
+router.delete('/api/groups', function(req, res) {
+  models.UserGroup.destroy({
+    where: {
+      UserId: req.query.UserId,
+      GroupId: req.query.GroupId
+    }
+  }).then(function() {
+    models.UserGroup.findAll({
+      include: [{
+        model: models.Group,
+        as: 'users'
+      }],
+      where: {
+        UserId: req.query.UserId
+      }
+    }).then(function(groups) {
+      // console.log(groups);
+      res.send(groups.map(function(group) {
+        return group.dataValues.users;
+      }));
+    }).catch(function(err) {
+      res.send(err);
+    });
+  }).catch(function(err) {
+    res.send(err);
+  });
+});
+
+// WEB APP - load all annotations for a specific group
+router.get('/api/group', function(req, res) {
+  models.Annotation.findAll({
+    include: [{
+      model: models.User
+    }, {
+      model: models.Doc
+    }],
+    where: {
+      private: 'Group',
+      groupId: req.query.GroupId
+    },
+    order: [['updatedAt', 'DESC']]
+  }).then(function(annotations) {
+    res.send(annotations);
   }).catch(function(err) {
     res.send(err);
   });
