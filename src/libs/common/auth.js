@@ -23,7 +23,7 @@ export const initFB = () => (
 export const getUserStatusFromFB = () => (
   new Promise(resolve => {
     window.FB.getLoginStatus(res => (
-      res ? resolve(res.status) : resolve(undefined)
+      res ? resolve(res.status) : resolve(res)
     ));
   })
 );
@@ -37,22 +37,3 @@ export const getUserFromFB = () => (
     );
   })
 );
-
-
-// export const getUserStatusFromFB = () => {
-//   return new Promise(resolve => {
-//     window.FB.getLoginStatus(res => {
-//       return res ? resolve(res.status) : resolve(undefined);
-//     });
-//   });
-// };
-
-// export const getUserFromFB = () => {
-//   return new Promise(resolve => {
-//     window.FB.api(
-//       '/me?fields=id,email,name',
-//       res => resolve(res),
-//       { scope: 'email' }
-//     );
-//   });
-// };

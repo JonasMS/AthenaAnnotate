@@ -1,2 +1,4 @@
+export const SHOW_IFRAME = 'SHOW_IFRAME';
+export const HIDE_IFRAME = 'HIDE_IFRAME';
 export const CREATE_ANNOTE = 'CREATE_ANNOTE';
 export const CREATE_HIGHLIGHT = 'CREATE_HIGHLIGHT';

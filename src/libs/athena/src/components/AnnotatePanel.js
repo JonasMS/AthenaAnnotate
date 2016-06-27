@@ -1,6 +1,7 @@
-// import FacebookLogout from './FacebookLogout';
 import React, { PropTypes, Component } from 'react';
 import { saveAnnote } from '../utils/annotation';
+import FacebookLogout from './FacebookLogout';
+
 
 class AnnotatePanel extends Component {
   constructor(props) {
@@ -8,7 +9,7 @@ class AnnotatePanel extends Component {
     this.submitHandler = this.submitHandler.bind(this);
   }
 
-  submitHandler () {
+  submitHandler() {
     const {
       user,
       actions,
@@ -23,35 +24,32 @@ class AnnotatePanel extends Component {
     });
 
     actions.clearAnnote();
+    this.props.close();
   }
 
   render () {
+    const { close, annotation, actions, exact } = this.props;
+
     return (
       <div>
-        <h1> AnnotatePanel </h1>
+        <button onClick={close}> Close </button>
+        <h1> Annotate Panel </h1>
+        <div className="targetText">
+          <input type="text" value={exact} />
+        </div>
+        <div className="bodyText">
+          <textarea
+            value={annotation.body.text}
+            onChange={(e) => actions.updateBody(e.target.value)}
+          />
+        </div>
+        <button
+          className="submitBtn"
+          onClick={this.submitHandler}
+        > Submit </button>
+        <FacebookLogout logout={actions.logout} />
       </div>
     );
-    // const { annotation, actions, exact } = this.props;
-    // return (
-    //   <div>
-    //     <div className="targetText">
-    //       <input type="text" value={exact} />
-    //     </div>
-    //     <div className="bodyText">
-    //       <textarea
-    //         value={annotation.body.text}
-    //         onChange={(e) => actions.updateBody(e.target.value)}
-    //       />
-    //     </div>
-    //     <button
-    //       className="submitBtn"
-    //       onClick={this.submitHandler}
-    //     > Submit </button>
-    //     <div>
-    //       <FacebookLogout logout={actions.logout} />
-    //     </div>
-    //   </div>
-    // );
   }
 }
 
@@ -60,6 +58,7 @@ AnnotatePanel.propTypes = {
   actions: PropTypes.object,
   annotation: PropTypes.object,
   annotations: PropTypes.array,
+  close: PropTypes.func.isRequired,
   exact: PropTypes.string.isRequired,
 };
 

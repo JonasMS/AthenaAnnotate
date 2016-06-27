@@ -10,12 +10,6 @@ export const failedRequest = error => (
   }
 );
 
-export const showAuthPanel = () => (
-  {
-    type: types.SHOW_AUTH_PANEL,
-  }
-);
-
 export const saveUserToStore = userData => (
   {
     type: types.SAVE_USER_TO_STORE,

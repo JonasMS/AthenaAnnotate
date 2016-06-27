@@ -5,8 +5,9 @@ import AnnotatePanel  from '../containers/AnnotatePanel';
 // import Adder from '../components/Adder';
 // import { setWidgClass } from '../utils/utils';
 // import { shortcutHandler } from '../utils/panel';
-
 import {
+  HIDE_IFRAME,
+  SHOW_IFRAME,
   CREATE_ANNOTE,
   CREATE_HIGHLIGHT,
 } from '../../../common/messageTypes';
@@ -22,9 +23,11 @@ class App extends Component {
   constructor(props) {
     super(props);
 
+    this.hideFrame = this.hideFrame.bind(this);
     this.createAnnote = this.createAnnote.bind(this);
     this.createHightlight = this.createHightlight.bind(this);
     this.handleMessageEvent = this.handleMessageEvent.bind(this);
+    this.postMessageToParent = this.postMessageToParent.bind(this);
   }
 
   componentDidMount() {
@@ -71,13 +74,31 @@ class App extends Component {
   createAnnote(data) {
     if (this.isUserLoggedIn()) {
       console.log(data);
+      // data passed must update the state, then the state
+      // must be passed into AnnotatePanel so it can display
+      // fields values with the data.
+    } else {
+      console.log('[createAnnote]: user not logged in');
     }
   }
 
   createHightlight(data) {
     if (this.isUserLoggedIn()) {
       console.log(data);
+      // highlighting is done by content.js.
+      // but the data it passed must be saved to the db.
+    } else {
+      console.log('[createHightlight]: user not logged in');
+      this.postMessageToParent({ type: SHOW_IFRAME });
     }
+  }
+
+  postMessageToParent(action) {
+    parent.postMessage(action, '*');
+  }
+
+  hideFrame() {
+    this.postMessageToParent({ type: HIDE_IFRAME });
   }
 
   // take action on events we know about
@@ -93,34 +114,17 @@ class App extends Component {
   }
 
   render() {
-    const { user, actions: { login } } = this.props;
+    const { actions: { login } } = this.props;
 
     return (
       <div>
         {
-          user && user.id
-            ? <AnnotatePanel />
-            : <AuthPanel login={login} />
+          this.isUserLoggedIn()
+            ? <AnnotatePanel close={this.hideFrame} />
+            : <AuthPanel login={login} close={this.hideFrame} />
         }
       </div>
     );
-    // const widgetClass = setWidgClass(
-    //   this.props.widget
-    // );
-
-    // const { user, actions: { login, logout } } = this.props;
-
-    // return (
-    //   <div>
-    //     <div className={widgetClass}>
-    //       <div id="fb-root"></div>
-    //         {user && user.id ?
-    //         <AnnotatePanel logout={logout} /> :
-    //         <AuthPanel login={login} />}
-    //     </div>
-    //     <Adder />
-    //   </div>
-    // );
   }
 }
 
