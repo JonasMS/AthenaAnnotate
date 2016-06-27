@@ -1,5 +1,3 @@
-import '../../../../../node_modules/bootstrap/dist/css/bootstrap.min.css';
-import '../../../../../node_modules/bootstrap/dist/css/bootstrap-theme.min.css';
 import './assets/styles/styles.scss';
 import React from 'react';
 import { render } from 'react-dom';
@@ -22,7 +20,6 @@ iframe.classList.add(HIDE_IFRAME_CLASS);
 document.body.appendChild(iframe);
 document.body.insertBefore(app, document.body.childNodes[0]);
 
-// @TODO: pass iframe into App
 render(
   <App iframe={iframe} />,
   document.getElementById('app-anchor')

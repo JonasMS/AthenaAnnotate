@@ -4,7 +4,6 @@ import {
   FormGroup,
   ControlLabel,
   FormControl,
-  HelpBlock,
 } from 'react-bootstrap';
 import { saveAnnote } from '../utils/annotation';
 import FacebookLogout from './FacebookLogout';
