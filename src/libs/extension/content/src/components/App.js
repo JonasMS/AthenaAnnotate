@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PropTypes, Component } from 'react';
 import ControlButton from './ControlButton';
 
 import {
@@ -23,8 +23,6 @@ class App extends Component {
     this.state = {
       controls: HIDE_CONTROL_BUTTONS_CLASS,
     };
-    this.iframe = document.getElementById('athena-app');
-    this.iframe.display = HIDE_IFRAME;
 
     this.createAnnote = this.createAnnote.bind(this);
     this.createHighlight = this.createHighlight.bind(this);
@@ -56,11 +54,11 @@ class App extends Component {
   }
 
   postMessageToFrame(action) {
-    this.iframe.contentWindow.postMessage(action, '*');
+    this.props.iframe.contentWindow.postMessage(action, '*');
   }
 
   toggleDisplayFrame() {
-    const classList = this.iframe.classList;
+    const classList = this.props.iframe.classList;
 
     if (classList.contains(SHOW_IFRAME_CLASS)) {
       classList.remove(SHOW_IFRAME_CLASS);
@@ -120,5 +118,9 @@ class App extends Component {
     );
   }
 }
+
+App.propTypes = {
+  iframe: PropTypes.object.isRequired,
+};
 
 export default App;
