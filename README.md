@@ -2,35 +2,89 @@
 
 Annotate the web.
 
-## Getting Started 
 
-1. Clone repo
-2. `npm install`
-3. Copy `.env.example` to `.env` and set any API keys or config variables in this file.
-4. `npm start`
 
-Now, navigate to `http://localhost:3000` to view the application.
+## Development Workflow
 
-## Commands
+### Step 0
 
-### `npm run clean`
+```
+$ git clone [this repo]
+$ npm install
+```
 
-Remove the `build/` directory.
+### Step 1
 
-### `npm run build`
+Read [CONTRIBUTING.md](CONTRIBUTING.md).
 
-Build client side code to `build/` - one time.
+### Step 2 
 
-### `npm run watch`
+1. Install [Postgres DB]()
+1. Start Postgres DB
+1. Run `npm run create`
 
-Build and watch for changes to client side files. Recompile when files change.
+### Step 3
 
-### `npm start`
+Copy `.env.example` to `.env` and set any API keys or config variables in this file.
 
-Starts the express web server.
+### Step 4
 
-> If you issue `npm install -g nodemon`, you can type: `nodemon npm start` for development. 
+Open 4 terminals and do the following.
 
-### `npm test`
+|Terminal No.|Endpoint|
+|---|---|
+| 1 | `npm run watch-app` |
+| 2 | `npm run watch-ext` |
+| 3 | `npm run watch-athena` |
+| 4 | `npm start` |
 
-Run all tests. 
+### Step 5
+
+Load the extension found at `build/extension` into Chrome. (Ensure *Developer Mode* is checked)
+
+> **Each time you make a change to the extension source, you must reload the compiled code in Chrome**
+
+### Step 6
+
+Navigate to `http://localhost:3000` to view the Web App. 
+
+## Design
+
+There are 5 parts to the application:
+
+1. [The server](#the-server)
+1. [The web app](#the-web-app)
+1. [The extension](#the-chrome-extension)
+1. [The annotation engine](#the-annotation-engine)
+1. [Postgres](#postgres)
+
+### The Server
+
+To start the server, issue:
+
+```
+$ npm start
+```
+This starts an express server defaulted to `http://localhost:3000`. 
+
+#### Endpoints
+
+|Description|Endpoint|
+|---|---|
+|[Web App](#the-web-app)|GET /|
+|[Annotation iFrame](#the-annotation-iframe)|GET /athena/athena.html|
+|[Annotation Engine](#the-annotation-engine)|GET /athena/athena.js|
+
+### The Web App
+
+### The Chrome Extension
+
+### The Annotation Engine
+
+### Postgres DB
+
+1. Install
+1. Start
+1. `npm run create`
+
+
