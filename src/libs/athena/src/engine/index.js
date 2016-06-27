@@ -20,6 +20,29 @@ const createRegQuery = selector => {
   return query;
 };
 
+const getEndNode = (node, len) => {
+  let curLen;
+  let remLen = len;
+  let curNode = node.nextSibling;
+  while (!!curNode) {
+    curLen = curNode.nodeType === 3 ?
+      curNode.length :
+      curNode.textContent.length;
+
+    if (remLen - curLen <= 0) {
+      return {
+        curNode,
+        remLen,
+      };
+    }
+    remLen -= curLen;
+    curNode = curNode.nextSibling;
+  }
+  return {
+    node,
+    remLen,
+  };
+};
 
 // returns a string docText that contains all
 // textNodes and an array of nodes that
@@ -65,6 +88,7 @@ export const parseDoc = doc => {
 // html element
 export const insertAnnote = (
   node,
+  endNode,
   annote,
   match
 ) => {
@@ -83,7 +107,7 @@ export const insertAnnote = (
     startOffset + exact.length;
 
   range.setStart(node.textNode, startOffset);
-  range.setEnd(node.textNode, endOffset);
+  range.setEnd(endNode.textNode, endOffset);
   console.log('node: ', node);
   console.log('insertAnnote: ', range);
 
@@ -103,7 +127,9 @@ export const insertAnnote = (
 export const locateAnnote = (doc, annote) => {
   const { docText, nodes } = parseDoc(doc);
   let node;
+  let endNode;
   let nodeLen;
+  // let nodeLen;
 
   // console.log(annote);
 
@@ -124,6 +150,7 @@ export const locateAnnote = (doc, annote) => {
     for (let i = 0; i < nodes.length; i++) {
       node = nodes[i];
       nodeLen = node.textNode.nodeValue.length;
+
       if (!!matchIdx) {
         if (matchIdx >= node.start + nodeLen) {
           continue;
@@ -138,12 +165,23 @@ export const locateAnnote = (doc, annote) => {
           node.start + nodeLen
         ) {
           console.log('MULTIPLE NODES');
+          endNode = node;
+          // endNode = getEndNode(
+          //   node,
+          //   match[1].length
+          // );
+        } else {
+          endNode = node;
+          // endNode = {
+          //   node: nodes[i],
+          //   offset: matchIdx + match[1].length
         }
 
         // console.log(node, node.textNode.nodeValue);
           // return node;
         insertAnnote(
           node,
+          endNode,
           annote,
           match
         );
