@@ -1,4 +1,5 @@
 import React, { PropTypes, Component } from 'react';
+import { Button } from 'react-bootstrap';
 import { saveAnnote } from '../utils/annotation';
 import FacebookLogout from './FacebookLogout';
 
@@ -32,7 +33,7 @@ class AnnotatePanel extends Component {
 
     return (
       <div>
-        <button onClick={close}> Close </button>
+        <Button onClick={close}> Close </Button>
         <h1> Annotate Panel </h1>
         <div className="targetText">
           <input type="text" value={exact} />

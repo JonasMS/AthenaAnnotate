@@ -1,9 +1,10 @@
 import React from 'react';
+import { Button } from 'react-bootstrap';
 
 const FacebookLogout = ({ logout }) => (
-  <button onClick={logout}>
-    Log Out of Facebook
-  </button>
+  <Button bsStyle="warning" onClick={logout}>
+    Log Out Facebook
+  </Button>
 );
 
 FacebookLogout.propTypes = {

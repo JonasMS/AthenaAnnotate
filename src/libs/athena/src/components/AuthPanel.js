@@ -1,9 +1,10 @@
 import React from 'react';
+import { Button } from 'react-bootstrap';
 import FacebookLogin from './FacebookLogin';
 
 const AuthPanel = ({ login, close }) => (
   <div>
-    <button onClick={close}> Close </button>
+    <Button onClick={close}> Close </Button>
     <h1> Auth Panel </h1>
     <div>
       <FacebookLogin login={login} />

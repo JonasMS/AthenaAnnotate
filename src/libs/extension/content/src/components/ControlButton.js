@@ -1,8 +1,9 @@
 import React, { PropTypes } from 'react';
+import { Button } from 'react-bootstrap';
 
 const ControlButton = ({ handler, label }) => (
   <span>
-    <button onClick={handler}> {label} </button>
+    <Button onClick={handler}> {label} </Button>
   </span>
 );
 
