@@ -27,6 +27,11 @@ module.exports = function(sequelize, DataTypes) {
           through: models.Follows,
           foreignKey: 'followsId'
         });
+        User.belongsToMany(models.Group, {
+          as: 'groups',
+          through: models.UserGroup,
+          foreignKey: 'UserId'
+        });
       }
     }
   });

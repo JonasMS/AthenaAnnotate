@@ -277,3 +277,52 @@ router.get('/api/follow', function(req, res) {
     res.send(err);
   });
 });
+
+// BOTH - finds a Group, or creates a Group and adds User as a member
+router.post('/api/groups', function(req, res) {
+  // console.log(req.body);
+  models.Group.findOrCreate({
+    where: {
+      name: req.body.name
+    }
+  }).then(function(group) {
+    // console.log('This is the group found or created /\n', group);
+    // if group was found --> send error message to User
+    if (group[1] === false) {
+      res.send(JSON.stringify('Group Already Exists!'));
+    } else {
+      models.UserGroup.create({
+        UserId: req.body.UserId,
+        GroupId: group[0].dataValues.id
+    // if no group was found, get id
+      }).then(function(newGroup) {
+        // console.log('This is the association between user and group /\n', newGroup);
+        res.send(JSON.stringify(newGroup.dataValues.GroupId));
+      }).catch(function(err) {
+        res.send(err);
+      });
+    }
+  }).catch(function(err) {
+    res.send(err);
+  });
+});
+
+// WEB APP - gets list of Groups for a User
+router.get('/api/groups', function(req, res) {
+  models.UserGroup.findAll({
+    include: [{
+      model: models.Group,
+      as: 'users'
+    }],
+    where: {
+      UserId: req.query.UserId
+    }
+  }).then(function(groups) {
+    console.log(groups);
+    res.send(groups.map(function(group) {
+      return group.dataValues;
+    }));
+  }).catch(function(err) {
+    res.send(err);
+  });
+});

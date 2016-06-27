@@ -260,4 +260,72 @@ export const loadFollowingDB = (id) => (
       .catch(err => console.log(err))
 );
 
-// export const setGroup = (id)
+// To handle loading groups
+const loadGroups = (groups) => (
+  {
+    type: 'LOAD_GROUPS',
+    groups,
+  }
+);
+
+export const loadGroupsDB = (userId) => (
+  dispatch =>
+    fetch(`http://localhost:3000/api/groups?UserId=${userId}`)
+      .then(response => response.json())
+      .then(groups => {
+        console.log(groups);
+        dispatch(loadGroups(groups));
+      })
+      .catch(err => console.log(err))
+);
+
+// To show a list of Groups a User is a part of
+export const showGroups = () => (
+  {
+    type: 'SHOW_GROUPS',
+  }
+);
+
+// To leave a Group
+export const leaveGroup = (groupId) => (
+  {
+    type: 'LEAVE_GROUP',
+    groupId,
+  }
+);
+
+// To handle selecting a certain Group
+export const setGroup = (groupId) => (
+  {
+    type: 'SET_GROUP',
+    groupId,
+  }
+);
+
+// To handle creating a group
+export const createGroup = (name, userId) => (
+  dispatch =>
+    fetch('http://localhost:3000/api/groups', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        name,
+        UserId: userId,
+      }),
+    })
+    .then(response => response.json())
+    .then(message => {
+      // console.log(message);
+      // if message is error --> return error
+      if (message === 'Group Already Exists!') {
+        window.alert('Group Already Exists!');
+      } else {
+        dispatch(loadGroupsDB(userId));
+      }
+      // if message is success --> add group to grouplist
+    })
+    .catch(err => console.log(err))
+);
+

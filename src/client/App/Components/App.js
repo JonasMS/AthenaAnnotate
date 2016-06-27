@@ -23,15 +23,36 @@ class App extends Component {
 
   componentDidUpdate() {
     // this.props.actions.fetchDocs(this.props.user.id);
-    this.props.actions.fetchAnnotations(this.props.user.id, this.props.filter, this.props.group);
+    this.props.actions.fetchAnnotations(
+      this.props.user.id,
+      this.props.filter,
+      this.props.group.selected
+    );
     if (!this.props.following.loaded) {
       this.props.actions.loadFollowingDB(this.props.user.id);
+    }
+    if (!this.props.group.loaded) {
+      this.props.actions.loadGroupsDB(this.props.user.id);
     }
     // this.props.actions.fetchStuff(this.props.user.id);
   }
 
   render() {
-    const { user, loading, filter, actions: { login, logout, setFilter } } = this.props;
+    const {
+      user,
+      loading,
+      filter,
+      group,
+      actions: {
+        login,
+        logout,
+        setFilter,
+        setGroup,
+        leaveGroup,
+        showGroups,
+        createGroup,
+      },
+    } = this.props;
     return (
       <div>
         <div id="fb-root"></div>
@@ -39,7 +60,17 @@ class App extends Component {
           user && user.id
           ?
             <div className="row">
-              <Sidebar user={user} logout={logout} setFilter={setFilter} filter={filter} />
+              <Sidebar
+                user={user}
+                logout={logout}
+                setFilter={setFilter}
+                filter={filter}
+                group={group}
+                leaveGroup={leaveGroup}
+                setGroup={setGroup}
+                showGroups={showGroups}
+                createGroup={createGroup}
+              />
               {loading ? <Loading /> : <VisibleDocList />}
             </div>
           :
@@ -56,7 +87,7 @@ App.propTypes = {
   loading: PropTypes.bool.isRequired,
   filter: PropTypes.string,
   following: PropTypes.object.isRequired,
-  group: PropTypes.number,
+  group: PropTypes.object.isRequired,
 };
 
 export default App;
