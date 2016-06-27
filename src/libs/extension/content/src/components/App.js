@@ -9,8 +9,10 @@ import {
 } from '../../../../common/messageTypes';
 
 import {
-  HIDE_CONTROL_BUTTONS,
-  SHOW_CONTROL_BUTTONS,
+  HIDE_IFRAME_CLASS,
+  SHOW_IFRAME_CLASS,
+  HIDE_CONTROL_BUTTONS_CLASS,
+  SHOW_CONTROL_BUTTONS_CLASS,
 } from '../constants';
 
 
@@ -19,10 +21,7 @@ class App extends Component {
     super(props);
 
     this.state = {
-      controls: HIDE_CONTROL_BUTTONS,
-      style: {
-        visibility: 'hidden',
-      },
+      controls: HIDE_CONTROL_BUTTONS_CLASS,
     };
     this.iframe = document.getElementById('athena-app');
     this.iframe.display = HIDE_IFRAME;
@@ -52,7 +51,7 @@ class App extends Component {
         this.toggleDisplayFrame();
         break;
       default:
-        // noop.. yet
+        // noop
     }
   }
 
@@ -61,28 +60,19 @@ class App extends Component {
   }
 
   toggleDisplayFrame() {
-    if (this.iframe.display === SHOW_IFRAME) {
-      this.iframe.display = HIDE_IFRAME;
-      this.iframe.style = 'display: none;';
+    const classList = this.iframe.classList;
+
+    if (classList.contains(SHOW_IFRAME_CLASS)) {
+      classList.remove(SHOW_IFRAME_CLASS);
+      classList.add(HIDE_IFRAME_CLASS);
     } else {
-      this.iframe.display = SHOW_IFRAME;
-      this.iframe.style = [
-        'position: absolute;',
-        'top: 0;',
-        'right: 0px;',
-        'width: 400px;',
-        'height: 600px;',
-        'border: none;',
-        'transitionDuration: 0.5s;',
-      ].join('');
+      classList.remove(HIDE_IFRAME_CLASS);
+      classList.add(SHOW_IFRAME_CLASS);
     }
   }
 
   createAnnote() {
-    this.setState({
-      controls: HIDE_CONTROL_BUTTONS,
-    });
-
+    this.setState({ controls: HIDE_CONTROL_BUTTONS_CLASS });
     this.postMessageToFrame({
       type: CREATE_ANNOTE,
       annote: {
@@ -91,15 +81,11 @@ class App extends Component {
         suffix: 'suffix',
       },
     });
-
     this.toggleDisplayFrame();
   }
 
   createHighlight() {
-    this.setState({
-      controls: HIDE_CONTROL_BUTTONS,
-    });
-
+    this.setState({ controls: HIDE_CONTROL_BUTTONS_CLASS });
     this.postMessageToFrame({
       type: CREATE_HIGHLIGHT,
       highlight: {
@@ -111,41 +97,25 @@ class App extends Component {
   handleKeyPressEvent(event) {
     switch (event.key) {
       case '1':
-        return this.setState({
-          controls: SHOW_CONTROL_BUTTONS,
-          style: {
-            ...this.state.style,
-            visibility: 'visible',
-          },
-        });
+        return this.setState({ controls: SHOW_CONTROL_BUTTONS_CLASS });
       default:
-        return this.setState({
-          style: {
-            ...this.state.style,
-            visibility: 'hidden',
-          },
-        });
+        return this.setState({ controls: HIDE_CONTROL_BUTTONS_CLASS });
     }
   }
 
   render() {
     return (
-      <div style={this.state.style}>
-      {
-        this.state.controls === SHOW_CONTROL_BUTTONS
-        ?
-          <div>
-            <ControlButton
-              handler={this.createAnnote}
-              label={'Annotate!'}
-            />
-            <ControlButton
-              handler={this.createHighlight}
-              label={'Highlight!'}
-            />
-          </div>
-        : null
-      }
+      <div className={this.state.controls}>
+        <div>
+          <ControlButton
+            handler={this.createAnnote}
+            label={'Annotate!'}
+          />
+          <ControlButton
+            handler={this.createHighlight}
+            label={'Highlight!'}
+          />
+        </div>
       </div>
     );
   }

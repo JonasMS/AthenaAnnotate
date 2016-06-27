@@ -1,3 +1,4 @@
+import './assets/styles/styles.scss';
 import React from 'react';
 import { render } from 'react-dom';
 import App from './components/App';
@@ -11,15 +12,17 @@ app.id = 'app-anchor';
 const iframe = document.createElement('iframe');
 iframe.src = `${process.env.ATHENA_HOST}/athena/athena.html`;
 iframe.id = 'athena-app';
-iframe.style = [
-  'display: none;',
-].join('');
+// iframe.style = [
+//   'display: none;',
+// ].join('');
+iframe.classList.add('iframe-hide');
 
 // document is the site the user is visiting. here we inject our code.
 // @TODO: what if body doesn't exist?
 document.body.appendChild(iframe);
 document.body.insertBefore(app, document.body.childNodes[0]);
 
+// @TODO: pass iframe into App
 render(
   <App />,
   document.getElementById('app-anchor')
