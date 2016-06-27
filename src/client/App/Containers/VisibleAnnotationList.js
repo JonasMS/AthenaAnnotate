@@ -7,6 +7,7 @@ const mapStatetoProps = (state) => (
     annotations: state.annotations,
     filter: state.filter,
     user: state.user,
+    following: state.following,
   }
 );
 

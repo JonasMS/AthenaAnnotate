@@ -17,6 +17,7 @@ const Annotation = (
     userId,
     followUser,
     user,
+    following,
   }
 ) => (
   <li
@@ -35,7 +36,8 @@ const Annotation = (
           {filter !== 'Self' ?
             <div>
               {userName}
-              <a onClick={() => followUser(userId, user.id)}>follow</a>
+              <a onClick={() => followUser(userId, user.id)}>{following[userId] === 1
+                ? 'unfollow' : 'follow'}</a>
             </div>
             : null}
           {edit && filter === 'Self' ?
@@ -83,6 +85,7 @@ Annotation.propTypes = {
   filter: PropTypes.string.isRequired,
   followUser: PropTypes.func.isRequired,
   user: PropTypes.object.isRequired,
+  following: PropTypes.object.isRequired,
 };
 
 export default Annotation;

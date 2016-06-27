@@ -23,8 +23,10 @@ class App extends Component {
 
   componentDidUpdate() {
     // this.props.actions.fetchDocs(this.props.user.id);
-    this.props.actions.fetchAnnotations(this.props.user.id, this.props.filter);
-    // this.props.actions.loadFollowingDB(this.props.user.id);
+    this.props.actions.fetchAnnotations(this.props.user.id, this.props.filter, this.props.group);
+    if (!this.props.following.loaded) {
+      this.props.actions.loadFollowingDB(this.props.user.id);
+    }
     // this.props.actions.fetchStuff(this.props.user.id);
   }
 
@@ -53,6 +55,8 @@ App.propTypes = {
   actions: PropTypes.object,
   loading: PropTypes.bool.isRequired,
   filter: PropTypes.string,
+  following: PropTypes.object.isRequired,
+  group: PropTypes.number,
 };
 
 export default App;

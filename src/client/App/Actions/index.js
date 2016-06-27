@@ -259,3 +259,5 @@ export const loadFollowingDB = (id) => (
       })
       .catch(err => console.log(err))
 );
+
+// export const setGroup = (id)

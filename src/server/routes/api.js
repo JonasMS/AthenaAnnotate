@@ -168,19 +168,42 @@ router.get('/api/discover', function(req, res) {
   });
 });
 
-// WEB aPP - loads all Annotations form users that User is following
-// router.get('/api/following', function(req, res) {
-//   models.Annotation.findAll({
-//     include: [{
-//       model: models.User
-//     }, {
-//       model: models.Doc
-//     }],
-//     where: {
-//       UserId
-//     }
-//   })
-// })
+// WEB APP - loads all Annotations form users that User is following
+router.get('/api/following', function(req, res) {
+  models.Follows.findAll({
+    include: [{
+      model: models.User,
+      as: 'follows'
+    }],
+    where: {
+      UserId: req.query.UserId
+    }
+  }).then(function(users) {
+    console.log(users);
+    models.Annotation.findAll({
+      include: [{
+        model: models.User
+      }, {
+        model: models.Doc
+      }],
+      where: {
+        UserId: {
+          $in: users.map(function(user) {
+            return user.dataValues.follows.id;
+          })
+        },
+        private: 'Public'
+      },
+      order: [['updatedAt', 'DESC']]
+    }).then(function(annotations) {
+      res.send(annotations);
+    }).catch(function(err) {
+      res.send(err);
+    });
+  }).catch(function(err) {
+    res.send(err);
+  });
+});
 
 // WEB APP - loads Docs for a given User
 router.get('/api/docs', function(req, res) {
@@ -246,7 +269,7 @@ router.get('/api/follow', function(req, res) {
   }).then(function(users) {
     console.log(users);
     res.send(users.map(function(user) {
-      return user.dataValues.follows;
+      return user.dataValues.follows.id;
     }));
     // res.send(users);
   }).catch(function(err) {
