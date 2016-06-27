@@ -1,5 +1,11 @@
 import React, { PropTypes, Component } from 'react';
-import { Button } from 'react-bootstrap';
+import {
+  Button,
+  FormGroup,
+  ControlLabel,
+  FormControl,
+  HelpBlock,
+} from 'react-bootstrap';
 import { saveAnnote } from '../utils/annotation';
 import FacebookLogout from './FacebookLogout';
 
@@ -35,19 +41,26 @@ class AnnotatePanel extends Component {
       <div>
         <Button onClick={close}> Close </Button>
         <h1> Annotate Panel </h1>
-        <div className="targetText">
-          <input type="text" value={exact} />
-        </div>
-        <div className="bodyText">
-          <textarea
-            value={annotation.body.text}
-            onChange={(e) => actions.updateBody(e.target.value)}
-          />
-        </div>
-        <button
-          className="submitBtn"
+
+        <form>
+          <FormGroup controlId="annoteFormId">
+            <ControlLabel>Highlighted Text</ControlLabel>
+            <FormControl
+              type="text"
+              value={exact}
+            />
+            <ControlLabel>Your Note</ControlLabel>
+            <FormControl
+              componentClass="textarea"
+              value={annotation.body.text}
+              onChange={(e) => actions.updateBody(e.target.value)}
+            />
+          </FormGroup>
+        </form>
+        <Button
+          bsStyle="primary"
           onClick={this.submitHandler}
-        > Submit </button>
+        > Submit </Button>
         <FacebookLogout logout={actions.logout} />
       </div>
     );
