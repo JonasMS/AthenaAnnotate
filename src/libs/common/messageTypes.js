@@ -11,6 +11,8 @@ export const HAS_MOUNTED = 'HAS_MOUNTED';
 export const GET_USER = 'GET_USER';
 export const SEND_USER = 'SEND_USER';
 
+export const SEND_ANNOTES = 'SEND_ANNOTES';
+
 export const GET_ANNOTE_ID = 'GET_ANNOTE_ID';
 export const SEND_ANNOTE_ID = 'SEND_ANNOTE_ID';
 export const GET_USER_ID = 'GET_USER_ID';

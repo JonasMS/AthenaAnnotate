@@ -15,6 +15,7 @@ import {
   HAS_MOUNTED,
   GET_USER,
   SEND_USER,
+  SEND_ANNOTES,
 } from '../../../common/messageTypes';
 
 import {
@@ -89,9 +90,11 @@ class App extends Component {
           .then(annotes => {
             console.log('annotes: ', annotes);
             const doc = document.body;
-            annotes.forEach(annote => { locateAnnote(doc, annote); });
+            // TODO: send annotes to Athena after placing on DOM
+            // send Annotes to Athena
+            this.postMessageToFrame({ type: SEND_ANNOTES, annotes });
             // place Annotes on DOM
-            // send Annotes to Athena,
+            annotes.forEach(annote => { locateAnnote(doc, annote); });
           });
       });
   }

@@ -19,7 +19,7 @@ import {
   HAS_MOUNTED,
   GET_USER,
   SEND_USER,
-
+  SEND_ANNOTES,
 } from '../../../common/messageTypes';
 
 import {
@@ -196,11 +196,15 @@ class App extends Component {
   handleMessageEvent(event) {
     const { actions: {
       saveUserToStore,
+      addAnnote,
       },
      } = this.props;
     switch (event.data.type) {
       case SEND_USER:
         return saveUserToStore(event.data.user);
+      case SEND_ANNOTES:
+        console.log('send_notes:', event.data.annotes);
+        return addAnnote(event.data.annotes);
 
       case CREATE_ANNOTE:
         return this.createAnnote(event.data);
@@ -221,7 +225,7 @@ class App extends Component {
 
   render() {
     const { actions: { login } } = this.props;
-
+    console.log('props: ', this.props);
     return (
       <div>
         {

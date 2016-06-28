@@ -4,10 +4,8 @@ const annotations = (
 ) => {
   switch (action.type) {
     case 'ADD_ANNOTE':
-      return (
-        state
-        .concat([action.annote])
-      );
+      return Array.isArray(action.annote) ?
+        state.concat(action.annote) : state.concat([action.annote]);
     default:
       return state;
   }
