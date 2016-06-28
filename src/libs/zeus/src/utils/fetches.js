@@ -34,3 +34,11 @@ export const fetchUser = (fbAcc) => {
     .then(res => res.json());
     // .then(user => { this.user = user; });
 };
+
+export const fetchAnnotes = (user) => {
+  const source = window.location.href;
+  const query = '/api/doc?UserId=' + user.id + '&&source=' + source;
+
+  return fetch(query)
+    .then(res => res.json());
+};
