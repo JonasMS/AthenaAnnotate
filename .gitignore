@@ -1,5 +1,6 @@
 build
 .env
 node_modules
+/src/server/sslcert/*
 
 .DS_Store
