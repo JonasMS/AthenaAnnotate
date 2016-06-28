@@ -16,6 +16,10 @@ import {
   SEND_USER_ID,
   GET_IDS,
   SEND_IDS,
+  HAS_MOUNTED,
+  GET_USER,
+  SEND_USER,
+
 } from '../../../common/messageTypes';
 
 import {
@@ -30,6 +34,7 @@ class App extends Component {
   constructor(props) {
     super(props);
 
+    this.sendUser = this.sendUser.bind(this);
     this.hideFrame = this.hideFrame.bind(this);
     this.createAnnote = this.createAnnote.bind(this);
     this.createHightlight = this.createHightlight.bind(this);
@@ -56,7 +61,12 @@ class App extends Component {
           getUserFromFB()
             .then(user => {
               if (user) {
-                this.props.actions.getUserFromDB(user);
+                this.extIntervalId = window.setInterval(() => {
+                  this.postMessageToParent({ type: HAS_MOUNTED });
+                }, 100);
+                // TODO: use property in this?
+                this.fbAcc = user;
+                // this.props.actions.getUserFromDB(user);
               }
             });
         }
@@ -100,6 +110,16 @@ class App extends Component {
 
   componentWillUnmount() {
     window.removeEventListener('message');
+  }
+
+  sendUser() {
+    // if (this.isUserLoggedIn()) {
+    window.clearInterval(this.extIntervalId);
+    this.postMessageToParent({
+      type: SEND_USER,
+      user: this.fbAcc,
+    });
+    // }
   }
 
   isUserLoggedIn() {
@@ -179,6 +199,8 @@ class App extends Component {
         return this.createAnnote(event.data);
       case CREATE_HIGHLIGHT:
         return this.createHightlight(event.data);
+      case GET_USER:
+        return this.sendUser();
       case GET_IDS:
         return this.sendIds(event.data.kind);
       case GET_ANNOTE_ID:
