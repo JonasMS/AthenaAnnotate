@@ -49,7 +49,7 @@ class App extends Component {
     this.handleKeyPressEvent = this.handleKeyPressEvent.bind(this);
     this.handleSelectionEvent = this.handleSelectionEvent.bind(this);
     this.annote = null;
-    this.annotations = null;
+    this.annoteId = 0; // TODO: '0' is for dev purposes
     this.user = null;
     this.getUserIntevalId = null;
   }
@@ -72,14 +72,19 @@ class App extends Component {
   }
 
   setUser(fbAcc) {
-    // window.clearInterval(this.getUserIntervalId);
-  // const payload = JSON.stringify(fbAcc);
-
     fetchUser(fbAcc)
     .then(user => {
       this.user = user;
+      this.postMessageToFrame({ type: SEND_USER, user });
       console.log(this.user);
+      // fetch Annotes, send User & Annotes to Athena,
+      // place Annotes on DOM
     });
+  }
+
+  isUserLoggedIn() {
+    const { user } = this;
+    return user && user.id;
   }
 
   handleSelectionEvent() {
@@ -165,18 +170,16 @@ class App extends Component {
     this.toggleDisplayFrame();
   }
 
-  createHighlight({ annoteId, userId }) {
-    this.setState({ controls: HIDE_CONTROL_BUTTONS_CLASS });
-    const { selector, range } = getText();
-    const annote = createAnnote(selector, annoteId, userId);
-    saveAnnote(annote);
-    // POST annote to server
-    // this.postMessageToFrame({
-    //   annote,
-    //   type: CREATE_HIGHLIGHT,
-    // });
-    // wrap target in tags
-    wrapAnnote(range);
+  createHighlight() {
+    if (this.isUserLoggedIn()) {
+      this.setState({ controls: HIDE_CONTROL_BUTTONS_CLASS });
+      const { selector, range } = getText();
+      const annote = createAnnote(selector, this.annoteId, this.user.id);
+      saveAnnote(annote); // POST annote to server to be stored in db
+      wrapAnnote(range);
+      this.annoteId++;
+      console.log('annote: ', annote);
+    }
   }
 
   handleKeyPressEvent(event) {
@@ -197,7 +200,7 @@ class App extends Component {
             label={'Annotate!'}
           />
           <ControlButton
-            handler={() => { this.createAnnote('highlight'); }}
+            handler={() => { this.createHighlight(); }}
             label={'Highlight!'}
           />
         </div>
