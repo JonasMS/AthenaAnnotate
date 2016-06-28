@@ -21,10 +21,10 @@ import {
   SHOW_CONTROL_BUTTONS_CLASS,
 } from '../constants';
 
-import { getText, createAnnote } from '../utils/utils';
-
 import { wrapAnnote, locateAnnote } from '../engine/';
 
+import { saveAnnote } from '../utils/fetches';
+import { getText, createAnnote } from '../utils/utils';
 
 class App extends Component {
   constructor(props) {
@@ -51,6 +51,7 @@ class App extends Component {
     window.addEventListener('message', this.handleMessageEvent);
     // window.addEventListener('keypress', this.handleKeyPressEvent);
     document.body.addEventListener('mouseup', this.handleSelectionEvent);
+    console.log(this.props);
   }
 
   componentWillUnmount() {
@@ -138,10 +139,12 @@ class App extends Component {
     this.setState({ controls: HIDE_CONTROL_BUTTONS_CLASS });
     const { selector, range } = getText();
     const annote = createAnnote(selector, annoteId, userId);
-    this.postMessageToFrame({
-      annote,
-      type: CREATE_HIGHLIGHT,
-    });
+    saveAnnote(annote);
+    // POST annote to server
+    // this.postMessageToFrame({
+    //   annote,
+    //   type: CREATE_HIGHLIGHT,
+    // });
     // wrap target in tags
     wrapAnnote(range);
   }

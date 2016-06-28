@@ -25,3 +25,5 @@ render(
   <App iframe={iframe} />,
   document.getElementById('app-anchor')
 );
+
+window.store = store;
