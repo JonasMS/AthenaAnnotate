@@ -194,7 +194,14 @@ class App extends Component {
 
   // take action on events we know about
   handleMessageEvent(event) {
+    const { actions: {
+      saveUserToStore,
+      },
+     } = this.props;
     switch (event.data.type) {
+      case SEND_USER:
+        return saveUserToStore(event.data.user);
+
       case CREATE_ANNOTE:
         return this.createAnnote(event.data);
       case CREATE_HIGHLIGHT:
