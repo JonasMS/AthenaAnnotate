@@ -130,7 +130,7 @@ export const saveAnnote = annote => (
     .then(parseJSON)
     .then(annotation => {
       // TODO: remove locateAnnote, will occur in ext.
-      locateAnnote(document.body, annotation);
+      // locateAnnote(document.body, annotation);
       dispatch(addAnnote(annotation));
       dispatch(clearAnnote());
     });
