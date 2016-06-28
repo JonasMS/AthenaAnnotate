@@ -21,7 +21,9 @@ import {
   SHOW_CONTROL_BUTTONS_CLASS,
 } from '../constants';
 
-import { createAnnote } from '../utils/utils';
+import { getText, createAnnote } from '../utils/utils';
+
+import { wrapAnnote, locateAnnote } from '../engine/';
 
 
 class App extends Component {
@@ -134,15 +136,14 @@ class App extends Component {
 
   createHighlight({ annoteId, userId }) {
     this.setState({ controls: HIDE_CONTROL_BUTTONS_CLASS });
-    // create annotation
-    console.log('ids: ', annoteId, ' ', userId);
-    const annote = createAnnote(annoteId, userId);
-    // send annote to Athena
+    const { selector, range } = getText();
+    const annote = createAnnote(selector, annoteId, userId);
     this.postMessageToFrame({
       annote,
       type: CREATE_HIGHLIGHT,
     });
     // wrap target in tags
+    // wrapAnnote(range);
   }
 
   handleKeyPressEvent(event) {

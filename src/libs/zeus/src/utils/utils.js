@@ -32,20 +32,23 @@ export const getText = () => {
     );
 
   return {
-    exact,
-    prefix,
-    suffix,
+    range,
+    selector: {
+      exact,
+      prefix,
+      suffix,
+    },
   };
 };
 
 // TODO: move to engine?
 
 export const createAnnote = (
+  selector,
   annoteId,
   userId
 ) => {
   const url = window.location.href;
-  const selector = getText();
 
   // TODO: do not use annotations.length to determine
   // annotation id, will be problematic in event of an
