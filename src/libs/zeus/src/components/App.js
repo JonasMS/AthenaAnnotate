@@ -12,6 +12,9 @@ import {
   SEND_USER_ID,
   GET_IDS,
   SEND_IDS,
+  HAS_MOUNTED,
+  GET_USER,
+  SEND_USER,
 } from '../../../common/messageTypes';
 
 import {
@@ -34,6 +37,8 @@ class App extends Component {
       controls: HIDE_CONTROL_BUTTONS_CLASS,
     };
 
+    this.getUser = this.getUser.bind(this);
+    this.setUser = this.setUser.bind(this);
     this.createAnnote = this.createAnnote.bind(this);
     this.createNote = this.createNote.bind(this);
     this.createHighlight = this.createHighlight.bind(this);
@@ -43,21 +48,33 @@ class App extends Component {
     this.handleMessageEvent = this.handleMessageEvent.bind(this);
     this.handleKeyPressEvent = this.handleKeyPressEvent.bind(this);
     this.handleSelectionEvent = this.handleSelectionEvent.bind(this);
-    this.annoteId = null;
-    this.userId = null;
+    this.annote = null;
+    this.annotations = null;
+    this.user = null;
+    this.getUserIntevalId = null;
   }
 
   componentDidMount() {
     window.addEventListener('message', this.handleMessageEvent);
     // window.addEventListener('keypress', this.handleKeyPressEvent);
     document.body.addEventListener('mouseup', this.handleSelectionEvent);
-    console.log(this.props);
+    // this.getUserIntervalId = window.setInterval(() => { this.getUser(); }, 200);
   }
 
   componentWillUnmount() {
     window.removeEventListener('message');
     // window.removeEventListener('onkeypress');
     // document.removeEventListener('mouseup');
+  }
+
+  getUser() {
+    this.postMessageToFrame({ type: GET_USER });
+  }
+
+  setUser(user) {
+    // window.clearInterval(this.getUserIntervalId);
+    this.user = user;
+    console.log(this.user);
   }
 
   handleSelectionEvent() {
@@ -80,6 +97,10 @@ class App extends Component {
       case SHOW_IFRAME:
         this.toggleDisplayFrame();
         break;
+      case HAS_MOUNTED:
+        return this.postMessageToFrame({ type: GET_USER });
+      case SEND_USER:
+        return this.setUser(event.data.user);
       case SEND_IDS:
         return this.annoteHandler(event.data.ids, event.data.kind);
       case SEND_ANNOTE_ID:
@@ -119,7 +140,11 @@ class App extends Component {
   }
 
   createAnnote(kind) {
-    this.postMessageToFrame({ type: GET_IDS, kind });
+    // create annote
+    // wrap annote
+    // Show Widget && send annote to Widget
+
+    // this.postMessageToFrame({ type: GET_IDS, kind });
   }
 
   createNote() {
