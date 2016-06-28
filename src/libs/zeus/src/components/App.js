@@ -6,7 +6,7 @@ import {
   HIDE_IFRAME,
   CREATE_ANNOTE,
   CREATE_HIGHLIGHT,
-} from '../../../../common/messageTypes';
+} from '../../../common/messageTypes';
 
 import {
   HIDE_IFRAME_CLASS,
