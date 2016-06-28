@@ -7,7 +7,7 @@ const changeLocation = (url) => {
 
 const Doc = ({ url, id, count, onDocDelete, listView, filter }) => (
   <li
-    className="jumbotron list-group-item"
+    className="card"
   >
     <div onClick={() => changeLocation(url)}>
       {url}

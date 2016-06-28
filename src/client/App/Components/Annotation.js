@@ -20,28 +20,26 @@ const Annotation = (
     following,
   }
 ) => (
-  <li
-    className="list-group-item"
-  >
-    {target}
+  <li className="annotation">
+    {filter !== 'Self' ?
+      <div>
+        <span className="username">{userName}</span>
+        {user.id === userId ? null :
+          <a className="follow" onClick={() => followUser(userId, user.id)}>{following[userId] === 1
+            ? 'unfollow' : 'follow'}</a>
+        }
+      </div>
+      : null}
+    <blockquote>
+      {target}
+    </blockquote>
     <div>
     {!!body ?
       <div>
-        <div className="well">
-          {!edit ? body : null}
-        </div>
+        {!edit ? body : null}
         <div
           className="card-action"
         >
-          {filter !== 'Self' ?
-            <div>
-              {userName}
-              {user.id === userId ? null :
-                <a onClick={() => followUser(userId, user.id)}>{following[userId] === 1
-                  ? 'unfollow' : 'follow'}</a>
-              }
-            </div>
-            : null}
           {edit && (/* filter === 'Self' || */user.id === userId) ?
             <BodyEditor
               body={body}

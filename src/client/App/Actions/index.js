@@ -332,3 +332,15 @@ export const setModal = (modal) => (
     modal,
   }
 );
+
+export const loadProfile = () => (
+  {
+    type: 'LOAD_PROFILE',
+  }
+);
+
+export const exitProfile = () => (
+  {
+    type: 'EXIT_PROFILE',
+  }
+);

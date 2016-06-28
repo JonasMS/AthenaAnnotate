@@ -8,6 +8,7 @@ import filter from './filter';
 import following from './following';
 import group from './group';
 import modal from './modal';
+import profile from './profile';
 import user from '../../../libs/athena/src/reducers/user';
 
 const Reducers = combineReducers({
@@ -21,6 +22,7 @@ const Reducers = combineReducers({
   following,
   group,
   modal,
+  profile,
 });
 
 export default Reducers;

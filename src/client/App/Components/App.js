@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import Loading from './Loading';
 import Sidebar from './Sidebar';
 import Splash from './Splash';
-import VisibleDocList from '../Containers/VisibleDocList';
+import Main from './Main';
 import NavBar from './NavBar';
 import { initFB, getUserFromFB, getUserStatusFromFB } from '../../../libs/common/auth';
 
@@ -44,6 +44,7 @@ class App extends Component {
       loading,
       filter,
       group,
+      profile,
       actions: {
         login,
         logout,
@@ -53,6 +54,7 @@ class App extends Component {
         showGroups,
         createGroup,
         editGroup,
+        loadProfile,
       },
     } = this.props;
     return (
@@ -62,7 +64,11 @@ class App extends Component {
           user && user.id
           ?
             <div className="row">
-              <NavBar logout={logout} user={user} />
+              <NavBar
+                logout={logout}
+                user={user}
+                loadProfile={loadProfile}
+              />
               <Sidebar
                 user={user}
                 // logout={logout}
@@ -75,7 +81,7 @@ class App extends Component {
                 createGroup={createGroup}
                 editGroup={editGroup}
               />
-              {loading ? <Loading /> : <VisibleDocList />}
+              {loading ? <Loading /> : <Main profile={profile} user={user} />}
             </div>
           :
             <Splash login={login} />
@@ -90,6 +96,7 @@ App.propTypes = {
   actions: PropTypes.object,
   loading: PropTypes.bool.isRequired,
   filter: PropTypes.string,
+  profile: PropTypes.bool.isRequired,
   following: PropTypes.object.isRequired,
   group: PropTypes.object.isRequired,
 };

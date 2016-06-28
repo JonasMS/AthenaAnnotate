@@ -54,7 +54,7 @@ const Sidebar = ({
 
 Sidebar.propTypes = {
   user: PropTypes.object,
-  logout: PropTypes.func.isRequired,
+  // logout: PropTypes.func.isRequired,
   setFilter: PropTypes.func.isRequired,
   showGroups: PropTypes.func.isRequired,
   setGroup: PropTypes.func.isRequired,
