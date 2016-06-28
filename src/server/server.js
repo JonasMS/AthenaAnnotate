@@ -1,3 +1,6 @@
+var fs = require('fs');
+var http = require('http');
+var https = require('https');
 var cors = require('cors');
 var express = require('express');
 var morgan = require('morgan');
@@ -7,14 +10,18 @@ var cookieParser = require('cookie-parser');
 var homeRoute = require('./routes/home');
 var apiRoute = require('./routes/api');
 var Sequelize = require('sequelize');
+
 var sequelize = new Sequelize('postgres://postgres@localhost:5432/annotate');
-var host;
-var port;
+var privateKey  = fs.readFileSync(__dirname + '/sslcert/server.key', 'utf8');
+var certificate = fs.readFileSync(__dirname + '/sslcert/server.crt', 'utf8');
+var credentials = { key: privateKey, cert: certificate };
+var server = express();
 
 require('dotenv').config({ silent: true });
 
-host = process.env.HOST || 'localhost';
-port = process.env.PORT || 3000;
+var host = process.env.HOST || 'localhost';
+var httpPort = process.env.HTTP_PORT || 3000;
+var httpsPort = process.env.HTTPS_PORT || 8443;
 
 sequelize
   .authenticate()
@@ -25,7 +32,7 @@ sequelize
     console.log('Unable to connect to the database: ', err);
   });
 
-express()
+server
   .use(cors({
     origin: '*',
     methods: ['GET, POST, OPTIONS'],
@@ -44,11 +51,18 @@ express()
     saveUninitialized: false
   }))
   .use(apiRoute)
-  .use(homeRoute)
-  .listen(port);
+  .use(homeRoute);
 
-process
-  .stdout
-  .write('Server listening on http://' + host + ':' + port + '. Use <ctrl-c> to stop server.\n');
+http
+  .createServer(server)
+  .listen(httpPort);
+
+https
+  .createServer(credentials, server)
+  .listen(httpsPort);
+
+console.log('[HTTP]: Server listening on http://' + host + ':' + httpPort + '\n');
+console.log('[HTTPS]: Server listening on https://' + host + ':' + httpsPort + '\n');
+console.log('\nUse <ctrl-c> to stop servers.\n\n');
 
 module.exports = sequelize;
