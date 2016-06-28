@@ -26,7 +26,7 @@ import {
 
 import { wrapAnnote, locateAnnote } from '../engine/';
 
-import { saveAnnote } from '../utils/fetches';
+import { saveAnnote, fetchUser, fetchAnnotes } from '../utils/fetches';
 import { getText, createAnnote } from '../utils/utils';
 
 class App extends Component {
@@ -71,10 +71,15 @@ class App extends Component {
     this.postMessageToFrame({ type: GET_USER });
   }
 
-  setUser(user) {
+  setUser(fbAcc) {
     // window.clearInterval(this.getUserIntervalId);
-    this.user = user;
-    console.log(this.user);
+  // const payload = JSON.stringify(fbAcc);
+
+    fetchUser(fbAcc)
+    .then(user => {
+      this.user = user;
+      console.log(this.user);
+    });
   }
 
   handleSelectionEvent() {

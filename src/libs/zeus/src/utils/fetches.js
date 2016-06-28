@@ -17,3 +17,20 @@ export const saveAnnote = (annote) => {
     // dispatch(clearAnnote());
     // });
 };
+
+export const fetchUser = (fbAcc) => {
+  const payload = JSON.stringify(fbAcc);
+
+  return fetch('/api/users', {
+    method: 'POST',
+    headers: {
+      'Content-type': 'application/json',
+      'Content-length': payload.length,
+    },
+    credentials: 'same-origin',
+    body: payload,
+  })
+    .then(checkStatus)
+    .then(res => res.json());
+    // .then(user => { this.user = user; });
+};
