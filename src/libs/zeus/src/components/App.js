@@ -143,7 +143,7 @@ class App extends Component {
       type: CREATE_HIGHLIGHT,
     });
     // wrap target in tags
-    // wrapAnnote(range);
+    wrapAnnote(range);
   }
 
   handleKeyPressEvent(event) {

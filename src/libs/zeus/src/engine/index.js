@@ -83,16 +83,16 @@ export const parseDoc = doc => {
   };
 };
 
-// export const wrapAnnote = (range) => {
-//   const athena = new Athena;
-//   const cb = function() {
-//     console.log('clicked!!');
-//   };
-//   athena.addListener(cb);
-//   range.surroundContents(athena);
-//   // TODO: range.detach()
-//   return range;
-// };
+export const wrapAnnote = (range) => {
+  const athena = new Athena;
+  const cb = function() {
+    console.log('clicked!!');
+  };
+  athena.addListener(cb);
+  range.surroundContents(athena);
+  // TODO: range.detach()
+  return range;
+};
 
 // returns range
 // wraps the selected text in a custom
