@@ -5,6 +5,8 @@ import App from '../components/App';
 
 const mapStateToProps = (state) => ({
   user: state.user,
+  annotation: state.annotation,
+  annotations: state.annotations,
   panel: state.panel,
 });
 

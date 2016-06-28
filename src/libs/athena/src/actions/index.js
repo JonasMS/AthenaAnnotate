@@ -4,9 +4,8 @@ import * as types from '../constants/actionTypes';
 import * as options from '../constants/fetchOptions';
 import { getText } from '../utils/utils';
 import { getUserFromFB } from '../../../common/auth';
-import { createAnnote } from '../utils/annotation';
 import { checkStatus, createPOST, parseJSON } from '../utils/fetch';
-import { placeAnnote } from '../engine/index';
+import { locateAnnote } from '../engine/index';
 
 export const failedRequest = error => (
   {
@@ -61,6 +60,8 @@ export const logout = () => (
   )
 );
 
+
+// TODO: delete, functionality moved to ext
 // adder actions
 export const setAdder = adder => {
   const sel = window.getSelection();
@@ -114,27 +115,26 @@ export const addAnnote = annote => ({
   annote,
 });
 
-export const saveAnnote = data => (
+export const saveAnnote = annote => (
   dispatch => {
     // create full annotation object
-    const annotation = createAnnote(data);
+    // const annotation = createAnnote(data);
+    console.log('annotation: ', annote);
+    // annote.createdAt = Date.now();
 
     fetch(
       options.API_CREATE,
-      createPOST(annotation)
+      createPOST(annote)
     )
     .then(checkStatus)
     .then(parseJSON)
-    .then(annote => {
-      // console.log('annote: ', annotation);
-      locateAnnote(
-        document.body,
-        annotation
-      );
-      dispatch(addAnnote(annote));
+    .then(annotation => {
+      // TODO: remove locateAnnote, will occur in ext.
+      locateAnnote(document.body, annotation);
+      dispatch(addAnnote(annotation));
       dispatch(clearAnnote());
     });
-    return annotation;
+    return annote;
   }
 );
 

@@ -10,6 +10,12 @@ import {
   SHOW_IFRAME,
   CREATE_ANNOTE,
   CREATE_HIGHLIGHT,
+  GET_ANNOTE_ID,
+  SEND_ANNOTE_ID,
+  GET_USER_ID,
+  SEND_USER_ID,
+  GET_IDS,
+  SEND_IDS,
 } from '../../../common/messageTypes';
 
 import {
@@ -18,6 +24,7 @@ import {
   getUserStatusFromFB,
 } from '../../../common/auth';
 
+import { createAnnote } from '../utils/annotation';
 
 class App extends Component {
   constructor(props) {
@@ -28,6 +35,14 @@ class App extends Component {
     this.createHightlight = this.createHightlight.bind(this);
     this.handleMessageEvent = this.handleMessageEvent.bind(this);
     this.postMessageToParent = this.postMessageToParent.bind(this);
+  }
+
+  componentWillMount() {
+    // fetch annotations for
+    // specific user and url
+
+    // forEach annotation
+    // insert annote into dom
   }
 
   componentDidMount() {
@@ -105,13 +120,48 @@ class App extends Component {
 
   createHightlight(data) {
     if (this.isUserLoggedIn()) {
-      console.log(data);
+      // create annotation object
+      console.log('data: ', data);
+      console.log('data.annote: ', data.annote);
+      this.props.actions.saveAnnote(data.annote);
+
       // highlighting is done by content.js.
       // but the data it passed must be saved to the db.
     } else {
       console.log('[createHightlight]: user not logged in');
       this.postMessageToParent({ type: SHOW_IFRAME });
     }
+  }
+
+  sendAnnoteId() {
+    // TODO: replace annotations.length
+    const annoteId = this.props.annotations.length;
+    console.log('annoteId: ', annoteId);
+    this.postMessageToParent({
+      type: SEND_ANNOTE_ID,
+      annoteId,
+    });
+    return annoteId;
+  }
+
+  sendUserId() {
+    console.log('user: ', this.props.user);
+    const userId = this.props.user.id;
+    this.postMessageToParent({
+      type: SEND_USER_ID,
+      userId,
+    });
+    return userId;
+  }
+
+  sendIds(kind) {
+    const userId = this.props.user.id;
+    const annoteId = this.props.annotations.length;
+    this.postMessageToParent({
+      kind,
+      type: SEND_IDS,
+      ids: { userId, annoteId },
+    });
   }
 
   postMessageToParent(action) {
@@ -129,6 +179,12 @@ class App extends Component {
         return this.createAnnote(event.data);
       case CREATE_HIGHLIGHT:
         return this.createHightlight(event.data);
+      case GET_IDS:
+        return this.sendIds(event.data.kind);
+      case GET_ANNOTE_ID:
+        return this.sendAnnoteId();
+      case GET_USER_ID:
+        return this.sendUserId();
       default:
         return undefined;
     }
@@ -153,6 +209,8 @@ App.propTypes = {
   // adder: PropTypes.string,
   // widget: PropTypes.string,
   user: PropTypes.object,
+  annotation: PropTypes.object,
+  annotations: PropTypes.array,
   actions: PropTypes.object,
 };
 

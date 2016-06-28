@@ -6,6 +6,12 @@ import {
   HIDE_IFRAME,
   CREATE_ANNOTE,
   CREATE_HIGHLIGHT,
+  GET_ANNOTE_ID,
+  SEND_ANNOTE_ID,
+  GET_USER_ID,
+  SEND_USER_ID,
+  GET_IDS,
+  SEND_IDS,
 } from '../../../common/messageTypes';
 
 import {
@@ -14,6 +20,8 @@ import {
   HIDE_CONTROL_BUTTONS_CLASS,
   SHOW_CONTROL_BUTTONS_CLASS,
 } from '../constants';
+
+import { createAnnote } from '../utils/utils';
 
 
 class App extends Component {
@@ -25,21 +33,42 @@ class App extends Component {
     };
 
     this.createAnnote = this.createAnnote.bind(this);
+    this.createNote = this.createNote.bind(this);
     this.createHighlight = this.createHighlight.bind(this);
+    this.annoteHandler = this.annoteHandler.bind(this);
     this.toggleDisplayFrame = this.toggleDisplayFrame.bind(this);
     this.postMessageToFrame = this.postMessageToFrame.bind(this);
     this.handleMessageEvent = this.handleMessageEvent.bind(this);
     this.handleKeyPressEvent = this.handleKeyPressEvent.bind(this);
+    this.handleSelectionEvent = this.handleSelectionEvent.bind(this);
+    this.annoteId = null;
+    this.userId = null;
   }
 
   componentDidMount() {
     window.addEventListener('message', this.handleMessageEvent);
-    window.addEventListener('keypress', this.handleKeyPressEvent);
+    // window.addEventListener('keypress', this.handleKeyPressEvent);
+    document.body.addEventListener('mouseup', this.handleSelectionEvent);
   }
 
   componentWillUnmount() {
     window.removeEventListener('message');
-    window.removeEventListener('onkeypress');
+    // window.removeEventListener('onkeypress');
+    // document.removeEventListener('mouseup');
+  }
+
+  handleSelectionEvent() {
+    const range = window.getSelection().getRangeAt(0);
+    const distance = Math.abs(
+      range.endOffset - range.startOffset
+    );
+    const display = this.state.controller;
+    // IF a selection is made on mouseup
+    if (distance > 0) {
+      this.setState({ controls: SHOW_CONTROL_BUTTONS_CLASS });
+    } else if (display !== HIDE_CONTROL_BUTTONS_CLASS) {
+      this.setState({ controls: HIDE_CONTROL_BUTTONS_CLASS });
+    }
   }
 
   handleMessageEvent(event) {
@@ -48,8 +77,16 @@ class App extends Component {
       case SHOW_IFRAME:
         this.toggleDisplayFrame();
         break;
+      case SEND_IDS:
+        return this.annoteHandler(event.data.ids, event.data.kind);
+      case SEND_ANNOTE_ID:
+        this.annoteId = event.data.annoteId;
+        return this.annoteId;
+      case SEND_USER_ID:
+        this.userId = event.data.userId;
+        return this.userId;
       default:
-        // noop
+        return null;// noop , need to return some value
     }
   }
 
@@ -69,7 +106,20 @@ class App extends Component {
     }
   }
 
-  createAnnote() {
+  annoteHandler(ids, kind) {
+    if (kind === 'highlight') {
+      this.createHighlight(ids);
+    } else if (kind === 'note') {
+      this.createAnnote(ids);
+    }
+    return kind;
+  }
+
+  createAnnote(kind) {
+    this.postMessageToFrame({ type: GET_IDS, kind });
+  }
+
+  createNote() {
     this.setState({ controls: HIDE_CONTROL_BUTTONS_CLASS });
     this.postMessageToFrame({
       type: CREATE_ANNOTE,
@@ -82,14 +132,17 @@ class App extends Component {
     this.toggleDisplayFrame();
   }
 
-  createHighlight() {
+  createHighlight({ annoteId, userId }) {
     this.setState({ controls: HIDE_CONTROL_BUTTONS_CLASS });
+    // create annotation
+    console.log('ids: ', annoteId, ' ', userId);
+    const annote = createAnnote(annoteId, userId);
+    // send annote to Athena
     this.postMessageToFrame({
+      annote,
       type: CREATE_HIGHLIGHT,
-      highlight: {
-        exact: 'highlighted',
-      },
     });
+    // wrap target in tags
   }
 
   handleKeyPressEvent(event) {
@@ -106,11 +159,11 @@ class App extends Component {
       <div className={this.state.controls}>
         <div>
           <ControlButton
-            handler={this.createAnnote}
+            handler={() => { this.createAnnote('note'); }}
             label={'Annotate!'}
           />
           <ControlButton
-            handler={this.createHighlight}
+            handler={() => { this.createAnnote('highlight'); }}
             label={'Highlight!'}
           />
         </div>
