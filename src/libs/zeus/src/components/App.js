@@ -71,15 +71,29 @@ class App extends Component {
     this.postMessageToFrame({ type: GET_USER });
   }
 
+
   setUser(fbAcc) {
-    fetchUser(fbAcc)
-    .then(user => {
-      this.user = user;
-      this.postMessageToFrame({ type: SEND_USER, user });
-      console.log(this.user);
-      // fetch Annotes, send User & Annotes to Athena,
-      // place Annotes on DOM
-    });
+    return fetchUser(fbAcc)
+      .then(user => {
+        this.user = user;
+        this.postMessageToFrame({ type: SEND_USER, user });
+        console.log(this.user);
+        return user;
+      });
+  }
+
+  initialLoad(fbAcc) {
+    this.setUser(fbAcc)
+      .then(user => {
+        fetchAnnotes(user)
+          .then(annotes => {
+            console.log('annotes: ', annotes);
+            const doc = document.body;
+            annotes.forEach(annote => { locateAnnote(doc, annote); });
+            // place Annotes on DOM
+            // send Annotes to Athena,
+          });
+      });
   }
 
   isUserLoggedIn() {
@@ -110,7 +124,7 @@ class App extends Component {
       case HAS_MOUNTED:
         return this.postMessageToFrame({ type: GET_USER });
       case SEND_USER:
-        return this.setUser(event.data.user);
+        return this.initialLoad(event.data.user);
       case SEND_IDS:
         return this.annoteHandler(event.data.ids, event.data.kind);
       case SEND_ANNOTE_ID:
