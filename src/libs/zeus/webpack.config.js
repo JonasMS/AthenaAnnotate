@@ -2,7 +2,7 @@ const path = require('path');
 const webpack = require('webpack');
 const PATHS = {
   app: path.join(__dirname, 'src'),
-  build: path.join(__dirname, '../../../../build/extension'),
+  build: path.join(__dirname, '../../../build/zeus'),
 };
 
 require('dotenv').config({ silent: true });
@@ -13,7 +13,7 @@ module.exports = {
   },
   output: {
     path: PATHS.build,
-    filename: 'content.js',
+    filename: 'zeus.js',
   },
   devtool: 'inline-sourcemap',
   module: {
