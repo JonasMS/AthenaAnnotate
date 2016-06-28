@@ -3,6 +3,7 @@ import Loading from './Loading';
 import Sidebar from './Sidebar';
 import Splash from './Splash';
 import VisibleDocList from '../Containers/VisibleDocList';
+import NavBar from './NavBar';
 import { initFB, getUserFromFB, getUserStatusFromFB } from '../../../libs/common/auth';
 
 class App extends Component {
@@ -55,15 +56,16 @@ class App extends Component {
       },
     } = this.props;
     return (
-      <div>
+      <div className="container">
         <div id="fb-root"></div>
         {
           user && user.id
           ?
             <div className="row">
+              <NavBar logout={logout} user={user} />
               <Sidebar
                 user={user}
-                logout={logout}
+                // logout={logout}
                 setFilter={setFilter}
                 filter={filter}
                 group={group}

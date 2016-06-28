@@ -7,7 +7,7 @@ const changeLocation = (url) => {
 
 const Doc = ({ url, id, count, onDocDelete, listView, filter }) => (
   <li
-    className="card blue-grey darken-1 white-text"
+    className="jumbotron list-group-item"
   >
     <div onClick={() => changeLocation(url)}>
       {url}
@@ -20,7 +20,7 @@ const Doc = ({ url, id, count, onDocDelete, listView, filter }) => (
         <i className="material-icons">delete</i>
       </button>}
     {listView}
-    {listView ? <div>{count}</div> : <VisibleAnnotationList id={id} />}
+    {listView ? <div>Annotations: {count}</div> : <VisibleAnnotationList id={id} />}
   </li>
 );
 

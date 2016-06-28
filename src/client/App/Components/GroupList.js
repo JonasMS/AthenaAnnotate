@@ -2,23 +2,28 @@ import React, { PropTypes } from 'react';
 
 const GroupList = ({ user, leaveGroupDB, setGroup, createGroup, editGroup, setFilter, group }) => {
   const groups = group.groups.map(groupObj => (
-    <li
-      onClick={() => {
-        setGroup(groupObj.id);
-        setFilter('Groups');
-      }}
-      key={groupObj.id}
-    >
-      {groupObj.name}
-      <button onClick={() => leaveGroupDB(groupObj.id, user.id)}>
-        X
-      </button>
+    <li key={groupObj.id}>
+      <a
+        className="nav-header"
+        data-toggle="collapse"
+        data-target="#groups"
+        onClick={() => {
+          setGroup(groupObj.id);
+          setFilter('Groups');
+        }}
+      >
+        {groupObj.name}
+        <button onClick={() => leaveGroupDB(groupObj.id, user.id)}>
+          X
+        </button>
+      </a>
     </li>
   ));
   return (
-    <ul>
+    <ul className="nav nav-list collpase" id="groups">
       {groups}
       <input
+        className="nav-header"
         placeholder="Group Name"
         defaultValue={group.edit}
         onChange={(e) => {

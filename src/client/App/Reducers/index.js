@@ -7,6 +7,7 @@ import listView from './listView';
 import filter from './filter';
 import following from './following';
 import group from './group';
+import modal from './modal';
 import user from '../../../libs/athena/src/reducers/user';
 
 const Reducers = combineReducers({
@@ -19,6 +20,7 @@ const Reducers = combineReducers({
   filter,
   following,
   group,
+  modal,
 });
 
 export default Reducers;

@@ -31,7 +31,7 @@ const AnnotationList = (
     />
   ));
   return (
-    <ul>
+    <ul className="list-group">
       {annotationList}
     </ul>
   );

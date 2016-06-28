@@ -318,3 +318,17 @@ export const editGroup = (edit) => (
     edit,
   }
 );
+
+// To handle modals
+export const showModal = () => (
+  {
+    type: 'SHOW_MODAL',
+  }
+);
+
+export const setModal = (modal) => (
+  {
+    type: 'SET_MODAL',
+    modal,
+  }
+);

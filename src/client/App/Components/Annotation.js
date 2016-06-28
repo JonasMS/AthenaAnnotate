@@ -21,26 +21,28 @@ const Annotation = (
   }
 ) => (
   <li
-    className="card grey darken-1 white-text"
+    className="list-group-item"
   >
     {target}
     <div>
     {!!body ?
       <div>
-        <p>
+        <div className="well">
           {!edit ? body : null}
-        </p>
+        </div>
         <div
           className="card-action"
         >
           {filter !== 'Self' ?
             <div>
               {userName}
-              <a onClick={() => followUser(userId, user.id)}>{following[userId] === 1
-                ? 'unfollow' : 'follow'}</a>
+              {user.id === userId ? null :
+                <a onClick={() => followUser(userId, user.id)}>{following[userId] === 1
+                  ? 'unfollow' : 'follow'}</a>
+              }
             </div>
             : null}
-          {edit && filter === 'Self' ?
+          {edit && (/* filter === 'Self' || */user.id === userId) ?
             <BodyEditor
               body={body}
               onCancel={() => onEditBody(id)}
@@ -48,7 +50,7 @@ const Annotation = (
               onDelete={() => onDeleteBody(id, url)}
             />
             : null}
-          {!edit && filter === 'Self' ?
+          {!edit && (/* filter === 'Self' || */user.id === userId) ?
             <button
               className="waves-effect waves-light btn-floating"
               onClick={() => onEditBody(id)}
@@ -60,7 +62,7 @@ const Annotation = (
       </div>
     : null}
     </div>
-    {filter !== 'Self' ? null :
+    {/* filter !== 'Self' || */user.id !== userId ? null :
       <button
         className="waves-effect waves-light btn-floating"
         onClick={onAnnotationDelete}

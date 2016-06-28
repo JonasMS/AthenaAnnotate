@@ -1,10 +1,10 @@
 import React, { PropTypes } from 'react';
-import FacebookLogout from '../../../libs/athena/src/components/FacebookLogout';
+// import FacebookLogout from '../../../libs/athena/src/components/FacebookLogout';
 import GroupList from './GroupList';
 
 const Sidebar = ({
   user,
-  logout,
+  // logout,
   setFilter,
   showGroups,
   leaveGroupDB,
@@ -13,8 +13,8 @@ const Sidebar = ({
   createGroup,
   editGroup,
 }) => (
-  <div className="col s2 offset-s2">
-    <ul>
+  <div className="col-md-3">
+    <ul className="nav nav-sidebar affix">
       <li>
         <a onClick={() => setFilter('Self')}>My Annotations</a>
       </li>
@@ -48,7 +48,6 @@ const Sidebar = ({
         <a>Help</a>
       </li>
     </ul>
-    <FacebookLogout logout={logout} />
   </div>
 );
 
@@ -66,3 +65,7 @@ Sidebar.propTypes = {
 };
 
 export default Sidebar;
+
+/*  <li>
+      <FacebookLogout logout={logout} />
+    </li> */

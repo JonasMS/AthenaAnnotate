@@ -12,12 +12,16 @@ const DocList = ({ docs, onDocDelete, listView, switchView, filter }) => {
     />
       ));
   return (
-    <div className="col s6">
+    <div className="col-md-9">
       <button
+        type="button"
+        className="btn btn-default"
+        aria-label="listView"
         onClick={() => switchView()}
-      >Switch Views
+      >
+        <span className="glyphicon glyphicon-th-list" aria-hidden="true"></span>
       </button>
-      <ul>
+      <ul className="list-group">
         {docList}
       </ul>
     </div>
