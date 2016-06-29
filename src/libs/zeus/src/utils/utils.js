@@ -60,7 +60,10 @@ export const createAnnote = (
   return {
     id,
     creator: userId,
-    body: '',
+    body: {
+      lastModified: '',
+      text: '',
+    },
     target: {
       source: url,
       selector,

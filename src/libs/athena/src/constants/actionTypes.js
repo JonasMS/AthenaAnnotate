@@ -15,7 +15,11 @@ export const HIDE_ANNOTATE_PANEL = 'HIDE_ANNOTATE_PANEL';
 export const SET_WIDGET = 'SET_WIDGET';
 
 // annotation
+export const SET_ANNOTATION = 'SET_ANNOTATION';
 export const CLEAR_ANNOTATION = 'CLEAR_ANNOTATION';
 export const UPDATE_BODY = 'UPDATE_BODY';
 export const SET_TARGET = 'SET_TARGET';
+
+// annotations
+export const ADD_ANNOTATION = 'ADD_ANNOTATION';
 

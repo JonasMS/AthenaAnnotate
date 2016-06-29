@@ -20,6 +20,7 @@ import {
   GET_USER,
   SEND_USER,
   SEND_ANNOTES,
+  MODIFY_BODY,
 } from '../../../common/messageTypes';
 
 import {
@@ -34,6 +35,7 @@ class App extends Component {
   constructor(props) {
     super(props);
 
+    this.submitHandler = this.submitHandler.bind(this);
     this.sendUser = this.sendUser.bind(this);
     this.hideFrame = this.hideFrame.bind(this);
     this.createAnnote = this.createAnnote.bind(this);
@@ -127,15 +129,9 @@ class App extends Component {
     return user && user.id;
   }
 
-  createAnnote(data) {
-    if (this.isUserLoggedIn()) {
-      console.log(data);
-      // data passed must update the state, then the state
-      // must be passed into AnnotatePanel so it can display
-      // fields values with the data.
-    } else {
-      console.log('[createAnnote]: user not logged in');
-    }
+  createAnnote(annote) {
+    const { actions: { setAnnote } } = this.props;
+    setAnnote(annote); // set annotation
   }
 
   createHightlight(data) {
@@ -192,6 +188,14 @@ class App extends Component {
     this.postMessageToParent({ type: HIDE_IFRAME });
   }
 
+  submitHandler() {
+    const { actions: { addAnnote, clearAnnote }, annotation } = this.props;
+    const { body } = annotation;
+    this.postMessageToParent({ type: MODIFY_BODY, body });
+    addAnnote(annotation); // add annotation to annotations
+    clearAnnote(); // rest annote to empty shape
+  }
+
   // take action on events we know about
   handleMessageEvent(event) {
     const { actions: {
@@ -203,11 +207,10 @@ class App extends Component {
       case SEND_USER:
         return saveUserToStore(event.data.user);
       case SEND_ANNOTES:
-        console.log('send_notes:', event.data.annotes);
         return addAnnote(event.data.annotes);
-
       case CREATE_ANNOTE:
-        return this.createAnnote(event.data);
+        return this.createAnnote(event.data.annote);
+
       case CREATE_HIGHLIGHT:
         return this.createHightlight(event.data);
       case GET_USER:
@@ -230,7 +233,7 @@ class App extends Component {
       <div>
         {
           this.isUserLoggedIn()
-            ? <AnnotatePanel close={this.hideFrame} />
+            ? <AnnotatePanel close={this.hideFrame} submitHandler={this.submitHandler} />
             : <AuthPanel login={login} close={this.hideFrame} />
         }
       </div>

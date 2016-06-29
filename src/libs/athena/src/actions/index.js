@@ -110,8 +110,15 @@ export const clearAnnote = () => ({
   type: types.CLEAR_ANNOTATION,
 });
 
+// Set the value for state.annotation
+export const setAnnote = annote => ({
+  type: types.SET_ANNOTATION,
+  annote,
+});
+
+// Add Annotation(s) to state.annotations
 export const addAnnote = annote => ({
-  type: 'ADD_ANNOTE',
+  type: types.ADD_ANNOTATION,
   annote,
 });
 

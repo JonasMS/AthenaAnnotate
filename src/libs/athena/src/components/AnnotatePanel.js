@@ -13,30 +13,33 @@ import * as Actions from '../actions';
 class AnnotatePanel extends Component {
   constructor(props) {
     super(props);
-    this.submitHandler = this.submitHandler.bind(this);
+    // this.submitHandler = this.submitHandler.bind(this);
   }
 
-  submitHandler() {
-    const {
-      user,
-      actions,
-      annotation,
-      annotations,
-    } = this.props;
+  // submitHandler() {
+  //   // send annote to zeus
 
-    saveAnnote({
-      user,
-      annotation,
-      annotations,
-    });
+  //   const {
+  //     user,
+  //     actions,
+  //     annotation,
+  //     annotations,
+  //   } = this.props;
 
-    // update annotations
-    actions.clearAnnote();
-    this.props.close();
-  }
+  //   saveAnnote({
+  //     user,
+  //     annotation,
+  //     annotations,
+  //   });
+
+  //   // update annotations
+  //   actions.clearAnnote();
+  //   this.props.close();
+  // }
 
   render () {
-    const { close, annotation, actions, exact } = this.props;
+    const { close, submitHandler, annotation, actions } = this.props;
+    const { exact } = annotation.target.selector;
 
     return (
       <div>
@@ -45,7 +48,6 @@ class AnnotatePanel extends Component {
 
         <form>
           <FormGroup controlId="annoteFormId">
-            <ControlLabel>Highlighted Text</ControlLabel>
             <FormControl
               type="text"
               value={exact}
@@ -60,7 +62,7 @@ class AnnotatePanel extends Component {
         </form>
         <Button
           bsStyle="primary"
-          onClick={this.submitHandler}
+          onClick={submitHandler}
         > Submit </Button>
         <FacebookLogout logout={actions.logout} />
       </div>
@@ -74,7 +76,7 @@ AnnotatePanel.propTypes = {
   annotation: PropTypes.object,
   annotations: PropTypes.array,
   close: PropTypes.func.isRequired,
-  exact: PropTypes.string.isRequired,
+  // exact: PropTypes.string.isRequired,
 };
 
 export default AnnotatePanel;

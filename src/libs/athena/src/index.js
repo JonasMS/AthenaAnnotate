@@ -15,5 +15,3 @@ render(
   </Provider>,
   document.getElementById('athena-anchor')
 );
-
-window.store = store; // for dev purposes;
