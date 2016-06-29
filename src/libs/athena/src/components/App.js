@@ -2,20 +2,12 @@ import React, { Component, PropTypes } from 'react';
 
 import AuthPanel from '../components/AuthPanel';
 import AnnotatePanel  from '../containers/AnnotatePanel';
-// import Adder from '../components/Adder';
-// import { setWidgClass } from '../utils/utils';
-// import { shortcutHandler } from '../utils/panel';
 import {
   HIDE_IFRAME,
   SHOW_IFRAME,
   CREATE_ANNOTE,
   CREATE_HIGHLIGHT,
-  GET_ANNOTE_ID,
   SEND_ANNOTE_ID,
-  GET_USER_ID,
-  SEND_USER_ID,
-  GET_IDS,
-  SEND_IDS,
   HAS_MOUNTED,
   GET_USER,
   SEND_USER,
@@ -29,8 +21,6 @@ import {
   getUserStatusFromFB,
 } from '../../../common/auth';
 
-import { createAnnote } from '../utils/annotation';
-
 class App extends Component {
   constructor(props) {
     super(props);
@@ -39,17 +29,9 @@ class App extends Component {
     this.sendUser = this.sendUser.bind(this);
     this.hideFrame = this.hideFrame.bind(this);
     this.createAnnote = this.createAnnote.bind(this);
-    this.createHightlight = this.createHightlight.bind(this);
+    this.createHighlight = this.createHighlight.bind(this);
     this.handleMessageEvent = this.handleMessageEvent.bind(this);
     this.postMessageToParent = this.postMessageToParent.bind(this);
-  }
-
-  componentWillMount() {
-    // fetch annotations for
-    // specific user and url
-
-    // forEach annotation
-    // insert annote into dom
   }
 
   componentDidMount() {
@@ -73,41 +55,6 @@ class App extends Component {
             });
         }
       });
-
-    // // listener for mouseups
-    // document
-    // .getElementsByTagName('body')[0]
-    // .addEventListener('mouseup', () => {
-    //   const { adder, actions } = this.props;
-    //   actions.setAdder(adder);
-    // });
-
-    // // listener for shortcut keys
-    // window
-    // .addEventListener('keydown', e => {
-    //   shortcutHandler(e, this.props);
-    // });
-
-    // listener for shortcut keys
-    // window
-    // .addEventListener('keydown', e => {
-    //   const {
-    //     annotation,
-    //     annotations,
-    //     user,
-    //     widget,
-    //     actions,
-    //   } = this.props;
-    //   shortcutHandler(
-    //     e, {
-    //       annotation,
-    //       annotations,
-    //       user,
-    //       widget,
-    //       actions,
-    //     }
-    //   );
-    // });
   }
 
   componentWillUnmount() {
@@ -115,13 +62,11 @@ class App extends Component {
   }
 
   sendUser() {
-    // if (this.isUserLoggedIn()) {
     window.clearInterval(this.extIntervalId);
     this.postMessageToParent({
       type: SEND_USER,
       user: this.fbAcc,
     });
-    // }
   }
 
   isUserLoggedIn() {
@@ -134,50 +79,13 @@ class App extends Component {
     setAnnote(annote); // set annotation
   }
 
-  createHightlight(data) {
+  createHighlight(data) {
     if (this.isUserLoggedIn()) {
-      // create annotation object
-      console.log('data: ', data);
-      console.log('data.annote: ', data.annote);
       this.props.actions.saveAnnote(data.annote);
-
-      // highlighting is done by content.js.
-      // but the data it passed must be saved to the db.
     } else {
-      console.log('[createHightlight]: user not logged in');
+      console.log('[createHighlight]: user not logged in');
       this.postMessageToParent({ type: SHOW_IFRAME });
     }
-  }
-
-  sendAnnoteId() {
-    // TODO: replace annotations.length
-    const annoteId = this.props.annotations.length;
-    console.log('annoteId: ', annoteId);
-    this.postMessageToParent({
-      type: SEND_ANNOTE_ID,
-      annoteId,
-    });
-    return annoteId;
-  }
-
-  sendUserId() {
-    console.log('user: ', this.props.user);
-    const userId = this.props.user.id;
-    this.postMessageToParent({
-      type: SEND_USER_ID,
-      userId,
-    });
-    return userId;
-  }
-
-  sendIds(kind) {
-    const userId = this.props.user.id;
-    const annoteId = this.props.annotations.length;
-    this.postMessageToParent({
-      kind,
-      type: SEND_IDS,
-      ids: { userId, annoteId },
-    });
   }
 
   postMessageToParent(action) {
@@ -210,17 +118,10 @@ class App extends Component {
         return addAnnote(event.data.annotes);
       case CREATE_ANNOTE:
         return this.createAnnote(event.data.annote);
-
       case CREATE_HIGHLIGHT:
-        return this.createHightlight(event.data);
+        return this.createHighlight(event.data);
       case GET_USER:
         return this.sendUser();
-      case GET_IDS:
-        return this.sendIds(event.data.kind);
-      case GET_ANNOTE_ID:
-        return this.sendAnnoteId();
-      case GET_USER_ID:
-        return this.sendUserId();
       default:
         return undefined;
     }
@@ -242,8 +143,6 @@ class App extends Component {
 }
 
 App.propTypes = {
-  // adder: PropTypes.string,
-  // widget: PropTypes.string,
   user: PropTypes.object,
   annotation: PropTypes.object,
   annotations: PropTypes.array,

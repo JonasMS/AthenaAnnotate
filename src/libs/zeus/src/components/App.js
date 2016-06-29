@@ -5,13 +5,6 @@ import {
   SHOW_IFRAME,
   HIDE_IFRAME,
   CREATE_ANNOTE,
-  CREATE_HIGHLIGHT,
-  GET_ANNOTE_ID,
-  SEND_ANNOTE_ID,
-  GET_USER_ID,
-  SEND_USER_ID,
-  GET_IDS,
-  SEND_IDS,
   HAS_MOUNTED,
   GET_USER,
   SEND_USER,
@@ -39,15 +32,12 @@ class App extends Component {
       controls: HIDE_CONTROL_BUTTONS_CLASS,
     };
     this.retrieveAnnotes = this.retrieveAnnotes.bind(this);
-    this.getUser = this.getUser.bind(this);
     this.setUser = this.setUser.bind(this);
     this.initNote = this.initNote.bind(this);
     this.createHighlight = this.createHighlight.bind(this);
-    this.annoteHandler = this.annoteHandler.bind(this);
     this.toggleDisplayFrame = this.toggleDisplayFrame.bind(this);
     this.postMessageToFrame = this.postMessageToFrame.bind(this);
     this.handleMessageEvent = this.handleMessageEvent.bind(this);
-    this.handleKeyPressEvent = this.handleKeyPressEvent.bind(this);
     this.handleSelectionEvent = this.handleSelectionEvent.bind(this);
     this.annote = null; // TODO: necessary?
     this.annoteId = 0; // TODO: '0' is for dev purposes
@@ -59,19 +49,13 @@ class App extends Component {
     window.addEventListener('message', this.handleMessageEvent);
     // window.addEventListener('keypress', this.handleKeyPressEvent);
     document.body.addEventListener('mouseup', this.handleSelectionEvent);
-    // this.getUserIntervalId = window.setInterval(() => { this.getUser(); }, 200);
   }
 
   componentWillUnmount() {
     window.removeEventListener('message');
     // window.removeEventListener('onkeypress');
-    // document.removeEventListener('mouseup');
+    document.removeEventListener('mouseup');
   }
-
-  getUser() {
-    this.postMessageToFrame({ type: GET_USER });
-  }
-
 
   setUser(fbAcc) {
     return fetchUser(fbAcc)
@@ -89,34 +73,16 @@ class App extends Component {
         fetchAnnotes(user)
           .then(annotes => {
             console.log('annotes: ', annotes);
-            // const doc = document.body;
-            // TODO: send annotes to Athena after placing on DOM
-            // send Annotes to Athena
+            this.annoteId = this.getAnnoteId(annotes[annotes.length - 1].id);
+            annotes.forEach(annote => { locateAnnote(document.body, annote)});
             this.postMessageToFrame({ type: SEND_ANNOTES, annotes });
-            // place Annotes on DOM
-            // annotes.forEach(annote => { locateAnnote(doc, annote); });
-            this.retrieveAnnotes(annotes);
-            console.log('annoteId: ', this.annoteId);
           });
       });
   }
 
-  retrieveAnnotes(annotes) {
-    let annoteId = 0;
-    let curId;
-    annotes.forEach(annote => {
-      locateAnnote(document.body, annote); // TODO: use window instead of doc.body?
-      curId = this.getAnnoteId(annote.id);
-      if (curId > annoteId) {
-        annoteId = curId;
-      }
-    });
-    this.annoteId = annoteId + 1;
-  }
-
   getAnnoteId(idString) {
     const idx = idString.lastIndexOf('/') - 1;
-    return parseInt(idString[idx], 10);
+    return parseInt(idString[idx], 10) + 1;
   }
 
   isUserLoggedIn() {
@@ -150,15 +116,6 @@ class App extends Component {
         return this.initialLoad(event.data.user);
       case MODIFY_BODY:
       return this.createNote(event.data.body);
-
-      case SEND_IDS:
-        return this.annoteHandler(event.data.ids, event.data.kind);
-      case SEND_ANNOTE_ID:
-        this.annoteId = event.data.annoteId;
-        return this.annoteId;
-      case SEND_USER_ID:
-        this.userId = event.data.userId;
-        return this.userId;
       default:
         return null;// noop , need to return some value
     }
@@ -168,6 +125,7 @@ class App extends Component {
     this.props.iframe.contentWindow.postMessage(action, '*');
   }
 
+  // TODO: toggle vs explicit orders?
   toggleDisplayFrame() {
     const classList = this.props.iframe.classList;
 
@@ -178,15 +136,6 @@ class App extends Component {
       classList.remove(HIDE_IFRAME_CLASS);
       classList.add(SHOW_IFRAME_CLASS);
     }
-  }
-
-  annoteHandler(ids, kind) {
-    if (kind === 'highlight') {
-      this.createHighlight(ids);
-    } else if (kind === 'note') {
-      this.createAnnote(ids);
-    }
-    return kind;
   }
 
   initNote() {
@@ -225,15 +174,6 @@ class App extends Component {
       this.annoteId++; // TODO: move into createAnnote
       console.log('annote: ', annote);
     } // TODO: else show auth panel
-  }
-
-  handleKeyPressEvent(event) {
-    switch (event.key) {
-      case '1':
-        return this.setState({ controls: SHOW_CONTROL_BUTTONS_CLASS });
-      default:
-        return this.setState({ controls: HIDE_CONTROL_BUTTONS_CLASS });
-    }
   }
 
   render() {

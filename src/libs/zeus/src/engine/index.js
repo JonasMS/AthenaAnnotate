@@ -119,8 +119,8 @@ export const insertAnnote = (
 
   range.setStart(node.textNode, startOffset);
   range.setEnd(endNode.textNode, endOffset);
-  console.log('node: ', node);
-  console.log('insertAnnote: ', range);
+  // console.log('node: ', node);
+  // console.log('insertAnnote: ', range);
 
   // wrap selection in athena-annote tag
   const athena = new Athena;

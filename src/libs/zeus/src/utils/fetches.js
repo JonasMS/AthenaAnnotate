@@ -9,13 +9,6 @@ export const saveAnnote = (annote) => {
     createPOST(annote)
     )
     .then(checkStatus);
-    // .then(parseJSON)
-    // .then(annotation => {
-
-
-    // dispatch(addAnnote(annotation));
-    // dispatch(clearAnnote());
-    // });
 };
 
 export const fetchUser = (fbAcc) => {
@@ -31,7 +24,7 @@ export const fetchUser = (fbAcc) => {
     body: payload,
   })
     .then(checkStatus)
-    .then(res => res.json());
+    .then(res => res.json()); // TODO: refactor with parseJSON
     // .then(user => { this.user = user; });
 };
 
