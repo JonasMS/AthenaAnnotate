@@ -7,14 +7,19 @@ const annotation = (
       text: '',
     },
     target: {
-      exact: '',
-      prefix: '',
-      suffix: '',
+      source: '',
+      selector: {
+        exact: '',
+        prefix: '',
+        suffix: '',
+      },
     },
   },
   action
 ) => {
   switch (action.type) {
+    case types.SET_ANNOTATION:
+      return action.annote;
     case types.CLEAR_ANNOTATION:
       return Object.assign({}, state, {
         body: {
@@ -22,9 +27,12 @@ const annotation = (
           text: '',
         },
         target: {
-          exact: '',
-          prefix: '',
-          suffix: '',
+          source: '',
+          selector: {
+            exact: '',
+            prefix: '',
+            suffix: '',
+          },
         },
       });
     case types.UPDATE_BODY:

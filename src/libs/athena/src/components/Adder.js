@@ -3,21 +3,27 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 // import { createHandler } from '../utils/handlers';
 import * as Actions from '../actions';
-import { getText, setAddClass } from '../utils/utils';
+import { setAddClass } from '../utils/utils';
 
 class Adder extends Component {
 
   createHandler(btn) {
+    const {
+      annotation,
+      annotations,
+      user,
+      actions,
+    } = this.props;
     if (btn === 'note') {
-      const { actions } = this.props;
-      // change annotation.target
-      actions.setTarget(getText());
-      // TODO: Why is dispatch needed?
-      actions.setWidget('SHOW');
-    } else {
-      // create annotation
-      // add annotation to annotations
-
+      actions.adderHandler('note');
+    } else if (btn === 'highlight') {
+      actions.adderHandler(
+        'highlight', {
+          annotation,
+          annotations,
+          user,
+        }
+      );
     }
   }
 
@@ -52,6 +58,9 @@ class Adder extends Component {
 
 const mapStateToProps = (state) => ({
   adder: state.adder,
+  user: state.user,
+  annotation: state.annotation,
+  annotations: state.annotations,
 });
 
 const mapDispatchToProps = (dispatch) => ({

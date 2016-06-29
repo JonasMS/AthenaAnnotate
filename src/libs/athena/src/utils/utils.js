@@ -1,17 +1,49 @@
 export const getText = () => {
   // suffix: 20 chars after exact
   const sel = window.getSelection();
+  const range = sel.getRangeAt(0);
   const { data } = sel.focusNode;
-  const exStart = sel.focusOffset;
-  const exEnd = sel.anchorOffset;
-  const exact =
-    data
+  // const data = range.cloneContents().textContent;
+  // TODO: ^ may not work well w/
+  // selection of multiple nodes
+  const { startOffset } = range;
+  const { endOffset } = range;
+  console.log('getText: ', sel);
+  console.log('getText: ', range);
+
+  const exact = range.cloneContents().textContent;
+
+  const prefix =
+    range
+    .startContainer
+    .textContent
     .substring(
-      exStart,
-      exEnd
-     );
-  const prefix = data.substring(exStart - 20, exStart);
-  const suffix = data.substring(exEnd, exEnd + 20);
+    startOffset - 20,
+    startOffset
+    );
+
+  const suffix =
+    range
+    .endContainer
+    .textContent
+    .substring(
+      endOffset,
+      endOffset + 20
+    );
+  // const exact =
+  //   text
+  //   .substring(
+  //     startOffset,
+  //     endOffset
+  //    );
+  // const prefix = data.substring(
+  //   startOffset - 20,
+  //   startOffset
+  // );
+  // const suffix = data.substring(
+  //   endOffset,
+  //   endOffset + 20
+  // );
 
   return {
     exact,

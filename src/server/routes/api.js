@@ -49,8 +49,9 @@ router.get('/api/doc', function(req, res) {
     }],
     where: {
       UserId: req.query.UserId,
-      DocId: req.query.DocId
-    }
+      source: req.query.source
+    },
+    order: [['createdAt', 'ASC']]
   }).then(function(annotations) {
     annotationConstructor(annotations, res);
   }).catch(function(err) {

@@ -5,7 +5,11 @@ import {
   SHOW_IFRAME,
   HIDE_IFRAME,
   CREATE_ANNOTE,
-  CREATE_HIGHLIGHT,
+  HAS_MOUNTED,
+  GET_USER,
+  SEND_USER,
+  SEND_ANNOTES,
+  MODIFY_BODY,
 } from '../../../common/messageTypes';
 
 import {
@@ -15,6 +19,10 @@ import {
   SHOW_CONTROL_BUTTONS_CLASS,
 } from '../constants';
 
+import { wrapAnnote, locateAnnote } from '../engine/';
+
+import { saveAnnote, fetchUser, fetchAnnotes } from '../utils/fetches';
+import { getText, createAnnote } from '../utils/utils';
 
 class App extends Component {
   constructor(props) {
@@ -23,23 +31,76 @@ class App extends Component {
     this.state = {
       controls: HIDE_CONTROL_BUTTONS_CLASS,
     };
-
-    this.createAnnote = this.createAnnote.bind(this);
+    this.setUser = this.setUser.bind(this);
+    this.initNote = this.initNote.bind(this);
     this.createHighlight = this.createHighlight.bind(this);
     this.toggleDisplayFrame = this.toggleDisplayFrame.bind(this);
     this.postMessageToFrame = this.postMessageToFrame.bind(this);
     this.handleMessageEvent = this.handleMessageEvent.bind(this);
-    this.handleKeyPressEvent = this.handleKeyPressEvent.bind(this);
+    this.handleSelectionEvent = this.handleSelectionEvent.bind(this);
+    this.annote = null; // TODO: necessary?
+    this.annoteId = 0; // TODO: '0' is for dev purposes
+    this.user = null;
+    this.getUserIntevalId = null;
   }
 
   componentDidMount() {
     window.addEventListener('message', this.handleMessageEvent);
-    window.addEventListener('keypress', this.handleKeyPressEvent);
+    // window.addEventListener('keypress', this.handleKeyPressEvent);
+    document.body.addEventListener('mouseup', this.handleSelectionEvent);
   }
 
   componentWillUnmount() {
     window.removeEventListener('message');
-    window.removeEventListener('onkeypress');
+    // window.removeEventListener('onkeypress');
+    document.removeEventListener('mouseup');
+  }
+
+  setUser(fbAcc) {
+    return fetchUser(fbAcc)
+      .then(user => {
+        this.user = user;
+        this.postMessageToFrame({ type: SEND_USER, user });
+        console.log(this.user);
+        return user;
+      });
+  }
+
+  initialLoad(fbAcc) {
+    this.setUser(fbAcc)
+      .then(user => {
+        fetchAnnotes(user)
+          .then(annotes => {
+            console.log('annotes: ', annotes);
+            this.annoteId = this.getAnnoteId(annotes[annotes.length - 1].id);
+            annotes.forEach(annote => { locateAnnote(document.body, annote)});
+            this.postMessageToFrame({ type: SEND_ANNOTES, annotes });
+          });
+      });
+  }
+
+  getAnnoteId(idString) {
+    const idx = idString.lastIndexOf('/') - 1;
+    return parseInt(idString[idx], 10) + 1;
+  }
+
+  isUserLoggedIn() {
+    const { user } = this;
+    return user && user.id;
+  }
+
+  handleSelectionEvent() {
+    const range = window.getSelection().getRangeAt(0);
+    const distance = Math.abs(
+      range.endOffset - range.startOffset
+    );
+    const display = this.state.controller;
+    // IF a selection is made on mouseup
+    if (distance > 0) {
+      this.setState({ controls: SHOW_CONTROL_BUTTONS_CLASS });
+    } else if (display !== HIDE_CONTROL_BUTTONS_CLASS) {
+      this.setState({ controls: HIDE_CONTROL_BUTTONS_CLASS });
+    }
   }
 
   handleMessageEvent(event) {
@@ -48,8 +109,14 @@ class App extends Component {
       case SHOW_IFRAME:
         this.toggleDisplayFrame();
         break;
+      case HAS_MOUNTED:
+        return this.postMessageToFrame({ type: GET_USER });
+      case SEND_USER:
+        return this.initialLoad(event.data.user);
+      case MODIFY_BODY:
+      return this.createNote(event.data.body);
       default:
-        // noop
+        return null;// noop , need to return some value
     }
   }
 
@@ -57,6 +124,7 @@ class App extends Component {
     this.props.iframe.contentWindow.postMessage(action, '*');
   }
 
+  // TODO: toggle vs explicit orders?
   toggleDisplayFrame() {
     const classList = this.props.iframe.classList;
 
@@ -69,36 +137,42 @@ class App extends Component {
     }
   }
 
-  createAnnote() {
-    this.setState({ controls: HIDE_CONTROL_BUTTONS_CLASS });
-    this.postMessageToFrame({
-      type: CREATE_ANNOTE,
-      annote: {
-        exact: 'selected',
-        prefix: 'prefix',
-        suffix: 'suffix',
-      },
+  initNote() {
+    if (this.isUserLoggedIn()) {
+      this.setState({ controls: HIDE_CONTROL_BUTTONS_CLASS });
+      const { selector, range } = getText();
+      const annote = createAnnote(selector, this.annoteId, this.user.id);
+      this.annote = annote;
+
+      this.postMessageToFrame({ type: CREATE_ANNOTE, annote });
+      this.toggleDisplayFrame();
+      wrapAnnote(range);
+    } // TODO: else show auth panel
+  }
+
+  createNote(body) {
+    // change annote
+    console.log('body: ', body);
+    this.annote = Object.assign({}, this.annote, {
+      body,
     });
+    console.log('annote:', this.annote);
+    saveAnnote(this.annote);
     this.toggleDisplayFrame();
+    // TODO: this.annote = null ?
   }
 
   createHighlight() {
-    this.setState({ controls: HIDE_CONTROL_BUTTONS_CLASS });
-    this.postMessageToFrame({
-      type: CREATE_HIGHLIGHT,
-      highlight: {
-        exact: 'highlighted',
-      },
-    });
-  }
-
-  handleKeyPressEvent(event) {
-    switch (event.key) {
-      case '1':
-        return this.setState({ controls: SHOW_CONTROL_BUTTONS_CLASS });
-      default:
-        return this.setState({ controls: HIDE_CONTROL_BUTTONS_CLASS });
-    }
+    if (this.isUserLoggedIn()) {
+      this.setState({ controls: HIDE_CONTROL_BUTTONS_CLASS });
+      const { selector, range } = getText();
+      const annote = createAnnote(selector, this.annoteId, this.user.id);
+      saveAnnote(annote); // POST annote to server to be stored in db
+      wrapAnnote(range);
+      // TODO: update state.annotations in Athena
+      this.annoteId++; // TODO: move into createAnnote
+      console.log('annote: ', annote);
+    } // TODO: else show auth panel
   }
 
   render() {
@@ -106,11 +180,11 @@ class App extends Component {
       <div className={this.state.controls}>
         <div>
           <ControlButton
-            handler={this.createAnnote}
+            handler={() => { this.initNote(); }}
             label={'Annotate!'}
           />
           <ControlButton
-            handler={this.createHighlight}
+            handler={() => { this.createHighlight(); }}
             label={'Highlight!'}
           />
         </div>

@@ -13,17 +13,17 @@ $ git clone [this repo]
 $ npm install
 ```
 
-### Contributing 
+### Contributing
 
 Read [CONTRIBUTING.md](CONTRIBUTING.md).
 
-### Install DB 
+### Install DB
 
 1. Install [Postgres DB]()
 1. Start Postgres DB
 1. Run `npm run create`
 
-### Setup Configuration 
+### Setup Configuration
 
 Copy `.env.example` to `.env` and set any API keys or config variables in this file. Here are typical setting for these variables:
 
@@ -38,10 +38,11 @@ Copy `.env.example` to `.env` and set any API keys or config variables in this f
 You'll also need to setup your SSL key and certification. Here are some instructions:
 
 ```sh
-# makes key.pem and cert.pem. you will be prompted to make a passcode
+# makes key.pem and cert.pem. you will be prompted to create a passcode and setup
 $ openssl req -x509 -newkey rsa:2048 -keyout key.pem -out cert.pem -days 365
 
-# removes the passcode (for dev purposes)
+
+# after setup, removes the passcode (for dev purposes)
 $ openssl rsa -in key.pem -out newkey.pem && mv newkey.pem key.pem
 ```
 
@@ -49,7 +50,7 @@ Finally, rename `key.pem` to `server.key` and `cert.pem` to `server.crt` and pla
 
 > RESOURCE: http://blog.mgechev.com/2014/02/19/create-https-tls-ssl-application-with-express-nodejs/
 
-### Build Application 
+### Build Application
 
 Build the entire application. You must do this **before** you set up the watch commands, as the build process includes copying static files to `build/`.
 
@@ -92,15 +93,15 @@ Open terminals and do the following.
 > See `package.json` for build scripts that build an individual module
 > Notice the server is listening on two ports - one for **HTTP** and one for **HTTPS**.
 
-### Load Extension in Browser 
+### Load Extension in Browser
 
 Load the extension found at `build/extension` into Chrome. (Ensure *Developer Mode* is checked)
 
 > **Each time you make a change to the extension source, you must reload the compiled code in Chrome**
 
-### View Web App 
+### View Web App
 
-Navigate to `http://localhost:3000` to view the Web App. 
+Navigate to `http://localhost:3000` to view the Web App.
 
 ## Design
 
@@ -119,7 +120,7 @@ To start the server, issue:
 ```
 $ npm start
 ```
-This starts an express server defaulted to `http://localhost:3000`. 
+This starts an express server defaulted to `http://localhost:3000`.
 
 #### Endpoints
 
