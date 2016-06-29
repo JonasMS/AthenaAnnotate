@@ -38,7 +38,7 @@ class App extends Component {
     this.state = {
       controls: HIDE_CONTROL_BUTTONS_CLASS,
     };
-
+    this.retrieveAnnotes = this.retrieveAnnotes.bind(this);
     this.getUser = this.getUser.bind(this);
     this.setUser = this.setUser.bind(this);
     this.initNote = this.initNote.bind(this);
@@ -89,14 +89,34 @@ class App extends Component {
         fetchAnnotes(user)
           .then(annotes => {
             console.log('annotes: ', annotes);
-            const doc = document.body;
+            // const doc = document.body;
             // TODO: send annotes to Athena after placing on DOM
             // send Annotes to Athena
             this.postMessageToFrame({ type: SEND_ANNOTES, annotes });
             // place Annotes on DOM
-            annotes.forEach(annote => { locateAnnote(doc, annote); });
+            // annotes.forEach(annote => { locateAnnote(doc, annote); });
+            this.retrieveAnnotes(annotes);
+            console.log('annoteId: ', this.annoteId);
           });
       });
+  }
+
+  retrieveAnnotes(annotes) {
+    let annoteId = 0;
+    let curId;
+    annotes.forEach(annote => {
+      locateAnnote(document.body, annote); // TODO: use window instead of doc.body?
+      curId = this.getAnnoteId(annote.id);
+      if (curId > annoteId) {
+        annoteId = curId;
+      }
+    });
+    this.annoteId = annoteId + 1;
+  }
+
+  getAnnoteId(idString) {
+    const idx = idString.lastIndexOf('/') - 1;
+    return parseInt(idString[idx], 10);
   }
 
   isUserLoggedIn() {
