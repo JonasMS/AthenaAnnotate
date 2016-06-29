@@ -27,9 +27,12 @@ const annotation = (
           text: '',
         },
         target: {
-          exact: '',
-          prefix: '',
-          suffix: '',
+          source: '',
+          selector: {
+            exact: '',
+            prefix: '',
+            suffix: '',
+          },
         },
       });
     case types.UPDATE_BODY:

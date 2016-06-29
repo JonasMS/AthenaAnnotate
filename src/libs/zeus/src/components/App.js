@@ -129,7 +129,7 @@ class App extends Component {
       case SEND_USER:
         return this.initialLoad(event.data.user);
       case MODIFY_BODY:
-
+      return this.createNote(event.data.body);
 
       case SEND_IDS:
         return this.annoteHandler(event.data.ids, event.data.kind);
@@ -184,7 +184,11 @@ class App extends Component {
 
   createNote(body) {
     // change annote
-    this.annote = Object.assign({}, this.annote, body);
+    console.log('body: ', body);
+    this.annote = Object.assign({}, this.annote, {
+      body,
+    });
+    console.log('annote:', this.annote);
     saveAnnote(this.annote);
     this.toggleDisplayFrame();
     // TODO: this.annote = null ?
