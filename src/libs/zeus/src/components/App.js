@@ -31,7 +31,6 @@ class App extends Component {
     this.state = {
       controls: HIDE_CONTROL_BUTTONS_CLASS,
     };
-    this.retrieveAnnotes = this.retrieveAnnotes.bind(this);
     this.setUser = this.setUser.bind(this);
     this.initNote = this.initNote.bind(this);
     this.createHighlight = this.createHighlight.bind(this);
