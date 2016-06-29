@@ -7,7 +7,7 @@ const Profile = ({ user, exitProfile }) => {
   return (
     <div className="col-md-9">
       <div
-        className="profilePic"
+        className="circle profilePic"
         style={style}
         alt="Profile"
       />

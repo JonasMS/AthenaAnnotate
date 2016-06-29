@@ -24,7 +24,7 @@ const NavBar = ({
                 aria-haspopup="true"
                 aria-expanded="false"
               >
-                <div className="avatar" style={style} />
+                <div className="circle avatar" style={style} />
                 {user.facebook.name}
               </a>
               <ul className="dropdown-menu">

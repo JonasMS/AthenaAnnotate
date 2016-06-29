@@ -40,7 +40,7 @@ div.avatar {
   background-clip: padding-box;
 }
 
-li {
+li.annotation{
   margin-bottom: 15px;
   list-style-type: none;
 }
@@ -54,4 +54,9 @@ li blockquote {
 
 li .username {
   font-weight: bold;
+}
+
+li.card {
+  margin-bottom: 15px;
+  list-style-type: none;
 }

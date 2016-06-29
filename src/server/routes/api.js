@@ -4,6 +4,7 @@ var models = require('../models/index');
 var annotationConstructor = require('../utils/annotationConstructor');
 var listOfDocs = require('../utils/listOfDocs');
 var userConstructor = require('../utils/userConstructor');
+var scraper = require('../utils/scraper');
 
 // EXTENSION - creates an annotation for a given Doc and User
 router.post('/api/create', function(req, res) {
@@ -375,4 +376,8 @@ router.get('/api/group', function(req, res) {
   }).catch(function(err) {
     res.send(err);
   });
+});
+
+router.get('/api/scrape', function(req, res) {
+  scraper(req.query.url, res);
 });

@@ -42,7 +42,7 @@ const Editor = ({ body, onCancel, editText, onSave, editor, onDelete }) => (
           className="btn btn-default dropdown-toggle"
           data-toggle="dropdown"
           aria-haspopup="true"
-          aria-expanded="false"
+          aria-expanded="false"d
         >
           Privacy
           <span className="caret"></span>

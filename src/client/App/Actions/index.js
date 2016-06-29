@@ -3,10 +3,6 @@ require('es6-promise').polyfill();
 
 export * from '../../../libs/athena/src/actions';
 
-// TODO
-// pass a `filter` will determine which set of docs to
-// load options will be following feed or personal feed
-
 // To load all annotations based on filter
 const requestAnnotations = () => (
   {
@@ -35,12 +31,9 @@ export const fetchAnnotations = (id, filter, groupId) => {
   return dispatch => {
     dispatch(requestAnnotations());
     return fetch(url)
-    // return fetch(`http://localhost:3000/api/annotations?UserId=${id}`)
       .then(response => response.json())
       .then(annotations => {
-        // console.log(annotations);
         dispatch(loadAnnotations(annotations));
-      // .catch(err => console.log(err));
       });
   };
 };
@@ -230,7 +223,6 @@ export const loadFollowingDB = (id) => (
     fetch(`http://localhost:3000/api/follow?UserId=${id}`)
       .then(response => response.json())
       .then(users => {
-        // console.log(users);
         dispatch(loadFollowing(users));
       })
       .catch(err => console.log(err))
@@ -249,7 +241,6 @@ export const loadGroupsDB = (userId) => (
     fetch(`http://localhost:3000/api/groups?UserId=${userId}`)
       .then(response => response.json())
       .then(groups => {
-        // console.log(groups);
         dispatch(loadGroups(groups));
       })
       .catch(err => console.log(err))
@@ -270,7 +261,6 @@ export const leaveGroupDB = (groupId, userId) => (
     })
       .then(response => response.json())
       .then(groups => {
-        // console.log(groups);
         dispatch(loadGroups(groups));
       })
       .catch(err => console.log(err))
@@ -302,11 +292,11 @@ export const createGroup = (name, userId) => (
       // console.log(message);
       // if message is error --> return error
       if (message === 'Group Already Exists!') {
-        window.alert('Group Already Exists!');
+        // TODO: handle if Group already exists
+        // window.alert('Group Already Exists!');
       } else {
         dispatch(loadGroupsDB(userId));
       }
-      // if message is success --> add group to grouplist
     })
     .catch(err => console.log(err))
 );
