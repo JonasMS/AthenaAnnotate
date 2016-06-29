@@ -66,6 +66,13 @@ class App extends Component {
       });
   }
 
+  getAnnoteId(idString) {
+    const endIdx = idString.lastIndexOf('/');
+    const startIdx = idString.substring(0, endIdx)
+                     .lastIndexOf('e') + 1;
+    return parseInt(idString.substring(startIdx, endIdx), 10) + 1;
+  }
+
   initialLoad(fbAcc) {
     this.setUser(fbAcc)
       .then(user => {
@@ -73,16 +80,13 @@ class App extends Component {
           .then(annotes => {
             console.log('annotes: ', annotes);
             this.annoteId = this.getAnnoteId(annotes[annotes.length - 1].id);
-            annotes.forEach(annote => { locateAnnote(document.body, annote)});
+            console.log('annoteId: ', this.annoteId);
+            annotes.forEach(annote => { locateAnnote(document.body, annote); });
             this.postMessageToFrame({ type: SEND_ANNOTES, annotes });
           });
       });
   }
 
-  getAnnoteId(idString) {
-    const idx = idString.lastIndexOf('/') - 1;
-    return parseInt(idString[idx], 10) + 1;
-  }
 
   isUserLoggedIn() {
     const { user } = this;
