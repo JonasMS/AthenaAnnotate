@@ -22,7 +22,7 @@ import {
 import { wrapAnnote, locateAnnote } from '../engine/';
 
 import { saveAnnote, fetchUser, fetchAnnotes } from '../utils/fetches';
-import { getText, createAnnote } from '../utils/utils';
+import { shortcutHandler, getText, createAnnote } from '../utils/utils';
 
 class App extends Component {
   constructor(props) {
@@ -39,14 +39,14 @@ class App extends Component {
     this.handleMessageEvent = this.handleMessageEvent.bind(this);
     this.handleSelectionEvent = this.handleSelectionEvent.bind(this);
     this.annote = null; // TODO: necessary?
-    this.annoteId = 0; // TODO: '0' is for dev purposes
+    this.annoteId = 0; // TODO: change to null?
     this.user = null;
     this.getUserIntevalId = null;
   }
 
   componentDidMount() {
     window.addEventListener('message', this.handleMessageEvent);
-    // window.addEventListener('keypress', this.handleKeyPressEvent);
+    window.addEventListener('keypress', shortcutHandler);
     document.body.addEventListener('mouseup', this.handleSelectionEvent);
   }
 
@@ -54,6 +54,13 @@ class App extends Component {
     window.removeEventListener('message');
     // window.removeEventListener('onkeypress');
     document.removeEventListener('mouseup');
+  }
+
+  getAnnoteId(idString) { // copied to utils/utils
+    const endIdx = idString.lastIndexOf('/');
+    const startIdx = idString.substring(0, endIdx)
+                     .lastIndexOf('e') + 1;
+    return parseInt(idString.substring(startIdx, endIdx), 10) + 1;
   }
 
   setUser(fbAcc) {
@@ -64,13 +71,6 @@ class App extends Component {
         console.log(this.user);
         return user;
       });
-  }
-
-  getAnnoteId(idString) {
-    const endIdx = idString.lastIndexOf('/');
-    const startIdx = idString.substring(0, endIdx)
-                     .lastIndexOf('e') + 1;
-    return parseInt(idString.substring(startIdx, endIdx), 10) + 1;
   }
 
   initialLoad(fbAcc) {
@@ -86,7 +86,6 @@ class App extends Component {
           });
       });
   }
-
 
   isUserLoggedIn() {
     const { user } = this;
@@ -107,7 +106,7 @@ class App extends Component {
     }
   }
 
-  handleMessageEvent(event) {
+  handleMessageEvent(event) { // copied to messaging
     switch (event.data.type) {
       case HIDE_IFRAME:
       case SHOW_IFRAME:
@@ -124,7 +123,7 @@ class App extends Component {
     }
   }
 
-  postMessageToFrame(action) {
+  postMessageToFrame(action) { // copied to messaging
     this.props.iframe.contentWindow.postMessage(action, '*');
   }
 

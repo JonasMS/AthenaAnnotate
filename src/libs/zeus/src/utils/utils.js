@@ -1,4 +1,4 @@
-export const getText = () => {
+export const getText = () => { // moved to engine
   // suffix: 20 chars after exact
   const sel = window.getSelection();
   const range = sel.getRangeAt(0);
@@ -41,9 +41,14 @@ export const getText = () => {
   };
 };
 
-// TODO: move to engine?
+export const getAnnoteId = idString => {
+  const endIdx = idString.lastIndexOf('/');
+  const startIdx = idString.substring(0, endIdx)
+                   .lastIndexOf('e') + 1;
+  return parseInt(idString.substring(startIdx, endIdx), 10) + 1;
+};
 
-export const createAnnote = (
+export const createAnnote = ( // TODO: move somewhere
   selector,
   annoteId,
   userId
