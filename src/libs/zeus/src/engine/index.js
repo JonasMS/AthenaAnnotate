@@ -22,8 +22,8 @@ const createRegQuery = selector => {
 
 const getEndNode = (node, len) => {
   let curLen;
-  let remLen = len;
-  let curNode = node.nextSibling;
+  let remLen = len - node.textNode.length;
+  let curNode = node.textNode.nextSibling;
   while (!!curNode) {
     curLen = curNode.nodeType === 3 ?
       curNode.length :
@@ -31,16 +31,16 @@ const getEndNode = (node, len) => {
 
     if (remLen - curLen <= 0) {
       return {
-        curNode,
-        remLen,
+        textNode: curNode,
+        end: remLen + 1,
       };
     }
     remLen -= curLen;
     curNode = curNode.nextSibling;
   }
   return {
-    node,
-    remLen,
+    textNode: node.textNode,
+    end: remLen,
   };
 };
 
@@ -97,27 +97,25 @@ export const wrapAnnote = (range) => {
 // returns range
 // wraps the selected text in a custom
 // html element
-export const insertAnnote = (
-  node,
-  endNode,
-  annote,
-  match
-) => {
+export const insertAnnote = (startNode, endNode, annote, match) => {
   const matchIdx = match.index;
   const {
     prefix,
     exact,
   } = annote.target.selector;
 
-
+  // debugger;
   // make a Range obj
   const range = document.createRange();
-  const startOffset =
-    (matchIdx - node.start) + prefix.length;
-  const endOffset =
-    startOffset + exact.length;
+  const startOffset = (matchIdx - startNode.start) + prefix.length;
+  const endOffset = startNode === endNode ?
+    startOffset + exact.length: endNode.end;
+  // const endOffset = endNode.offset;
+    // startOffset + exact.length;
 
-  range.setStart(node.textNode, startOffset);
+  console.log(endNode, ' ', endOffset);
+
+  range.setStart(startNode.textNode, startOffset);
   range.setEnd(endNode.textNode, endOffset);
   // console.log('node: ', node);
   // console.log('insertAnnote: ', range);
@@ -138,9 +136,9 @@ export const insertAnnote = (
 export const locateAnnote = (doc, annote) => {
   const { docText, nodes } = parseDoc(doc);
   let node;
+  let startNode;
   let endNode;
   let nodeLen;
-  // let nodeLen;
 
   // console.log(annote);
 
@@ -170,36 +168,35 @@ export const locateAnnote = (doc, annote) => {
         if (matchIdx < node.start) {
           break;
         }
-
-        if (
-          matchIdx + match[1].length >
-          node.start + nodeLen
-        ) {
-          console.log('MULTIPLE NODES');
-          endNode = node;
-          // endNode = getEndNode(
-          //   node,
-          //   match[1].length
-          // );
+        console.log('match[1]: ', match[1]);
+        // If match spans multiple nodes
+        // debugger;
+        if (matchIdx + match[1].length > node.start + nodeLen) {
+          endNode = getEndNode(node, match[1].length);
+          // console.log('MULTIPLE NODES');
+          // endNode = node;
         } else {
+          // endNode = { textNode: node.textNode, end: match[1].length };
           endNode = node;
-          // endNode = {
-          //   node: nodes[i],
-          //   offset: matchIdx + match[1].length
         }
+        // startNode = {
+        //   node,
+        //   offset: matchIdx,
+        // };
 
         // console.log(node, node.textNode.nodeValue);
           // return node;
+        console.log(node, ' ', endNode);
         insertAnnote(
           node,
           endNode,
           annote,
           match
         );
+      } else {
+        console.log('no match');
+        return match;
       }
     }
-  } else {
-    console.log('no match');
-    return match;
   }
 };
