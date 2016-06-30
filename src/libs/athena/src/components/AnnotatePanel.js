@@ -55,7 +55,7 @@ AnnotatePanel.propTypes = {
   annotations: PropTypes.array,
   close: PropTypes.func.isRequired,
   submitHandler: PropTypes.func.isRequired,
-  exact: PropTypes.string.isRequired,
+  // exact: PropTypes.string.isRequired,
 };
 
 export default AnnotatePanel;
