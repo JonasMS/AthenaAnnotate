@@ -7,25 +7,28 @@ import {
   MODIFY_BODY,
 } from '../../../../common/messageTypes';
 
-import iframe from '../../index';
+import { showAthena } from '../interactions';
+import { createNote } from '../handlers';
+// import iframe from '../../index';
 
-export const postMessageToFrame = action => {
+export function postMessageToFrame(iframe, action) {
   iframe.contentWindow.postMessage(action, '*');
-};
+}
 
-export const handleMessageEvent = e => {
+export function handleMessageEvent(e) {
   switch (e.data.type) {
     case HIDE_IFRAME:
     case SHOW_IFRAME:
-      this.toggleDisplayFrame();
+      // this.toggleDisplayFrame();
+      showAthena();
       break;
     case HAS_MOUNTED:
-      return this.postMessageToFrame({ type: GET_USER });
+      return postMessageToFrame({ type: GET_USER });
     case SEND_USER:
       return this.initialLoad(e.data.user);
     case MODIFY_BODY:
-    return this.createNote(e.data.body);
+      return createNote(e.data.body);
     default:
       return null;// noop , need to return some value
   }
-};
+}
