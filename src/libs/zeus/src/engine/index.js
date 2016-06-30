@@ -32,7 +32,7 @@ const getEndNode = (node, len) => {
     if (remLen - curLen <= 0) {
       return {
         textNode: curNode,
-        end: remLen + 1,
+        endOffset: remLen + 1,
       };
     }
     remLen -= curLen;
@@ -40,7 +40,7 @@ const getEndNode = (node, len) => {
   }
   return {
     textNode: node.textNode,
-    end: remLen,
+    endOffset: remLen,
   };
 };
 
@@ -51,12 +51,10 @@ export const parseDoc = doc => {
   let docText = '';
   let node;
   const nodes = [];
-  const nodeIterator =
-    document
-    .createNodeIterator(
-      doc,
-      NodeFilter.SHOW_TEXT,
-      textNode => (
+  const nodeIterator = document.createNodeIterator(
+    doc,
+    NodeFilter.SHOW_TEXT,
+    textNode => (
         textNode.parentElement.nodeName.toLowerCase() !== 'script' ?
             NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT
       )
@@ -95,43 +93,25 @@ export const wrapAnnote = (range) => {
 // returns range
 // wraps the selected text in a custom
 // html element
-export const insertAnnote = (startNode, endNode, annote, match) => {
-  const matchIdx = match.index;
-  const {
-    prefix,
-  } = annote.target.selector;
-
-  // debugger;
-  // make a Range obj
+export const insertAnnote = (startNode, endNode, cb) => {
   const range = document.createRange();
-  const startOffset = (matchIdx - startNode.start) + prefix.length;
-  const endOffset = startNode === endNode ?
-    startOffset + match[1].length : endNode.end;
-  // const endOffset = endNode.offset;
-    // startOffset + exact.length;
-
-  console.log(endNode, ' ', endOffset);
+  const { startOffset } = startNode;
+  const { endOffset } = endNode;
 
   range.setStart(startNode.textNode, startOffset);
   range.setEnd(endNode.textNode, endOffset);
-  // console.log('node: ', node);
-  // console.log('insertAnnote: ', range);
 
-  // wrap selection in athena-annote tag
   const athena = new Athena;
-  const cb = function() {
-    console.log('clicked!!');
-  };
   athena.addListener(cb);
   range.surroundContents(athena);
-  // TODO: range.detach()
+  // TODO: range.detach() ?
   return range;
 };
 
 // should return the location of a given
 // annote within a given node
-export const locateAnnote = (doc, annote) => {
-  const { docText, nodes } = parseDoc(doc);
+export const locateAnnote = (annote, docText, nodes) => {
+  // const { docText, nodes } = parseDoc(doc);
   let startNode;
   let endNode;
   let nodeLen;
@@ -157,23 +137,39 @@ export const locateAnnote = (doc, annote) => {
         if (matchIdx < startNode.start) {
           break;
         }
+
+        startNode.startOffset =
+        (matchIdx - startNode.start) + selector.prefix.length;
         // IF match spans multiple nodes find the endNode
         // ELSE, endNode is the same node as startNode
-        if (matchIdx + match[1].length > startNode.start + nodeLen) {
-          endNode = getEndNode(startNode, match[1].length);
-        } else {
-          endNode = startNode;
-        }
-        insertAnnote(startNode, endNode, selector.prefix, match);
-      } else {
-        // TODO: Handle case inwhich an annotation cannot be retrieved
-        console.log('no match');
-        return match;
+
+        endNode = matchIdx + match[1].length > startNode.start + nodeLen ?
+          getEndNode(startNode, match[1].length) :
+        {
+          textNode: startNode.textNode,
+          endOffset: startNode.startOffset + match[1].length,
+        };
+        return ({ startNode, endNode });
+        // insertAnnote(startNode, endNode, selector.prefix, match);
       }
+      // TODO: Handle case inwhich an annotation cannot be retrieved
+      console.log('no match');
+      return null;
     }
   }
 };
 
-export function retrieveAnnote() {
-
+// Returns Range of retrieved annotation or null
+// if the annotation could not be retrieved
+export function retrieveAnnote(doc, annote, cb) {
+  // parse document
+  const { docText, nodes } = parseDoc(doc);
+  // determine annote's location on document
+  const annoteLocation = locateAnnote(annote, docText, nodes);
+  // insert annote
+  if (!!annoteLocation) {
+    const { startNode, endNode } = annoteLocation;
+    return insertAnnote(startNode, endNode, cb);
+  }
+  return null;
 }

@@ -19,7 +19,7 @@ import {
   SHOW_CONTROL_BUTTONS_CLASS,
 } from '../constants';
 
-import { wrapAnnote, locateAnnote } from '../engine/';
+import { wrapAnnote, retrieveAnnote, locateAnnote } from '../engine/';
 import { saveAnnote, fetchUser, fetchAnnotes } from '../utils/fetches';
 import { getText, createAnnote } from '../utils/utils';
 
@@ -78,10 +78,13 @@ class App extends Component {
       .then(user => {
         fetchAnnotes(user)
           .then(annotes => {
-            console.log(annotes);
             if (!!annotes.length) {
-              this.getAnnoteId(annotes[annotes.length - 1].id);
-              annotes.forEach(annote => { locateAnnote(document.body, annote); });
+              this.annoteId = this.getAnnoteId(annotes[annotes.length - 1].id);
+              annotes.forEach(annote => {
+                retrieveAnnote(document.body, annote, () => {
+                  console.log(annote.id);
+                });
+              });
               this.postMessageToFrame({ type: SEND_ANNOTES, annotes });
             } else {
               this.annoteId = 0;
