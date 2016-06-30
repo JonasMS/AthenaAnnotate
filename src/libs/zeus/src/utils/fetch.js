@@ -8,20 +8,20 @@ const emitErr = (res) => {
 };
 
 export const checkStatus = res => (
-    (res.status >= 200) &&
-    (res.status < 300) ?
-      res : emitErr(res)
+  (res.status >= 200) &&
+  (res.status < 300) ?
+    res : emitErr(res)
 );
 
 export const parseJSON = res => (
-    res.json()
+  res.json()
 );
 
 export const createPOST = body => (
   {
     method: 'POST',
     headers: {
-      'Accept': 'application/json',
+      Accept: 'application/json',
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(body),

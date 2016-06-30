@@ -2,7 +2,6 @@ export const getText = () => {
   // suffix: 20 chars after exact
   const sel = window.getSelection();
   const range = sel.getRangeAt(0);
-  const { data } = sel.focusNode;
   // const data = range.cloneContents().textContent;
   // TODO: ^ may not work well w/
   // selection of multiple nodes
@@ -56,7 +55,7 @@ export const createAnnote = (
 
   // TODO: add '/' before annoteId if target.souce
   // does not end w/ a '/'
-  const id = url + '/annote' + annoteId + '/' + userId;
+  const id = `${url}/annote${annoteId}/${userId}`;
   return {
     id,
     creator: userId,
