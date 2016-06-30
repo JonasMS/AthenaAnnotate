@@ -1,0 +1,62 @@
+body { 
+  padding-top: 70px;
+}
+
+div.circle{
+  border-radius: 50%;
+  background-position-y: center;
+  background-position-x: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+div.profilePic {
+  display: block;
+  width: 250px;
+  height: 250px;
+  margin: 0 auto;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+div.avatar {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  margin-right: 5px;
+  vertical-align: middle;
+}
+
+.card {
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+}
+
+.card {
+  margin-top: 10px;
+  box-sizing: border-box;
+  border-radius: 2px;
+  background-clip: padding-box;
+}
+
+li.annotation{
+  margin-bottom: 15px;
+  list-style-type: none;
+}
+
+li blockquote {
+  font-size: 14px;
+  font-style: italic;
+  color: grey;
+  margin-bottom: 0;
+}
+
+li .username {
+  font-weight: bold;
+}
+
+li.card {
+  margin-bottom: 15px;
+  list-style-type: none;
+}

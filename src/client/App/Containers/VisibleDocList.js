@@ -6,6 +6,7 @@ const mapStatetoProps = (state) => (
   {
     docs: state.docs,
     listView: state.listView,
+    filter: state.filter,
   }
 );
 

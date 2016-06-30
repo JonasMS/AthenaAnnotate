@@ -5,29 +5,32 @@ const changeLocation = (url) => {
   window.location = url;
 };
 
-const Doc = ({ url, id, onDocDelete, listView }) => (
+const Doc = ({ url, id, count, onDocDelete, listView, filter }) => (
   <li
-    className="card blue-grey darken-1 white-text"
+    className="card"
   >
     <div onClick={() => changeLocation(url)}>
       {url}
     </div>
-    <button
-      className="waves-effect waves-light btn-floating"
-      onClick={onDocDelete}
-    >
-      <i className="material-icons">delete</i>
-    </button>
+    {filter !== 'Self' ? null :
+      <button
+        className="waves-effect waves-light btn-floating"
+        onClick={onDocDelete}
+      >
+        <i className="material-icons">delete</i>
+      </button>}
     {listView}
-    {listView ? null : <VisibleAnnotationList id={id} />}
+    {listView ? <div>Annotations: {count}</div> : <VisibleAnnotationList id={id} />}
   </li>
 );
 
 Doc.propTypes = {
+  count: PropTypes.number.isRequired,
   url: PropTypes.string.isRequired,
   id: PropTypes.number.isRequired,
   onDocDelete: PropTypes.func.isRequired,
   listView: PropTypes.bool.isRequired,
+  filter: PropTypes.string.isRequired,
 };
 
 export default Doc;

@@ -8,7 +8,9 @@ module.exports = function(sequelize, DataTypes) {
     prefix: DataTypes.TEXT,
     suffix: DataTypes.TEXT,
     UserId: DataTypes.INTEGER,
-    DocId: DataTypes.INTEGER
+    DocId: DataTypes.INTEGER,
+    private: DataTypes.STRING,
+    groupId: DataTypes.INTEGER
   }, {
     classMethods: {
       associate: function(models) {

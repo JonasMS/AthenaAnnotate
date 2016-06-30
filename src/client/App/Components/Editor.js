@@ -4,12 +4,12 @@ const Editor = ({ body, onCancel, editText, onSave, editor, onDelete }) => (
   <div>
     <form>
       <textarea
-        className="materialize-textarea"
+        className="form-control"
         defaultValue={body}
         onChange={(e) => editText(e.target.value)}
       />
       <button
-        className="waves-effect waves-light btn"
+        className="btn btn-default"
         type="submit"
         onClick={(e) => {
           e.preventDefault();
@@ -19,7 +19,7 @@ const Editor = ({ body, onCancel, editText, onSave, editor, onDelete }) => (
         Save
       </button>
       <button
-        className="waves-effect waves-light btn"
+        className="btn btn-default"
         onClick={(e) => {
           e.preventDefault();
           onDelete();
@@ -28,7 +28,7 @@ const Editor = ({ body, onCancel, editText, onSave, editor, onDelete }) => (
         Delete
       </button>
       <button
-        className="waves-effect waves-light btn"
+        className="btn btn-default"
         onClick={(e) => {
           e.preventDefault();
           onCancel();
@@ -36,6 +36,24 @@ const Editor = ({ body, onCancel, editText, onSave, editor, onDelete }) => (
       >
         Cancel
       </button>
+      <div className="btn-group">
+        <button
+          type="button"
+          className="btn btn-default dropdown-toggle"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"d
+        >
+          Privacy
+          <span className="caret"></span>
+        </button>
+        <ul className="dropdown-menu">
+          <li><a href="#">Private</a></li>
+          <li><a href="#">Public</a></li>
+          <li role="separator" className="divider"></li>
+          <li><a href="#">Groups</a></li>
+        </ul>
+      </div>
     </form>
   </div>
 );

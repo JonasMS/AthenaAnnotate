@@ -5,6 +5,9 @@ import * as actions from '../Actions';
 const mapStatetoProps = (state) => (
   {
     annotations: state.annotations,
+    filter: state.filter,
+    user: state.user,
+    following: state.following,
   }
 );
 
@@ -21,6 +24,9 @@ const mapDispatchToProps = (dispatch) => (
     },
     onDeleteBody: (id, url) => {
       dispatch(actions.deleteBodyDB(id, url));
+    },
+    followUser: (userId, id) => {
+      dispatch(actions.followUser(userId, id));
     },
   }
 );

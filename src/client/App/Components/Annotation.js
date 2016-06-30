@@ -12,22 +12,35 @@ const Annotation = (
     id,
     url,
     target,
+    userName,
+    filter,
+    userId,
+    followUser,
+    user,
+    following,
   }
 ) => (
-  <li
-    className="card grey darken-1 white-text"
-  >
-    {target}
+  <li className="annotation">
+    {filter !== 'Self' ?
+      <div>
+        <span className="username">{userName}</span>
+        {user.id === userId ? null :
+          <a className="follow" onClick={() => followUser(userId, user.id)}>{following[userId] === 1
+            ? 'unfollow' : 'follow'}</a>
+        }
+      </div>
+      : null}
+    <blockquote>
+      {target}
+    </blockquote>
     <div>
     {!!body ?
       <div>
-        <p>
-          {!edit ? body : null}
-        </p>
+        {!edit ? body : null}
         <div
           className="card-action"
         >
-          {edit ?
+          {edit && (/* filter === 'Self' || */user.id === userId) ?
             <BodyEditor
               body={body}
               onCancel={() => onEditBody(id)}
@@ -35,7 +48,7 @@ const Annotation = (
               onDelete={() => onDeleteBody(id, url)}
             />
             : null}
-          {!edit ?
+          {!edit && (/* filter === 'Self' || */user.id === userId) ?
             <button
               className="waves-effect waves-light btn-floating"
               onClick={() => onEditBody(id)}
@@ -47,12 +60,13 @@ const Annotation = (
       </div>
     : null}
     </div>
-    <button
-      className="waves-effect waves-light btn-floating"
-      onClick={onAnnotationDelete}
-    >
-      <i className="material-icons">delete</i>
-    </button>
+    {/* filter !== 'Self' || */user.id !== userId ? null :
+      <button
+        className="waves-effect waves-light btn-floating"
+        onClick={onAnnotationDelete}
+      >
+        <i className="material-icons">delete</i>
+      </button>}
   </li>
 );
 
@@ -66,6 +80,12 @@ Annotation.propTypes = {
   id: PropTypes.number.isRequired,
   url: PropTypes.string.isRequired,
   target: PropTypes.string.isRequired,
+  userName: PropTypes.string.isRequired,
+  userId: PropTypes.number.isRequired,
+  filter: PropTypes.string.isRequired,
+  followUser: PropTypes.func.isRequired,
+  user: PropTypes.object.isRequired,
+  following: PropTypes.object.isRequired,
 };
 
 export default Annotation;

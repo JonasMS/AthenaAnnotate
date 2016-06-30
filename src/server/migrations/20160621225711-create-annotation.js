@@ -10,13 +10,15 @@ module.exports = {
       },
       url: {
         type: Sequelize.TEXT,
-        unique: true
+        unique: true,
+        allowNull: false
       },
       text: {
         type: Sequelize.TEXT
       },
       source: {
-        type: Sequelize.TEXT
+        type: Sequelize.TEXT,
+        allowNull: false
       },
       exact: {
         type: Sequelize.TEXT
@@ -31,6 +33,13 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       DocId: {
+        type: Sequelize.INTEGER
+      },
+      private: {
+        type: Sequelize.STRING,
+        allowNull: false
+      },
+      groupId: {
         type: Sequelize.INTEGER
       },
       createdAt: {
