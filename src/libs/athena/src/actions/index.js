@@ -21,24 +21,24 @@ export const saveUserToStore = userData => (
   }
 );
 
-// export const getUserFromDB = fbUser => {
-//   const payload = JSON.stringify(fbUser);
+export const getUserFromDB = fbUser => {
+  const payload = JSON.stringify(fbUser);
 
-//   return dispatch => {
-//     fetch('/api/users', {
-//       method: 'POST',
-//       headers: {
-//         'Content-type': 'application/json',
-//         'Content-length': payload.length,
-//       },
-//       credentials: 'same-origin',
-//       body: payload,
-//     })
-//     .then(res => res.json())
-//     .then(res => dispatch(saveUserToStore(res)))
-//     .catch(err => dispatch(failedRequest(err)));
-//   };
-// };
+  return dispatch => {
+    fetch('/api/users', {
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/json',
+        'Content-length': payload.length,
+      },
+      credentials: 'same-origin',
+      body: payload,
+    })
+    .then(res => res.json())
+    .then(res => dispatch(saveUserToStore(res)))
+    .catch(err => dispatch(failedRequest(err)));
+  };
+};
 
 export const login = () => (
   dispatch => (
