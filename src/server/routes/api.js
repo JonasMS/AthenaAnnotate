@@ -12,6 +12,10 @@ router.post('/api/create', function(req, res) {
     where: { url: req.body.target.source },
     raw: true
   }).then(function(doc) {
+    // if doc[1] = true, then send to scraper
+    if (doc[1] === true) {
+      scraper(req.body.target.source);
+    }
     models.Annotation.create({
       UserId: Number(req.body.creator),
       DocId: Number(doc[0].id),
