@@ -9,15 +9,15 @@ const Doc = ({ url, baseUrl, title, image, id, count, onDocDelete, listView, fil
   <li>
     {listView
       ?
-      <div className="media card">
-        <a onClick={() => changeLocation(url)}>
+      <div className="media card" onClick={() => changeLocation(url)}>
+        <a>
           <div className="media-left">
             <img className="media-object docimage small" src={image} alt="Thumbnail" />
           </div>
           <div className="media-body">
             <h4 className="media-heading">{title}</h4>
-            <p>{baseUrl}</p>
-            <span>Annotations: {count}</span>
+            <p className="url">{baseUrl}</p>
+            <span className="note-count">Annotations: {count}</span>
           </div>
         </a>
       </div>
@@ -28,7 +28,7 @@ const Doc = ({ url, baseUrl, title, image, id, count, onDocDelete, listView, fil
             <img className="docimage large" src={image} alt="Document" />
           </div>
           <h4 className="heading">{title}</h4>
-          <p>{baseUrl}</p>
+          <p className="url">{baseUrl}</p>
         </a>
         {filter !== 'Self' ? null :
           <button

@@ -94,3 +94,9 @@ div.media-body {
 .card a {
   text-decoration: none;
 }
+
+p.url {
+  font-size: small;
+  color: grey;
+  font-style: italic;
+}

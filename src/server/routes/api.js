@@ -227,7 +227,19 @@ router.get('/api/docs', function(req, res) {
   });
 });
 
-module.exports = router;
+// WEB APP - deletes all annotations for a given Doc for a given User
+router.delete('/api/docs', function(req, res) {
+  models.Annotation.destroy({
+    where: {
+      UserId: req.query.UserId,
+      DocId: req.query.DocId
+    }
+  }).then(function() {
+    res.send('deleted');
+  }).catch(function() {
+    res.send('error');
+  });
+});
 
 // BOTH - toggles following a User
 router.post('/api/follow', function(req, res) {
@@ -385,3 +397,5 @@ router.get('/api/group', function(req, res) {
 router.get('/api/scrape', function(req, res) {
   scraper(req.query.url, res);
 });
+
+module.exports = router;

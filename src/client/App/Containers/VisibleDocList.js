@@ -4,6 +4,7 @@ import * as actions from '../Actions';
 
 const mapStatetoProps = (state) => (
   {
+    user: state.user,
     docs: state.docs,
     listView: state.listView,
     filter: state.filter,
@@ -12,8 +13,8 @@ const mapStatetoProps = (state) => (
 
 const mapDispatchToProps = (dispatch) => (
   {
-    onDocDelete: (id) => {
-      dispatch(actions.deleteDoc(id));
+    onDocDelete: (id, userId) => {
+      dispatch(actions.deleteDocDB(id, userId));
     },
     switchView: () => {
       dispatch(actions.switchView());

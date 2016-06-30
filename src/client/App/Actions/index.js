@@ -158,11 +158,30 @@ export const deleteBodyDB = (id, url) => (
 );
 
 // To handle deletion of doc for a specific user
+const deleteDocFail = id => (
+  {
+    type: 'DELETE_DOC_FAIL',
+    id,
+  }
+);
+
 export const deleteDoc = id => (
   {
     type: 'DELETE_DOC',
     id,
   }
+);
+
+export const deleteDocDB = (docId, userId) => (
+  dispatch =>
+    fetch(`http://localhost:3000/api/docs?UserId=${userId}&&DocId=${docId}`, {
+      method: 'DELETE',
+    }).then(response => {
+      if (response.status === 200) {
+        return dispatch(deleteDoc(docId));
+      }
+      return dispatch(deleteDocFail(docId));
+    })
 );
 
 // To handle switching between list and detail card views
