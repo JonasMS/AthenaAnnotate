@@ -87,6 +87,7 @@ div.media.card {
 }
 
 div.media-body {
+  padding-top: 10px;
   width: 100%;
 }
 

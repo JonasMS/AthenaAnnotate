@@ -5,7 +5,7 @@ const changeLocation = (url) => {
   window.location = url;
 };
 
-const Doc = ({ url, title, image, id, count, onDocDelete, listView, filter }) => (
+const Doc = ({ url, baseUrl, title, image, id, count, onDocDelete, listView, filter }) => (
   <li>
     {listView
       ?
@@ -16,7 +16,7 @@ const Doc = ({ url, title, image, id, count, onDocDelete, listView, filter }) =>
           </div>
           <div className="media-body">
             <h4 className="media-heading">{title}</h4>
-            <p>{url}</p>
+            <p>{baseUrl}</p>
             <span>Annotations: {count}</span>
           </div>
         </a>
@@ -28,7 +28,7 @@ const Doc = ({ url, title, image, id, count, onDocDelete, listView, filter }) =>
             <img className="docimage large" src={image} alt="Document" />
           </div>
           <h4 className="heading">{title}</h4>
-          <p>{url}</p>
+          <p>{baseUrl}</p>
         </a>
         {filter !== 'Self' ? null :
           <button
@@ -44,6 +44,7 @@ const Doc = ({ url, title, image, id, count, onDocDelete, listView, filter }) =>
 );
 
 Doc.propTypes = {
+  baseUrl: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   image: PropTypes.string.isRequired,
   count: PropTypes.number.isRequired,

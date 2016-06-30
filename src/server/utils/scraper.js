@@ -36,13 +36,13 @@ var getLargest = function (imgArray, originalLink) {
     return promise.reflect();
   }))
   .then(function(results) {
-    console.log(results);
+    // console.log(results);
     for (j = 0; j < results.length; j ++) {
       if (results[j].isFulfilled() && results[j].value() !== undefined) {
-        console.log('this is the result value', results[j].value());
+        // console.log('this is the result value', results[j].value());
         // console.log(results[j].value().width, results[j].value().height);
         currDimension = results[j].value().width * results[j].value().height;
-        console.log(currDimension);
+        // console.log(currDimension);
         if (currDimension > maxDimensions) {
           maxDimensions = currDimension;
           largest = imgArray[j];
@@ -68,7 +68,7 @@ var getImages = function(doc, originalLink) {
   var urlObj;
   var baseUrl = url.parse(originalLink).protocol + '//' + url.parse(originalLink).hostname;
 
-  console.log('these are the images', images);
+  // console.log('these are the images', images);
 
   for (i = 0; i < keys.length; i++) {
     if (images[keys[i]].attribs) {
@@ -89,10 +89,12 @@ var getImages = function(doc, originalLink) {
 };
 
 var getTitle = function(doc, originalLink) {
+  var baseUrl = url.parse(originalLink).protocol + '//' + url.parse(originalLink).hostname;
   var title = doc('title');
-  console.log(title[0].children[0].data);
+  // console.log(title[0].children[0].data);
   models.Doc.update({
-    title: title[0].children[0].data
+    title: title[0].children[0].data,
+    baseUrl: baseUrl
   }, {
     where: {
       url: originalLink
@@ -107,7 +109,7 @@ var getHTML = function(link) {
 // var getHTML = function(link, res) {
   request(link, function(error, response, body) {
     if (!error) {
-      console.log(response.statusCode);
+      // console.log(response.statusCode);
       $ = cheerio.load(body);
       getImages($, link);
       getTitle($, link);
