@@ -19,10 +19,6 @@ import {
   SHOW_CONTROL_BUTTONS_CLASS,
 } from '../constants';
 
-
-// import { selectionHandler } from '../modules/interactions';
-
-
 import { wrapAnnote, locateAnnote } from '../engine/';
 import { saveAnnote, fetchUser, fetchAnnotes } from '../utils/fetches';
 import { getText, createAnnote } from '../utils/utils';
@@ -43,9 +39,10 @@ class App extends Component {
     this.handleMessageEvent = this.handleMessageEvent.bind(this);
     this.handleSelectionEvent = this.handleSelectionEvent.bind(this);
     this.annote = null; // TODO: necessary?
-    this.annoteId = 0; // TODO: change to null?
+    this.annoteId = null;
     this.user = null;
     this.getUserIntevalId = null;
+    this.hasSelection = false;
   }
 
   componentDidMount() {
@@ -56,11 +53,11 @@ class App extends Component {
 
   componentWillUnmount() {
     window.removeEventListener('message');
-    // window.removeEventListener('onkeypress');
+    window.removeEventListener('keydown');
     document.removeEventListener('mouseup');
   }
 
-  getAnnoteId(idString) { // copied to utils/utils
+  getAnnoteId(idString) {
     const endIdx = idString.lastIndexOf('/');
     const startIdx = idString.substring(0, endIdx)
                      .lastIndexOf('e') + 1;
@@ -72,19 +69,18 @@ class App extends Component {
       .then(user => {
         this.user = user;
         this.postMessageToFrame({ type: SEND_USER, user });
-        console.log(this.user);
         return user;
       });
   }
 
-  initialLoad(fbAcc) {
+  initialLoad(fbAcc) { // TODO: change name to onSignIn ?
     this.setUser(fbAcc)
       .then(user => {
         fetchAnnotes(user)
           .then(annotes => {
-            console.log('annotes: ', annotes);
-            this.annoteId = this.getAnnoteId(annotes[annotes.length - 1].id);
-            console.log('annoteId: ', this.annoteId);
+            this.annoteId = !!annotes.length ?
+              this.getAnnoteId(annotes[annotes.length - 1].id) : 0;
+
             annotes.forEach(annote => { locateAnnote(document.body, annote); });
             this.postMessageToFrame({ type: SEND_ANNOTES, annotes });
           });
@@ -105,20 +101,24 @@ class App extends Component {
     // IF a selection is made on mouseup
     if (distance > 0) {
       this.setState({ controls: SHOW_CONTROL_BUTTONS_CLASS });
-    } else if (display !== HIDE_CONTROL_BUTTONS_CLASS) {
+      this.hasSelection = true;
+    } else {
       const classList = this.props.iframe.classList;
       if (classList.contains(SHOW_IFRAME_CLASS)) {
         this.hideAthena();
       }
-      this.setState({ controls: HIDE_CONTROL_BUTTONS_CLASS });
+      if (display !== HIDE_CONTROL_BUTTONS_CLASS) {
+        this.setState({ controls: HIDE_CONTROL_BUTTONS_CLASS });
+      }
+      this.hasSelection = false;
     }
   }
 
   shortcutHandler(e) {
     if (e.getModifierState('Shift')) {
-      if (e.code === 'KeyN') {
+      if (e.code === 'KeyN' && this.hasSelection) {
         this.initNote();
-      } else if (e.code === 'KeyH') {
+      } else if (e.code === 'KeyH' && this.hasSelection) {
         this.createHighlight();
       }
     } else if (e.code === 'Escape') {
@@ -141,7 +141,7 @@ class App extends Component {
     }
   }
 
-  handleMessageEvent(event) { // copied to messaging
+  handleMessageEvent(event) {
     switch (event.data.type) {
       case HIDE_IFRAME:
       case SHOW_IFRAME:
@@ -158,11 +158,10 @@ class App extends Component {
     }
   }
 
-  postMessageToFrame(action) { // copied to messaging
+  postMessageToFrame(action) {
     this.props.iframe.contentWindow.postMessage(action, '*');
   }
 
-  // TODO: toggle vs explicit orders?
   toggleDisplayFrame() {
     const classList = this.props.iframe.classList;
 
@@ -176,29 +175,24 @@ class App extends Component {
   }
 
   initNote() {
+    this.showAthena();
     if (this.isUserLoggedIn()) {
-      this.setState({ controls: HIDE_CONTROL_BUTTONS_CLASS });
       const { selector, range } = getText();
       const annote = createAnnote(selector, this.annoteId, this.user.id);
       this.annote = annote;
-
       this.postMessageToFrame({ type: CREATE_ANNOTE, annote });
-      this.showAthena();
       wrapAnnote(range);
-    } // TODO: else show auth panel
+      this.setState({ controls: HIDE_CONTROL_BUTTONS_CLASS });
+    }
   }
 
   createNote(body) {
-    // change annote
-    console.log('body: ', body);
+    // change body of this.annote
     this.annote = Object.assign({}, this.annote, {
       body,
     });
-    console.log('annote:', this.annote);
-    // saveAnnote(this.annote);
-    // this.toggleDisplayFrame();
+    saveAnnote(this.annote);
     this.hideAthena();
-    // TODO: this.annote = null ?
   }
 
   createHighlight() {
@@ -206,12 +200,13 @@ class App extends Component {
       this.setState({ controls: HIDE_CONTROL_BUTTONS_CLASS });
       const { selector, range } = getText();
       const annote = createAnnote(selector, this.annoteId, this.user.id);
-      // saveAnnote(annote); // POST annote to server to be stored in db
+      saveAnnote(annote); // POST annote to server to be stored in db
       wrapAnnote(range);
       // TODO: update state.annotations in Athena
       this.annoteId++; // TODO: move into createAnnote
-      console.log('annote: ', annote);
-    } // TODO: else show auth panel
+    } else {
+      this.showAthena();
+    }
   }
 
   render() {
