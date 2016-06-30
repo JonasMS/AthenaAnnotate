@@ -7,7 +7,6 @@ import {
   SHOW_IFRAME,
   CREATE_ANNOTE,
   CREATE_HIGHLIGHT,
-  SEND_ANNOTE_ID,
   HAS_MOUNTED,
   GET_USER,
   SEND_USER,
@@ -25,6 +24,7 @@ class App extends Component {
   constructor(props) {
     super(props);
 
+    this.loginHandler = this.loginHandler.bind(this);
     this.submitHandler = this.submitHandler.bind(this);
     this.sendUser = this.sendUser.bind(this);
     this.hideFrame = this.hideFrame.bind(this);
@@ -48,7 +48,6 @@ class App extends Component {
                 this.extIntervalId = window.setInterval(() => {
                   this.postMessageToParent({ type: HAS_MOUNTED });
                 }, 100);
-                // TODO: use property in this?
                 this.fbAcc = user;
                 // this.props.actions.getUserFromDB(user);
               }
@@ -104,6 +103,13 @@ class App extends Component {
     clearAnnote(); // rest annote to empty shape
   }
 
+  loginHandler() {
+    const { actions: { login } } = this.props;
+    login(fbAcc => {
+      this.postMessageToParent({ type: SEND_USER, user: fbAcc });
+    });
+  }
+
   // take action on events we know about
   handleMessageEvent(event) {
     const { actions: {
@@ -128,14 +134,13 @@ class App extends Component {
   }
 
   render() {
-    const { actions: { login } } = this.props;
-    console.log('props: ', this.props);
+    // console.log('props: ', this.props);
     return (
       <div>
         {
           this.isUserLoggedIn()
             ? <AnnotatePanel close={this.hideFrame} submitHandler={this.submitHandler} />
-            : <AuthPanel login={login} close={this.hideFrame} />
+            : <AuthPanel login={this.loginHandler} close={this.hideFrame} />
         }
       </div>
     );
