@@ -40,9 +40,12 @@ div.avatar {
   background-clip: padding-box;
 }
 
+li {
+  list-style-type: none;
+}
+
 li.annotation{
   margin-bottom: 15px;
-  list-style-type: none;
 }
 
 li blockquote {
@@ -56,9 +59,8 @@ li .username {
   font-weight: bold;
 }
 
-li.card {
-  margin-bottom: 15px;
-  list-style-type: none;
+div.media.card {
+  margin-top: 10px;
 }
 
 .docimage {
@@ -73,4 +75,21 @@ li.card {
 .small {
   width: 100px;
   height: 100px;
+}
+
+.media-left {
+  vertical-align: bottom;
+  float: left;
+}
+
+.media-body {
+  display: inline;
+}
+
+div.media-body {
+  width: 100%;
+}
+
+.card a {
+  text-decoration: none;
 }
