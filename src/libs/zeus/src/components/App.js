@@ -71,10 +71,17 @@ class App extends Component {
       .then(user => {
         fetchAnnotes(user)
           .then(annotes => {
-            console.log('annotes: ', annotes);
-            this.annoteId = this.getAnnoteId(annotes[annotes.length - 1].id);
-            annotes.forEach(annote => { locateAnnote(document.body, annote)});
-            this.postMessageToFrame({ type: SEND_ANNOTES, annotes });
+            if (annotes.length) {
+              const lastAnnote = annotes[annotes.length - 1];
+
+              if (lastAnnote && lastAnnote.id) {
+                this.annoteId = this.getAnnoteId(lastAnnote.id);
+                annotes.forEach(annote => {
+                  locateAnnote(document.body, annote);
+                });
+                this.postMessageToFrame({ type: SEND_ANNOTES, annotes });
+              }
+            }
           });
       });
   }

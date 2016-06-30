@@ -2,7 +2,6 @@ export const getText = () => {
   // suffix: 20 chars after exact
   const sel = window.getSelection();
   const range = sel.getRangeAt(0);
-  const { data } = sel.focusNode;
   // const data = range.cloneContents().textContent;
   // TODO: ^ may not work well w/
   // selection of multiple nodes
@@ -30,20 +29,6 @@ export const getText = () => {
       endOffset,
       endOffset + 20
     );
-  // const exact =
-  //   text
-  //   .substring(
-  //     startOffset,
-  //     endOffset
-  //    );
-  // const prefix = data.substring(
-  //   startOffset - 20,
-  //   startOffset
-  // );
-  // const suffix = data.substring(
-  //   endOffset,
-  //   endOffset + 20
-  // );
 
   return {
     exact,
@@ -53,9 +38,9 @@ export const getText = () => {
 };
 
 export const setWidgClass = (widget) => (
-    widget === 'HIDE' ?
-      'widget widget_hide' :
-      'widget widget_show'
+  widget === 'HIDE' ?
+    'widget widget_hide' :
+    'widget widget_show'
 );
 
 export const setAddClass = (adder) => (
