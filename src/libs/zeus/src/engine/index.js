@@ -56,12 +56,10 @@ export const parseDoc = doc => {
     .createNodeIterator(
       doc,
       NodeFilter.SHOW_TEXT,
-      function(node) {
-        return node.parentElement.nodeName.toLowerCase() !==
-          'script' ?
-            NodeFilter.FILTER_ACCEPT :
-            NodeFilter.FILTER_REJECT;
-      }
+      textNode => (
+        textNode.parentElement.nodeName.toLowerCase() !== 'script' ?
+            NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT
+      )
     );
   // iterate over each node
   node = nodeIterator.nextNode();
@@ -101,7 +99,6 @@ export const insertAnnote = (startNode, endNode, annote, match) => {
   const matchIdx = match.index;
   const {
     prefix,
-    exact,
   } = annote.target.selector;
 
   // debugger;
@@ -109,7 +106,7 @@ export const insertAnnote = (startNode, endNode, annote, match) => {
   const range = document.createRange();
   const startOffset = (matchIdx - startNode.start) + prefix.length;
   const endOffset = startNode === endNode ?
-    startOffset + exact.length: endNode.end;
+    startOffset + match[1].length : endNode.end;
   // const endOffset = endNode.offset;
     // startOffset + exact.length;
 
@@ -135,68 +132,48 @@ export const insertAnnote = (startNode, endNode, annote, match) => {
 // annote within a given node
 export const locateAnnote = (doc, annote) => {
   const { docText, nodes } = parseDoc(doc);
-  let node;
   let startNode;
   let endNode;
   let nodeLen;
 
-  // console.log(annote);
-
   const { selector } = annote.target;
   const regQuery = createRegQuery(selector);
 
-  // find matchIdx
+  // find index in document text where match starts
   const reg = new RegExp(regQuery, 'g');
-
-  // console.log('reg: ', reg);
-
   const match = reg.exec(docText);
-  // console.log('match: ', match[1]);
-  // IF match, loop over nodes
+  // IF match, find the match's corresponding node(s)
   if (match) {
     const matchIdx = match.index;
-    // console.log('matchIdx:', matchIdx);
     for (let i = 0; i < nodes.length; i++) {
-      node = nodes[i];
-      nodeLen = node.textNode.nodeValue.length;
+      startNode = nodes[i];
+      nodeLen = startNode.textNode.nodeValue.length;
 
       if (!!matchIdx) {
-        if (matchIdx >= node.start + nodeLen) {
+        if (matchIdx >= startNode.start + nodeLen) {
           continue;
         }
 
-        if (matchIdx < node.start) {
+        if (matchIdx < startNode.start) {
           break;
         }
-        console.log('match[1]: ', match[1]);
-        // If match spans multiple nodes
-        // debugger;
-        if (matchIdx + match[1].length > node.start + nodeLen) {
-          endNode = getEndNode(node, match[1].length);
-          // console.log('MULTIPLE NODES');
-          // endNode = node;
+        // IF match spans multiple nodes find the endNode
+        // ELSE, endNode is the same node as startNode
+        if (matchIdx + match[1].length > startNode.start + nodeLen) {
+          endNode = getEndNode(startNode, match[1].length);
         } else {
-          // endNode = { textNode: node.textNode, end: match[1].length };
-          endNode = node;
+          endNode = startNode;
         }
-        // startNode = {
-        //   node,
-        //   offset: matchIdx,
-        // };
-
-        // console.log(node, node.textNode.nodeValue);
-          // return node;
-        console.log(node, ' ', endNode);
-        insertAnnote(
-          node,
-          endNode,
-          annote,
-          match
-        );
+        insertAnnote(startNode, endNode, selector.prefix, match);
       } else {
+        // TODO: Handle case inwhich an annotation cannot be retrieved
         console.log('no match');
         return match;
       }
     }
   }
 };
+
+export function retrieveAnnote() {
+
+}

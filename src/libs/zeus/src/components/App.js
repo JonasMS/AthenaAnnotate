@@ -78,11 +78,14 @@ class App extends Component {
       .then(user => {
         fetchAnnotes(user)
           .then(annotes => {
-            this.annoteId = !!annotes.length ?
-              this.getAnnoteId(annotes[annotes.length - 1].id) : 0;
-
-            annotes.forEach(annote => { locateAnnote(document.body, annote); });
-            this.postMessageToFrame({ type: SEND_ANNOTES, annotes });
+            console.log(annotes);
+            if (!!annotes.length) {
+              this.getAnnoteId(annotes[annotes.length - 1].id);
+              annotes.forEach(annote => { locateAnnote(document.body, annote); });
+              this.postMessageToFrame({ type: SEND_ANNOTES, annotes });
+            } else {
+              this.annoteId = 0;
+            }
           });
       });
   }
@@ -200,6 +203,7 @@ class App extends Component {
       this.setState({ controls: HIDE_CONTROL_BUTTONS_CLASS });
       const { selector, range } = getText();
       const annote = createAnnote(selector, this.annoteId, this.user.id);
+      console.log('annote to save: ', annote);
       saveAnnote(annote); // POST annote to server to be stored in db
       wrapAnnote(range);
       // TODO: update state.annotations in Athena
