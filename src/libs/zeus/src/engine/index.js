@@ -10,12 +10,9 @@ const createRegQuery = selector => {
     suffix,
   } = selector;
 
-
-  query += !!prefix ?
-    prefix + '\.?' : '';
-  query += ('(' + exact + ')\.?');
-  query += !!suffix ?
-    suffix + '?' : '';
+  query += !!prefix ? `${prefix}\.?` : '';
+  query += `(${exact})\.?`;
+  query += !!suffix ? `${suffix}?` : '';
 
   return query;
 };
@@ -104,17 +101,6 @@ export const createRange = (startNode, endNode) => {
 export const insertAnnote = (startNode, endNode, cb) => {
   const range = createRange(startNode, endNode);
   wrapAnnote(range, cb);
-  // const range = document.createRange();
-  // const { startOffset } = startNode;
-  // const { endOffset } = endNode;
-
-  // range.setStart(startNode.textNode, startOffset);
-  // range.setEnd(endNode.textNode, endOffset);
-
-  // const athena = new Athena;
-  // athena.addListener(cb);
-  // range.surroundContents(athena);
-  // // TODO: range.detach() ?
   return range;
 };
 

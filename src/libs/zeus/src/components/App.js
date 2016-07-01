@@ -50,7 +50,7 @@ class App extends Component {
   componentDidMount() {
     window.addEventListener('message', this.handleMessageEvent);
     window.addEventListener('keydown', e => { this.shortcutHandler(e); });
-    document.body.addEventListener('mouseup', this.handleSelectionEvent);
+    window.addEventListener('mouseup', this.handleSelectionEvent);
   }
 
   componentWillUnmount() {
