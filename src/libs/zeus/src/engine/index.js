@@ -79,21 +79,15 @@ export const parseDoc = doc => {
   };
 };
 
-export const wrapAnnote = (range) => {
+export const wrapAnnote = (range, cb) => {
   const athena = new Athena;
-  const cb = function() {
-    console.log('clicked!!');
-  };
   athena.addListener(cb);
   range.surroundContents(athena);
   // TODO: range.detach()
   return range;
 };
 
-// returns range
-// wraps the selected text in a custom
-// html element
-export const insertAnnote = (startNode, endNode, cb) => {
+export const createRange = (startNode, endNode) => {
   const range = document.createRange();
   const { startOffset } = startNode;
   const { endOffset } = endNode;
@@ -101,10 +95,26 @@ export const insertAnnote = (startNode, endNode, cb) => {
   range.setStart(startNode.textNode, startOffset);
   range.setEnd(endNode.textNode, endOffset);
 
-  const athena = new Athena;
-  athena.addListener(cb);
-  range.surroundContents(athena);
-  // TODO: range.detach() ?
+  return range;
+};
+
+// returns range
+// wraps the selected text in a custom
+// html element
+export const insertAnnote = (startNode, endNode, cb) => {
+  const range = createRange(startNode, endNode);
+  wrapAnnote(range, cb);
+  // const range = document.createRange();
+  // const { startOffset } = startNode;
+  // const { endOffset } = endNode;
+
+  // range.setStart(startNode.textNode, startOffset);
+  // range.setEnd(endNode.textNode, endOffset);
+
+  // const athena = new Athena;
+  // athena.addListener(cb);
+  // range.surroundContents(athena);
+  // // TODO: range.detach() ?
   return range;
 };
 
@@ -169,7 +179,10 @@ export function retrieveAnnote(doc, annote, cb) {
   // insert annote
   if (!!annoteLocation) {
     const { startNode, endNode } = annoteLocation;
-    return insertAnnote(startNode, endNode, cb);
+    const range = createRange(startNode, endNode);
+    wrapAnnote(range, cb);
+    return range;
+    // return insertAnnote(startNode, endNode, cb);
   }
   return null;
 }

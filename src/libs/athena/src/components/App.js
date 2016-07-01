@@ -6,6 +6,7 @@ import {
   HIDE_IFRAME,
   SHOW_IFRAME,
   CREATE_ANNOTE,
+  ADD_ANNOTE,
   CREATE_HIGHLIGHT,
   HAS_MOUNTED,
   GET_USER,
@@ -114,13 +115,10 @@ class App extends Component {
 
   displayAnnote(annoteId) {
     const { annotations, actions: { setAnnote } } = this.props;
-    // filter annotes for annote w/ id
     const annote = annotations.filter(annotation => (
         annotation.id === annoteId
       )
     );
-    console.log('annote: ', annote);
-    // dispatch setAnnote
     setAnnote(annote[0]);
   }
 
@@ -142,6 +140,8 @@ class App extends Component {
         return this.createHighlight(event.data);
       case GET_USER:
         return this.sendUser();
+      case ADD_ANNOTE:
+        return addAnnote(event.data.annote);
       case DISPLAY_ANNOTE:
         return this.displayAnnote(event.data.annoteId);
       default:

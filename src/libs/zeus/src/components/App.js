@@ -5,6 +5,7 @@ import {
   SHOW_IFRAME,
   HIDE_IFRAME,
   CREATE_ANNOTE,
+  ADD_ANNOTE,
   HAS_MOUNTED,
   GET_USER,
   SEND_USER,
@@ -189,7 +190,10 @@ class App extends Component {
       const annote = createAnnote(selector, this.annoteId, this.user.id);
       this.annote = annote;
       this.postMessageToFrame({ type: CREATE_ANNOTE, annote });
-      wrapAnnote(range);
+      wrapAnnote(range, () => {
+        this.postMessageToFrame({ type: DISPLAY_ANNOTE, annoteId: annote.id });
+        this.showAthena();
+      });
       this.setState({ controls: HIDE_CONTROL_BUTTONS_CLASS });
     }
   }
@@ -208,9 +212,12 @@ class App extends Component {
       this.setState({ controls: HIDE_CONTROL_BUTTONS_CLASS });
       const { selector, range } = getText();
       const annote = createAnnote(selector, this.annoteId, this.user.id);
-      console.log('annote to save: ', annote);
       saveAnnote(annote); // POST annote to server to be stored in db
-      wrapAnnote(range);
+      this.postMessageToFrame({ type: ADD_ANNOTE, annote });
+      wrapAnnote(range, () => {
+        this.postMessageToFrame({ type: DISPLAY_ANNOTE, annoteId: annote.id });
+        this.showAthena();
+      });
       // TODO: update state.annotations in Athena
       this.annoteId++; // TODO: move into createAnnote
     } else {
