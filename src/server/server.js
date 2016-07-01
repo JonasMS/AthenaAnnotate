@@ -37,7 +37,7 @@ sequelize
 server
   .use(cors({
     origin: '*',
-    methods: ['GET, POST, OPTIONS'],
+    methods: ['GET, POST, OPTIONS, DELETE, PUT'],
     allowHeaders: 'content-type, accept',
     credentials: true,
     maxAge: 10
