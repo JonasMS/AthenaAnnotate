@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 
 const Profile = ({ user, invites, exitProfile, acceptInvite }) => {
   const invitesList = invites.invites.map(invite => (
-    <li>
+    <li key={invite.id}>
       <span>{invite.sentFrom} has invited you to join {invite.GroupId}.</span>
       <button onClick={() => acceptInvite(invite.GroupId, user.id, true)}>Acccept</button>
       <button onClick={() => acceptInvite(invite.GroupId, user.id,  false)}>Decline</button>
