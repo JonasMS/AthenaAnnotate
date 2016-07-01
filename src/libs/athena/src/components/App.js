@@ -12,6 +12,7 @@ import {
   SEND_USER,
   SEND_ANNOTES,
   MODIFY_BODY,
+  DISPLAY_ANNOTE,
 } from '../../../common/messageTypes';
 
 import {
@@ -26,6 +27,7 @@ class App extends Component {
 
     this.loginHandler = this.loginHandler.bind(this);
     this.submitHandler = this.submitHandler.bind(this);
+    this.displayAnnote = this.displayAnnote.bind(this);
     this.sendUser = this.sendUser.bind(this);
     this.hideFrame = this.hideFrame.bind(this);
     this.createAnnote = this.createAnnote.bind(this);
@@ -110,6 +112,18 @@ class App extends Component {
     });
   }
 
+  displayAnnote(annoteId) {
+    const { annotations, actions: { setAnnote } } = this.props;
+    // filter annotes for annote w/ id
+    const annote = annotations.filter(annotation => (
+        annotation.id === annoteId
+      )
+    );
+    console.log('annote: ', annote);
+    // dispatch setAnnote
+    setAnnote(annote[0]);
+  }
+
   // take action on events we know about
   handleMessageEvent(event) {
     const { actions: {
@@ -128,6 +142,8 @@ class App extends Component {
         return this.createHighlight(event.data);
       case GET_USER:
         return this.sendUser();
+      case DISPLAY_ANNOTE:
+        return this.displayAnnote(event.data.annoteId);
       default:
         return undefined;
     }

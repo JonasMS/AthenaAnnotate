@@ -10,6 +10,7 @@ import {
   SEND_USER,
   SEND_ANNOTES,
   MODIFY_BODY,
+  DISPLAY_ANNOTE,
 } from '../../../common/messageTypes';
 
 import {
@@ -19,7 +20,7 @@ import {
   SHOW_CONTROL_BUTTONS_CLASS,
 } from '../constants';
 
-import { wrapAnnote, retrieveAnnote, locateAnnote } from '../engine/';
+import { wrapAnnote, retrieveAnnote } from '../engine/';
 import { saveAnnote, fetchUser, fetchAnnotes } from '../utils/fetches';
 import { getText, createAnnote } from '../utils/utils';
 
@@ -82,7 +83,8 @@ class App extends Component {
               this.annoteId = this.getAnnoteId(annotes[annotes.length - 1].id);
               annotes.forEach(annote => {
                 retrieveAnnote(document.body, annote, () => {
-                  console.log(annote.id);
+                  this.postMessageToFrame({ type: DISPLAY_ANNOTE, annoteId: annote.id });
+                  this.showAthena();
                 });
               });
               this.postMessageToFrame({ type: SEND_ANNOTES, annotes });
