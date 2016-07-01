@@ -258,11 +258,11 @@ const loadGroups = (groups) => (
 export const loadGroupsDB = (userId) => (
   dispatch =>
     fetch(`http://localhost:3000/api/groups?UserId=${userId}`)
-      .then(response => response.json())
-      .then(groups => {
-        dispatch(loadGroups(groups));
-      })
-      .catch(err => console.log(err))
+    .then(response => response.json())
+    .then(groups => {
+      dispatch(loadGroups(groups));
+    })
+    .catch(err => console.log(err))
 );
 
 // To show a list of Groups a User is a part of
@@ -294,7 +294,7 @@ export const setGroup = (groupId) => (
 );
 
 // To handle creating a group
-export const createGroup = (name, userId) => (
+export const createGroup = (name, userId, otherUsersArray) => (
   dispatch =>
     fetch('http://localhost:3000/api/groups', {
       method: 'POST',
@@ -304,6 +304,7 @@ export const createGroup = (name, userId) => (
       body: JSON.stringify({
         name,
         UserId: userId,
+        otherUsersArray,
       }),
     })
     .then(response => response.json())
@@ -351,5 +352,40 @@ export const loadProfile = () => (
 export const exitProfile = () => (
   {
     type: 'EXIT_PROFILE',
+  }
+);
+
+const loadUserSearchResults = (users) => (
+  {
+    type: 'LOAD_SEARCH_USERS',
+    users,
+  }
+);
+
+export const searchUsers = (query, user) => (
+  dispatch => {
+    if (query.length < 1) {
+      dispatch(loadUserSearchResults([]));
+    } else {
+      fetch(`http://localhost:3000/api/search/users?user=${user}&&name=${query}`)
+      .then(response => response.json())
+      .then(users => {
+        dispatch(loadUserSearchResults(users.slice(0, 10)));
+      });
+    }
+  }
+);
+
+export const selectUser = (name) => (
+  {
+    type: 'SELECT_USER',
+    name,
+  }
+);
+
+export const deselectUser = name => (
+  {
+    type: 'DESELECT_USER',
+    name,
   }
 );

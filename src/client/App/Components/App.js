@@ -4,6 +4,7 @@ import Sidebar from './Sidebar';
 import Splash from './Splash';
 import Main from './Main';
 import NavBar from './NavBar';
+import GroupModal from '../Containers/Modal';
 import { initFB, getUserFromFB, getUserStatusFromFB } from '../../../libs/common/auth';
 
 class App extends Component {
@@ -55,10 +56,12 @@ class App extends Component {
         createGroup,
         editGroup,
         loadProfile,
+        showModal,
       },
     } = this.props;
     return (
       <div className="container">
+        <GroupModal />
         <div id="fb-root"></div>
         {
           user && user.id
@@ -80,6 +83,7 @@ class App extends Component {
                 showGroups={showGroups}
                 createGroup={createGroup}
                 editGroup={editGroup}
+                showModal={showModal}
               />
               {loading ? <Loading /> : <Main profile={profile} user={user} />}
             </div>

@@ -100,3 +100,7 @@ p.url {
   color: grey;
   font-style: italic;
 }
+
+ul#groups {
+  margin-left: 15px;
+}

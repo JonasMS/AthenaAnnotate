@@ -5,6 +5,7 @@ var annotationConstructor = require('../utils/annotationConstructor');
 var listOfDocs = require('../utils/listOfDocs');
 var userConstructor = require('../utils/userConstructor');
 var scraper = require('../utils/scraper');
+var addOtherUsers = require('../utils/addOtherUsers');
 
 // EXTENSION - creates an annotation for a given Doc and User
 router.post('/api/create', function(req, res) {
@@ -314,6 +315,7 @@ router.post('/api/groups', function(req, res) {
         GroupId: group[0].dataValues.id
     // if no group was found, get id
       }).then(function(newGroup) {
+        addOtherUsers(req.body.otherUsersArray, group[0].dataValues.id);
         // console.log('This is the association between user and group /\n', newGroup);
         res.send(JSON.stringify(newGroup.dataValues.GroupId));
       }).catch(function(err) {
@@ -396,6 +398,37 @@ router.get('/api/group', function(req, res) {
 
 router.get('/api/scrape', function(req, res) {
   scraper(req.query.url, res);
+});
+
+// To handle joining an existing Group
+router.post('/api/group', function(req, res) {
+  models.UserGroup.create({
+    UserId: req.body.userId,
+    GroupId: req.body.groupId
+  }).then(function(association) {
+    res.send(association);
+  }).catch(function(error) {
+    res.send(error);
+  });
+});
+
+// To handle searching for users
+router.get('/api/search/users', function(req, res) {
+  models.User.findAll({
+    where: {
+      name: {
+        $iLike: req.query.name + '%'
+      },
+      id: {
+        $ne: req.query.user
+      }
+    }
+  }).then(function(users) {
+    console.log(users);
+    res.send(users);
+  }).catch(function(error) {
+    res.send(error);
+  });
 });
 
 module.exports = router;

@@ -1,8 +1,8 @@
-const modal = (state = { modal: '', show:false}, action) => {
+const modal = (state = { modal: '', show: false }, action) => {
   switch (action.type) {
     case 'SHOW_MODAL':
       return Object.assign({}, state, {
-        show: true,
+        show: !state.show,
       });
     case 'SET_MODAL':
       return Object.assign({}, state, {
