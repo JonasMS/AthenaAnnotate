@@ -1,6 +1,11 @@
 const search = (state = { users: [], selected: [] }, action) => {
   const selected = state.selected;
   switch (action.type) {
+    case 'SHOW_MODAL':
+      return Object.assign({}, state, {
+        users: [],
+        selected: [],
+      });
     case 'LOAD_SEARCH_USERS':
       return Object.assign({}, state, {
         users: action.users,

@@ -299,7 +299,7 @@ router.get('/api/follow', function(req, res) {
 
 // BOTH - finds a Group, or creates a Group and adds User as a member
 router.post('/api/groups', function(req, res) {
-  // console.log(req.body);
+  console.log(req.body);
   models.Group.findOrCreate({
     where: {
       name: req.body.name
@@ -315,7 +315,7 @@ router.post('/api/groups', function(req, res) {
         GroupId: group[0].dataValues.id
     // if no group was found, get id
       }).then(function(newGroup) {
-        addOtherUsers(req.body.otherUsersArray, group[0].dataValues.id);
+        addOtherUsers(req.body.otherUsersArray, group[0].dataValues.id, req.body.creator);
         // console.log('This is the association between user and group /\n', newGroup);
         res.send(JSON.stringify(newGroup.dataValues.GroupId));
       }).catch(function(err) {
@@ -432,3 +432,42 @@ router.get('/api/search/users', function(req, res) {
 });
 
 module.exports = router;
+
+// To handle accepting or declining a Group invitation
+router.post('/api/groups/join', function(req, res) {
+  models.UserInvite.destroy({
+    where: {
+      UserId: req.body.UserId,
+      GroupId: req.body.GroupId
+    }
+  }).then(function() {
+    if (req.body.accept === true) {
+      models.UserGroup.create({
+        UserId: req.body.UserId,
+        GroupId: req.body.GroupId
+      }).then(function(newAssociation) {
+        res.send(JSON.stringify(newAssociation.dataValues.GroupId));
+      }).catch(function(error) {
+        res.send(error);
+      });
+    } else {
+      res.send('declined');
+    }
+  }).catch(function(error) {
+    res.send(error);
+  });
+});
+
+// To handle fetching all Invites for a specific User
+router.get('/api/invites', function(req, res) {
+  models.UserInvite.findAll({
+    where: {
+      UserId: req.query.user
+    }
+  }).then(function(associations) {
+    console.log(associations);
+    res.send(associations);
+  }).catch(function(error) {
+    res.send(error);
+  });
+});

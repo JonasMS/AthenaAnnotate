@@ -36,6 +36,9 @@ class App extends Component {
     if (!this.props.group.loaded) {
       this.props.actions.loadGroupsDB(this.props.user.id);
     }
+    if (!this.props.invites.loaded) {
+      this.props.actions.updateInvites(this.props.user.id);
+    }
     // this.props.actions.fetchStuff(this.props.user.id);
   }
 
@@ -103,6 +106,7 @@ App.propTypes = {
   profile: PropTypes.bool.isRequired,
   following: PropTypes.object.isRequired,
   group: PropTypes.object.isRequired,
+  invites: PropTypes.object.isRequired,
 };
 
 export default App;

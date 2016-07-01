@@ -16,8 +16,8 @@ const mapDispatchToProps = (dispatch) => (
     showModal: () => {
       dispatch(actions.showModal());
     },
-    createGroup: (name, userId, otherUsersArray) => {
-      dispatch(actions.createGroup(name, userId, otherUsersArray));
+    createGroup: (name, userId, userName, otherUsersArray) => {
+      dispatch(actions.createGroup(name, userId, userName, otherUsersArray));
     },
     editGroup: (edit) => {
       dispatch(actions.editGroup(edit));

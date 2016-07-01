@@ -294,7 +294,7 @@ export const setGroup = (groupId) => (
 );
 
 // To handle creating a group
-export const createGroup = (name, userId, otherUsersArray) => (
+export const createGroup = (name, userId, userName, otherUsersArray) => (
   dispatch =>
     fetch('http://localhost:3000/api/groups', {
       method: 'POST',
@@ -304,6 +304,7 @@ export const createGroup = (name, userId, otherUsersArray) => (
       body: JSON.stringify({
         name,
         UserId: userId,
+        creator: userName,
         otherUsersArray,
       }),
     })
@@ -388,4 +389,50 @@ export const deselectUser = name => (
     type: 'DESELECT_USER',
     name,
   }
+);
+
+// To handle loading all Invites for a User
+const loadInvites = invitesArray => (
+  {
+    type: 'LOAD_INVITES',
+    invitesArray,
+  }
+);
+
+export const updateInvites = (userId) => (
+  dispatch =>
+    fetch(`http://localhost:3000/api/invites?user=${userId}`)
+    .then(response => response.json())
+    .then(invites => {
+      dispatch(loadInvites(invites));
+    })
+);
+
+// To handle removing an Invite after interacting with it
+const removeInvites = groupId => (
+  {
+    type: 'REMOVE_INVITES',
+    groupId,
+  }
+);
+
+export const acceptInvite = (groupId, userId, accept) => (
+  dispatch =>
+    fetch('http://localhost:3000/api/groups/join', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        GroupId: groupId,
+        UserId: userId,
+        accept,
+      }),
+    })
+    .then(response => response.json())
+    .then(result => {
+      console.log(result);
+      dispatch(removeInvites(groupId));
+      dispatch(loadGroupsDB(userId));
+    })
 );

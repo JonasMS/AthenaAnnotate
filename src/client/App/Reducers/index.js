@@ -10,6 +10,7 @@ import group from './group';
 import modal from './modal';
 import profile from './profile';
 import search from './search';
+import invites from './invites';
 import user from '../../../libs/athena/src/reducers/user';
 
 const Reducers = combineReducers({
@@ -25,6 +26,7 @@ const Reducers = combineReducers({
   modal,
   profile,
   search,
+  invites,
 });
 
 export default Reducers;

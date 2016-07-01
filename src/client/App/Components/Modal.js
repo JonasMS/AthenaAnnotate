@@ -54,21 +54,23 @@ const createGroupModal = ({
           editGroup(e.target.value);
         }}
       />
-      <label htmlFor="search">Search for users</label>
-      <input
-        id="search"
-        type="text"
-        placeholder="Enter a name"
-        onChange={(e) => searchUsers(e.target.value, user.id)}
-      />
-      {search.users.length === 0
-        ?
-        null
-        :
-        <ul>
-          {userList}
-        </ul>
-      }
+      <form>
+        <label htmlFor="search">Search for users</label>
+        <input
+          id="search"
+          type="text"
+          placeholder="Enter a name"
+          onChange={(e) => searchUsers(e.target.value, user.id)}
+        />
+        {search.users.length === 0
+          ?
+          null
+          :
+          <ul className="autocomplete">
+            {userList}
+          </ul>
+        }
+      </form>
       {search.selected.length === 0
         ?
         null
@@ -83,7 +85,7 @@ const createGroupModal = ({
       <button
         className="btn btn-default"
         onClick={() => {
-          createGroup(group.edit, user.id, search.selected);
+          createGroup(group.edit, user.id, user.facebook.name, search.selected);
           showModal();
         }}
       >

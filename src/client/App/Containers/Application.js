@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux';
 import App from '../Components/App';
 import * as actions from '../Actions';
 
-const mapStateToProps = ({ user, loading, filter, following, group, profile, modal }) => (
+const mapStateToProps = ({ user, loading, filter, following, group, profile, modal, invites }) => (
   {
     user,
     loading,
@@ -12,6 +12,7 @@ const mapStateToProps = ({ user, loading, filter, following, group, profile, mod
     group,
     profile,
     modal,
+    invites,
   }
 );
 

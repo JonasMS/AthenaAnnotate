@@ -17,6 +17,10 @@ const group = (state = { showGroups: false, loaded: false }, action) => {
       return Object.assign({}, state, {
         showGroups: !state.showGroups,
       });
+    case 'SHOW_MODAL':
+      return Object.assign({}, state, {
+        edit: '',
+      });
     default:
       return state;
   }
