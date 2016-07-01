@@ -3,8 +3,11 @@ class Annote extends HTMLElement {
     // styling
     this.style.backgroundColor = 'yellow';
   }
-  addListener (cb) {
-    this.addEventListener('click', cb);
+  addListener (callback) {
+    this.addEventListener(
+      'click',
+      callback
+    );
   }
 }
 

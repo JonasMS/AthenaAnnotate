@@ -6,13 +6,14 @@ import {
   HIDE_IFRAME,
   SHOW_IFRAME,
   CREATE_ANNOTE,
+  ADD_ANNOTE,
   CREATE_HIGHLIGHT,
-  SEND_ANNOTE_ID,
   HAS_MOUNTED,
   GET_USER,
   SEND_USER,
   SEND_ANNOTES,
   MODIFY_BODY,
+  DISPLAY_ANNOTE,
 } from '../../../common/messageTypes';
 
 import {
@@ -25,7 +26,9 @@ class App extends Component {
   constructor(props) {
     super(props);
 
+    this.loginHandler = this.loginHandler.bind(this);
     this.submitHandler = this.submitHandler.bind(this);
+    this.displayAnnote = this.displayAnnote.bind(this);
     this.sendUser = this.sendUser.bind(this);
     this.hideFrame = this.hideFrame.bind(this);
     this.createAnnote = this.createAnnote.bind(this);
@@ -48,7 +51,6 @@ class App extends Component {
                 this.extIntervalId = window.setInterval(() => {
                   this.postMessageToParent({ type: HAS_MOUNTED });
                 }, 100);
-                // TODO: use property in this?
                 this.fbAcc = user;
                 // this.props.actions.getUserFromDB(user);
               }
@@ -104,6 +106,22 @@ class App extends Component {
     clearAnnote(); // rest annote to empty shape
   }
 
+  loginHandler() {
+    const { actions: { login } } = this.props;
+    login(fbAcc => {
+      this.postMessageToParent({ type: SEND_USER, user: fbAcc });
+    });
+  }
+
+  displayAnnote(annoteId) {
+    const { annotations, actions: { setAnnote } } = this.props;
+    const annote = annotations.filter(annotation => (
+        annotation.id === annoteId
+      )
+    );
+    setAnnote(annote[0]);
+  }
+
   // take action on events we know about
   handleMessageEvent(event) {
     const { actions: {
@@ -122,20 +140,23 @@ class App extends Component {
         return this.createHighlight(event.data);
       case GET_USER:
         return this.sendUser();
+      case ADD_ANNOTE:
+        return addAnnote(event.data.annote);
+      case DISPLAY_ANNOTE:
+        return this.displayAnnote(event.data.annoteId);
       default:
         return undefined;
     }
   }
 
   render() {
-    const { actions: { login } } = this.props;
-    console.log('props: ', this.props);
+    // console.log('props: ', this.props);
     return (
       <div>
         {
           this.isUserLoggedIn()
             ? <AnnotatePanel close={this.hideFrame} submitHandler={this.submitHandler} />
-            : <AuthPanel login={login} close={this.hideFrame} />
+            : <AuthPanel login={this.loginHandler} close={this.hideFrame} />
         }
       </div>
     );

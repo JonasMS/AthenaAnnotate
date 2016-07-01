@@ -13,29 +13,7 @@ import * as Actions from '../actions';
 class AnnotatePanel extends Component {
   constructor(props) {
     super(props);
-    // this.submitHandler = this.submitHandler.bind(this);
   }
-
-  // submitHandler() {
-  //   // send annote to zeus
-
-  //   const {
-  //     user,
-  //     actions,
-  //     annotation,
-  //     annotations,
-  //   } = this.props;
-
-  //   saveAnnote({
-  //     user,
-  //     annotation,
-  //     annotations,
-  //   });
-
-  //   // update annotations
-  //   actions.clearAnnote();
-  //   this.props.close();
-  // }
 
   render () {
     const { close, submitHandler, annotation, actions } = this.props;
@@ -76,6 +54,7 @@ AnnotatePanel.propTypes = {
   annotation: PropTypes.object,
   annotations: PropTypes.array,
   close: PropTypes.func.isRequired,
+  submitHandler: PropTypes.func.isRequired,
   // exact: PropTypes.string.isRequired,
 };
 
