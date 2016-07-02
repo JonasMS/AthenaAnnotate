@@ -109,9 +109,8 @@ var getHTML = function(link) {
 // var getHTML = function(link, res) {
   request({
     uri: link,
-    headers: {
-      'Content-type': 'appication/json'
-    }
+    jar: true,
+    maxRedirects: 20
   }, function(error, response, body) {
     if (!error) {
       // console.log(response.statusCode);

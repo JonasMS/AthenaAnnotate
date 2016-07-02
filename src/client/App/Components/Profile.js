@@ -18,7 +18,7 @@ const Profile = ({ user, invites, exitProfile, acceptInvite }) => {
         style={style}
         alt="Profile"
       />
-      <form>
+      <form className="profile">
         <div className="form-group">
           <label htmlFor="name">Name</label>
           <input type="text" className="form-control" id="name" defaultValue={user.facebook.name} />
