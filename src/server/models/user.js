@@ -11,7 +11,8 @@ module.exports = function(sequelize, DataTypes) {
     email: {
       type: DataTypes.STRING,
       unique: true
-    }
+    },
+    picture: DataTypes.TEXT
   }, {
     classMethods: {
       associate: function(models) {

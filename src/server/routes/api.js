@@ -104,13 +104,15 @@ router.delete('/api/annotations', function(req, res) {
 
 // BOTH - finds or creates User
 router.post('/api/users', function(req, res) {
+  console.log(req.body);
   models.User.findOrCreate({
     where: {
       facebookId: req.body.id
     },
     defaults: {
       name: req.body.name,
-      email: req.body.email
+      email: req.body.email,
+      picture: req.body.picture.data.url
     }
   }).then(function(user) {
     userConstructor(user[0], res);

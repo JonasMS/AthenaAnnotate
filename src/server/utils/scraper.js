@@ -107,7 +107,12 @@ var getTitle = function(doc, originalLink) {
 
 var getHTML = function(link) {
 // var getHTML = function(link, res) {
-  request(link, function(error, response, body) {
+  request({
+    uri: link,
+    headers: {
+      'Content-type': 'appication/json'
+    }
+  }, function(error, response, body) {
     if (!error) {
       // console.log(response.statusCode);
       $ = cheerio.load(body);
@@ -115,6 +120,7 @@ var getHTML = function(link) {
       getTitle($, link);
       // getImages($, res, link);
     } else {
+      console.log(error);
       // res.send('null');
     }
   });

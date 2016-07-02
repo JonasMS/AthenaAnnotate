@@ -31,7 +31,7 @@ export const getUserStatusFromFB = () => (
 export const getUserFromFB = () => (
   new Promise(resolve => {
     window.FB.api(
-      '/me?fields=id,email,name',
+      '/me?fields=id,email,name,picture.type(large)',
       res => resolve(res),
       { scope: 'email' }
     );

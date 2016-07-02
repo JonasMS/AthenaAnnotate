@@ -7,7 +7,7 @@ const NavBar = ({
   user,
   loadProfile,
 }) => {
-  const style = { backgroundImage: 'url(https://scontent-sjc.xx.fbcdn.net/v/t1.0-9/10401204_668568875459_8134_n.jpg?oh=9a5c5c13fe2f541352c061ac355a15fb&oe=580BE24C)' };
+  const style = { backgroundImage: `url(${user.facebook.picture})` };
   return (
     <nav className="navbar navbar-default navbar-fixed-top">
       <div className="container">
