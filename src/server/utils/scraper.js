@@ -30,7 +30,12 @@ var getLargest = function (imgArray, originalLink) {
   var i;
   var j;
   for (i = 0; i < imgArray.length; i ++) {
-    dimArray.push(getDimensions(imgArray[i]));
+    // var count = 0;
+    // sizeOf({url: imgArray[i], timeout: 5000}, function(err, dim, len) {
+    //   count +=1;
+    //   console.log(count, err, dim, len)});
+    // console.log(imgArray[i]);
+    dimArray.push(getDimensions({ url: imgArray[i], timeout: 5000 }));
   }
   Promise.all(dimArray.map(function(promise) {
     return promise.reflect();
@@ -39,8 +44,8 @@ var getLargest = function (imgArray, originalLink) {
     // console.log(results);
     for (j = 0; j < results.length; j ++) {
       if (results[j].isFulfilled() && results[j].value() !== undefined) {
-        // console.log('this is the result value', results[j].value());
-        // console.log(results[j].value().width, results[j].value().height);
+        console.log('this is the result value', results[j].value());
+        console.log(results[j].value().width, results[j].value().height);
         currDimension = results[j].value().width * results[j].value().height;
         // console.log(currDimension);
         if (currDimension > maxDimensions) {
@@ -69,7 +74,7 @@ var getImages = function(doc, originalLink) {
   var baseUrl = url.parse(originalLink).protocol + '//' + url.parse(originalLink).hostname;
 
   // console.log('these are the images', images);
-
+  console.log(keys.length);
   for (i = 0; i < keys.length; i++) {
     if (images[keys[i]].attribs) {
       for (key in images[keys[i]].attribs) {
@@ -80,6 +85,7 @@ var getImages = function(doc, originalLink) {
         } else if (urlObj.protocol !== 'data:' && urlObj.path !== null) {
           imgArray.push(url.resolve(baseUrl, urlObj.path));
         }
+        console.log(imgArray.length);
       }
     }
   }
