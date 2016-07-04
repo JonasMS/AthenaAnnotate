@@ -1,0 +1,20 @@
+.iframe {
+  position: absolute;
+    width: 30%;
+    height: 100%;
+    top: 0;
+    border: none;
+}
+
+.iframe {
+  &-show {
+    left: 70%;
+    transition-duration: 0.5s;
+  }
+
+  &-hide {
+    /*display: none;*/
+    left: 100%;
+    transition-duration: 0.5s;
+  }
+}
