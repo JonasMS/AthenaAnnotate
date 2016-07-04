@@ -9,7 +9,7 @@ module.exports = function(sequelize, DataTypes) {
     suffix: DataTypes.TEXT,
     UserId: DataTypes.INTEGER,
     DocId: DataTypes.INTEGER,
-    private: DataTypes.BOOLEAN,
+    private: DataTypes.STRING,
     groupId: DataTypes.INTEGER
   }, {
     classMethods: {
