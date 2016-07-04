@@ -6,7 +6,8 @@ module.exports = function(user, res) {
   result.facebook = {
     id: user.facebookId,
     name: user.name,
-    email: user.email
+    email: user.email,
+    picture: user.picture
   };
   res.send(result);
 };

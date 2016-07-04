@@ -18,6 +18,9 @@ module.exports = {
         type: Sequelize.TEXT,
         unique: true
       },
+      baseUrl: {
+        type: Sequelize.TEXT
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

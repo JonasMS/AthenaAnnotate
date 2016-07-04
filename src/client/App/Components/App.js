@@ -4,6 +4,7 @@ import Sidebar from './Sidebar';
 import Splash from './Splash';
 import Main from './Main';
 import NavBar from './NavBar';
+import GroupModal from '../Containers/Modal';
 import { initFB, getUserFromFB, getUserStatusFromFB } from '../../../libs/common/auth';
 
 class App extends Component {
@@ -35,6 +36,9 @@ class App extends Component {
     if (!this.props.group.loaded) {
       this.props.actions.loadGroupsDB(this.props.user.id);
     }
+    if (!this.props.invites.loaded) {
+      this.props.actions.updateInvites(this.props.user.id);
+    }
     // this.props.actions.fetchStuff(this.props.user.id);
   }
 
@@ -55,10 +59,12 @@ class App extends Component {
         createGroup,
         editGroup,
         loadProfile,
+        showModal,
       },
     } = this.props;
     return (
       <div className="container">
+        <GroupModal />
         <div id="fb-root"></div>
         {
           user && user.id
@@ -80,6 +86,7 @@ class App extends Component {
                 showGroups={showGroups}
                 createGroup={createGroup}
                 editGroup={editGroup}
+                showModal={showModal}
               />
               {loading ? <Loading /> : <Main profile={profile} user={user} />}
             </div>
@@ -99,6 +106,7 @@ App.propTypes = {
   profile: PropTypes.bool.isRequired,
   following: PropTypes.object.isRequired,
   group: PropTypes.object.isRequired,
+  invites: PropTypes.object.isRequired,
 };
 
 export default App;

@@ -6,7 +6,8 @@ module.exports = function(sequelize, DataTypes) {
     url: {
       type: DataTypes.TEXT,
       unique: true
-    }
+    },
+    baseUrl: DataTypes.TEXT
   }, {
     classMethods: {
       associate: function(models) {

@@ -11,7 +11,8 @@ module.exports = function(sequelize, DataTypes) {
     email: {
       type: DataTypes.STRING,
       unique: true
-    }
+    },
+    picture: DataTypes.TEXT
   }, {
     classMethods: {
       associate: function(models) {
@@ -30,6 +31,11 @@ module.exports = function(sequelize, DataTypes) {
         User.belongsToMany(models.Group, {
           as: 'groups',
           through: models.UserGroup,
+          foreignKey: 'UserId'
+        });
+        User.belongsToMany(models.Group, {
+          as: 'users',
+          through: models.UserInvite,
           foreignKey: 'UserId'
         });
       }

@@ -5,6 +5,7 @@ var annotationConstructor = require('../utils/annotationConstructor');
 var listOfDocs = require('../utils/listOfDocs');
 var userConstructor = require('../utils/userConstructor');
 var scraper = require('../utils/scraper');
+var addOtherUsers = require('../utils/addOtherUsers');
 
 // EXTENSION - creates an annotation for a given Doc and User
 router.post('/api/create', function(req, res) {
@@ -12,6 +13,10 @@ router.post('/api/create', function(req, res) {
     where: { url: req.body.target.source },
     raw: true
   }).then(function(doc) {
+    // if doc[1] = true, then send to scraper
+    if (doc[1] === true) {
+      scraper(req.body.target.source);
+    }
     models.Annotation.create({
       UserId: Number(req.body.creator),
       DocId: Number(doc[0].id),
@@ -99,13 +104,15 @@ router.delete('/api/annotations', function(req, res) {
 
 // BOTH - finds or creates User
 router.post('/api/users', function(req, res) {
+  console.log(req.body);
   models.User.findOrCreate({
     where: {
       facebookId: req.body.id
     },
     defaults: {
       name: req.body.name,
-      email: req.body.email
+      email: req.body.email,
+      picture: req.body.picture.data.url
     }
   }).then(function(user) {
     userConstructor(user[0], res);
@@ -223,7 +230,19 @@ router.get('/api/docs', function(req, res) {
   });
 });
 
-module.exports = router;
+// WEB APP - deletes all annotations for a given Doc for a given User
+router.delete('/api/docs', function(req, res) {
+  models.Annotation.destroy({
+    where: {
+      UserId: req.query.UserId,
+      DocId: req.query.DocId
+    }
+  }).then(function() {
+    res.send('deleted');
+  }).catch(function() {
+    res.send('error');
+  });
+});
 
 // BOTH - toggles following a User
 router.post('/api/follow', function(req, res) {
@@ -282,7 +301,7 @@ router.get('/api/follow', function(req, res) {
 
 // BOTH - finds a Group, or creates a Group and adds User as a member
 router.post('/api/groups', function(req, res) {
-  // console.log(req.body);
+  console.log(req.body);
   models.Group.findOrCreate({
     where: {
       name: req.body.name
@@ -298,6 +317,7 @@ router.post('/api/groups', function(req, res) {
         GroupId: group[0].dataValues.id
     // if no group was found, get id
       }).then(function(newGroup) {
+        addOtherUsers(req.body.otherUsersArray, group[0].dataValues.id, req.body.creator);
         // console.log('This is the association between user and group /\n', newGroup);
         res.send(JSON.stringify(newGroup.dataValues.GroupId));
       }).catch(function(err) {
@@ -380,4 +400,76 @@ router.get('/api/group', function(req, res) {
 
 router.get('/api/scrape', function(req, res) {
   scraper(req.query.url, res);
+});
+
+// To handle joining an existing Group
+router.post('/api/group', function(req, res) {
+  models.UserGroup.create({
+    UserId: req.body.userId,
+    GroupId: req.body.groupId
+  }).then(function(association) {
+    res.send(association);
+  }).catch(function(error) {
+    res.send(error);
+  });
+});
+
+// To handle searching for users
+router.get('/api/search/users', function(req, res) {
+  models.User.findAll({
+    where: {
+      name: {
+        $iLike: req.query.name + '%'
+      },
+      id: {
+        $ne: req.query.user
+      }
+    }
+  }).then(function(users) {
+    console.log(users);
+    res.send(users);
+  }).catch(function(error) {
+    res.send(error);
+  });
+});
+
+module.exports = router;
+
+// To handle accepting or declining a Group invitation
+router.post('/api/groups/join', function(req, res) {
+  models.UserInvite.destroy({
+    where: {
+      UserId: req.body.UserId,
+      GroupId: req.body.GroupId
+    }
+  }).then(function() {
+    if (req.body.accept === true) {
+      models.UserGroup.create({
+        UserId: req.body.UserId,
+        GroupId: req.body.GroupId
+      }).then(function(newAssociation) {
+        res.send(JSON.stringify(newAssociation.dataValues.GroupId));
+      }).catch(function(error) {
+        res.send(error);
+      });
+    } else {
+      res.send('declined');
+    }
+  }).catch(function(error) {
+    res.send(error);
+  });
+});
+
+// To handle fetching all Invites for a specific User
+router.get('/api/invites', function(req, res) {
+  models.UserInvite.findAll({
+    where: {
+      UserId: req.query.user
+    }
+  }).then(function(associations) {
+    console.log(associations);
+    res.send(associations);
+  }).catch(function(error) {
+    res.send(error);
+  });
 });

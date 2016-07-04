@@ -7,6 +7,7 @@ const doc = (state, action) => {
         url: state.Doc.url,
         image: state.Doc.image,
         title: state.Doc.title,
+        baseUrl: state.Doc.baseUrl,
         count: 0,
       };
     case 'LOAD_ANNOTATIONS':

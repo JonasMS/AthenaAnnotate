@@ -1,12 +1,12 @@
 import React, { PropTypes } from 'react';
 import Doc from './Doc';
 
-const DocList = ({ docs, onDocDelete, listView, switchView, filter }) => {
+const DocList = ({ user, docs, onDocDelete, listView, switchView, filter }) => {
   const docList = docs.map(doc => (
     <Doc
       key={doc.id}
       {...doc}
-      onDocDelete={() => onDocDelete(doc.id)}
+      onDocDelete={() => onDocDelete(doc.id, user.id)}
       listView={listView}
       filter={filter}
     />
@@ -29,6 +29,7 @@ const DocList = ({ docs, onDocDelete, listView, switchView, filter }) => {
 };
 
 DocList.propTypes = {
+  user: PropTypes.object.isRequired,
   docs: PropTypes.array.isRequired,
   onDocDelete: PropTypes.func.isRequired,
   listView: PropTypes.bool.isRequired,

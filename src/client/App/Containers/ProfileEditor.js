@@ -6,6 +6,7 @@ const mapStatetoProps = (state) => (
   {
     show: state.profile,
     user: state.user,
+    invites: state.invites,
 
   }
 );
@@ -14,6 +15,9 @@ const mapDispatchToProps = (dispatch) => (
   {
     exitProfile: () => {
       dispatch(actions.exitProfile());
+    },
+    acceptInvite: (group, user, bool) => {
+      dispatch(actions.acceptInvite(group, user, bool));
     },
   }
 );

@@ -1,11 +1,10 @@
 import React, { PropTypes } from 'react';
 
-const GroupList = ({ user, leaveGroupDB, setGroup, createGroup, editGroup, setFilter, group }) => {
+const GroupList = ({ user, leaveGroupDB, setGroup, showModal, setFilter, group }) => {
   const groups = group.groups.map(groupObj => (
     <li key={groupObj.id}>
       <a
         className="nav-header"
-        data-toggle="collapse"
         data-target="#groups"
         onClick={() => {
           setGroup(groupObj.id);
@@ -20,24 +19,17 @@ const GroupList = ({ user, leaveGroupDB, setGroup, createGroup, editGroup, setFi
     </li>
   ));
   return (
-    <ul className="nav nav-list collpase" id="groups">
+    <ul className="nav nav-list" id="groups">
       {groups}
-      <input
-        className="nav-header"
-        placeholder="Group Name"
-        defaultValue={group.edit}
-        onChange={(e) => {
-          e.preventDefault();
-          editGroup(e.target.value);
-        }}
-      />
-      <button
-        onClick={() => {
-          createGroup(group.edit, user.id);
-        }}
-      >
-        Create!
-      </button>
+      <li>
+        <a
+          className="nav-header"
+          data-target="#groups"
+          onClick={() => showModal()}
+        >
+          Create a new Group
+        </a>
+      </li>
     </ul>
   );
 };
@@ -47,8 +39,7 @@ GroupList.propTypes = {
   leaveGroupDB: PropTypes.func.isRequired,
   setGroup: PropTypes.func.isRequired,
   group: PropTypes.object,
-  createGroup: PropTypes.func.isRequired,
-  editGroup: PropTypes.func.isRequired,
+  showModal: PropTypes.func.isRequired,
   setFilter: PropTypes.func.isRequired,
 };
 

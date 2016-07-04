@@ -158,11 +158,30 @@ export const deleteBodyDB = (id, url) => (
 );
 
 // To handle deletion of doc for a specific user
+const deleteDocFail = id => (
+  {
+    type: 'DELETE_DOC_FAIL',
+    id,
+  }
+);
+
 export const deleteDoc = id => (
   {
     type: 'DELETE_DOC',
     id,
   }
+);
+
+export const deleteDocDB = (docId, userId) => (
+  dispatch =>
+    fetch(`http://localhost:3000/api/docs?UserId=${userId}&&DocId=${docId}`, {
+      method: 'DELETE',
+    }).then(response => {
+      if (response.status === 200) {
+        return dispatch(deleteDoc(docId));
+      }
+      return dispatch(deleteDocFail(docId));
+    })
 );
 
 // To handle switching between list and detail card views
@@ -239,11 +258,11 @@ const loadGroups = (groups) => (
 export const loadGroupsDB = (userId) => (
   dispatch =>
     fetch(`http://localhost:3000/api/groups?UserId=${userId}`)
-      .then(response => response.json())
-      .then(groups => {
-        dispatch(loadGroups(groups));
-      })
-      .catch(err => console.log(err))
+    .then(response => response.json())
+    .then(groups => {
+      dispatch(loadGroups(groups));
+    })
+    .catch(err => console.log(err))
 );
 
 // To show a list of Groups a User is a part of
@@ -275,7 +294,7 @@ export const setGroup = (groupId) => (
 );
 
 // To handle creating a group
-export const createGroup = (name, userId) => (
+export const createGroup = (name, userId, userName, otherUsersArray) => (
   dispatch =>
     fetch('http://localhost:3000/api/groups', {
       method: 'POST',
@@ -285,6 +304,8 @@ export const createGroup = (name, userId) => (
       body: JSON.stringify({
         name,
         UserId: userId,
+        creator: userName,
+        otherUsersArray,
       }),
     })
     .then(response => response.json())
@@ -333,4 +354,85 @@ export const exitProfile = () => (
   {
     type: 'EXIT_PROFILE',
   }
+);
+
+const loadUserSearchResults = (users) => (
+  {
+    type: 'LOAD_SEARCH_USERS',
+    users,
+  }
+);
+
+export const searchUsers = (query, user) => (
+  dispatch => {
+    if (query.length < 1) {
+      dispatch(loadUserSearchResults([]));
+    } else {
+      fetch(`http://localhost:3000/api/search/users?user=${user}&&name=${query}`)
+      .then(response => response.json())
+      .then(users => {
+        dispatch(loadUserSearchResults(users.slice(0, 10)));
+      });
+    }
+  }
+);
+
+export const selectUser = (name) => (
+  {
+    type: 'SELECT_USER',
+    name,
+  }
+);
+
+export const deselectUser = name => (
+  {
+    type: 'DESELECT_USER',
+    name,
+  }
+);
+
+// To handle loading all Invites for a User
+const loadInvites = invitesArray => (
+  {
+    type: 'LOAD_INVITES',
+    invitesArray,
+  }
+);
+
+export const updateInvites = (userId) => (
+  dispatch =>
+    fetch(`http://localhost:3000/api/invites?user=${userId}`)
+    .then(response => response.json())
+    .then(invites => {
+      dispatch(loadInvites(invites));
+    })
+);
+
+// To handle removing an Invite after interacting with it
+const removeInvites = groupId => (
+  {
+    type: 'REMOVE_INVITES',
+    groupId,
+  }
+);
+
+export const acceptInvite = (groupId, userId, accept) => (
+  dispatch =>
+    fetch('http://localhost:3000/api/groups/join', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        GroupId: groupId,
+        UserId: userId,
+        accept,
+      }),
+    })
+    .then(response => response.json())
+    .then(result => {
+      console.log(result);
+      dispatch(removeInvites(groupId));
+      dispatch(loadGroupsDB(userId));
+    })
 );

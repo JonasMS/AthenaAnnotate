@@ -1,30 +1,21 @@
 'use strict';
 module.exports = {
   up: function(queryInterface, Sequelize) {
-    return queryInterface.createTable('Users', {
+    return queryInterface.createTable('UserInvites', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      title: {
+      sentFrom: {
         type: Sequelize.STRING
       },
-      name: {
-        type: Sequelize.STRING
+      UserId: {
+        type: Sequelize.INTEGER
       },
-      facebookId: {
-        type: Sequelize.STRING,
-        unique: true,
-        allowNull: false
-      },
-      email: {
-        type: Sequelize.STRING,
-        unique: true
-      },
-      picture: {
-        type: Sequelize.TEXT
+      GroupId: {
+        type: Sequelize.INTEGER
       },
       createdAt: {
         allowNull: false,
@@ -37,6 +28,6 @@ module.exports = {
     });
   },
   down: function(queryInterface, Sequelize) {
-    return queryInterface.dropTable('Users');
+    return queryInterface.dropTable('UserInvites');
   }
 };
