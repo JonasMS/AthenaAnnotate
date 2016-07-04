@@ -1,11 +1,21 @@
 import React, { PropTypes } from 'react';
 
-const Profile = ({ user, invites, exitProfile, acceptInvite }) => {
+const Profile = ({ user, invites, exitProfile, acceptInvite, group, following }) => {
   const invitesList = invites.invites.map(invite => (
     <li key={invite.id}>
       <span>{invite.sentFrom} has invited you to join {invite.GroupId}.</span>
       <button onClick={() => acceptInvite(invite.GroupId, user.id, true)}>Acccept</button>
       <button onClick={() => acceptInvite(invite.GroupId, user.id,  false)}>Decline</button>
+    </li>
+  ));
+  const groupList = group.groups.map(grp => (
+    <li key={grp.id}>
+      <a>{grp.name}</a>
+    </li>
+  ));
+  const followList = following.users.map(followedUser => (
+    <li key={followedUser.id}>
+      <a>{followedUser.name}</a>
     </li>
   ));
   const style = {
@@ -40,11 +50,13 @@ const Profile = ({ user, invites, exitProfile, acceptInvite }) => {
         <div>
           <h5>Following</h5>
           <ul>
+            {followList}
           </ul>
         </div>
         <div>
           <h5>Groups</h5>
           <ul>
+            {groupList}
           </ul>
         </div>
 

@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import CreateGroupModal from '../Components/CreateGroupModal';
+import ModalComponent from '../Components/ModalComponent';
 import * as actions from '../Actions';
 
 const mapStatetoProps = (state) => (
@@ -34,9 +34,9 @@ const mapDispatchToProps = (dispatch) => (
   }
 );
 
-const GroupModal = connect(
+const Modal = connect(
   mapStatetoProps,
   mapDispatchToProps
-)(CreateGroupModal);
+)(ModalComponent);
 
-export default GroupModal;
+export default Modal;

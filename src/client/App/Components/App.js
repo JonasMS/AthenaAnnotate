@@ -59,7 +59,7 @@ class App extends Component {
         createGroup,
         editGroup,
         loadProfile,
-        showModal,
+        createNewGroup,
       },
     } = this.props;
     return (
@@ -86,7 +86,7 @@ class App extends Component {
                 showGroups={showGroups}
                 createGroup={createGroup}
                 editGroup={editGroup}
-                showModal={showModal}
+                createNewGroup={createNewGroup}
               />
               {loading ? <Loading /> : <Main profile={profile} user={user} />}
             </div>

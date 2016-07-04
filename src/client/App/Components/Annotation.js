@@ -25,8 +25,10 @@ const Annotation = (
       <div>
         <span className="username">{userName}</span>
         {user.id === userId ? null :
-          <a className="follow" onClick={() => followUser(userId, user.id)}>{following[userId] === 1
-            ? 'unfollow' : 'follow'}</a>
+          <a className="follow" onClick={() => followUser(userId, user.id)}>
+            {following.users.filter(followedUser => followedUser.id === userId).length !== 0
+            ? 'unfollow' : 'follow'}
+          </a>
         }
       </div>
       : null}

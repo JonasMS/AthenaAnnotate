@@ -8,6 +8,7 @@ const mapStatetoProps = (state) => (
     docs: state.docs,
     listView: state.listView,
     filter: state.filter,
+    group: state.group,
   }
 );
 
@@ -18,6 +19,9 @@ const mapDispatchToProps = (dispatch) => (
     },
     switchView: () => {
       dispatch(actions.switchView());
+    },
+    showMembers: (groupId) => {
+      dispatch(actions.showMembers(groupId));
     },
   }
 );

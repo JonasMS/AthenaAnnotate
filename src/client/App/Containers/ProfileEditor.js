@@ -7,6 +7,8 @@ const mapStatetoProps = (state) => (
     show: state.profile,
     user: state.user,
     invites: state.invites,
+    group: state.group,
+    following: state.following,
 
   }
 );

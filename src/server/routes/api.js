@@ -276,7 +276,7 @@ router.post('/api/follow', function(req, res) {
   });
 });
 
-// BOTH - loads a list of userIds that a user is following
+// BOTH - loads a list of Users that a User is following
 router.get('/api/follow', function(req, res) {
   models.Follows.findAll({
     include: [{
@@ -288,9 +288,11 @@ router.get('/api/follow', function(req, res) {
     }
     // attributes: ['followsId']
   }).then(function(users) {
-    // console.log(users);
+    console.log(users.map(function(user) {
+      return user.dataValues.follows;
+    }));
     res.send(users.map(function(user) {
-      return user.dataValues.follows.id;
+      return user.dataValues.follows;
     }));
     // res.send(users);
   }).catch(function(err) {
@@ -340,7 +342,7 @@ router.get('/api/groups', function(req, res) {
       UserId: req.query.UserId
     }
   }).then(function(groups) {
-    // console.log(groups);
+    console.log(groups);
     res.send(groups.map(function(group) {
       return group.dataValues.users;
     }));
@@ -552,6 +554,33 @@ router.get('/api/following/doc', function(req, res) {
     order: [['createdAt', 'ASC']]
   }).then(function(annotations) {
     annotationConstructor(annotations, res);
+  }).catch(function(err) {
+    res.send(err);
+  });
+});
+
+// Get a list of all members of a group, sorted alphabetically
+router.get('/api/groups/members', function(req, res) {
+  models.UserGroup.findAll({
+    include: [{
+      model: models.User,
+      as: 'groups'
+    }],
+    where: {
+      GroupId: req.query.GroupId
+    }
+  }).then(function(users) {
+    var members = users.map(function(user) {
+      return user.dataValues.groups.dataValues;
+    });
+    res.send(members.sort(function(a, b) {
+      if (a.name.toUpperCase() < b.name.toUpperCase()) {
+        return -1;
+      } else if (a.name.toUpperCase() > b.name.toUpperCase()) {
+        return 1;
+      }
+      return 0;
+    }));
   }).catch(function(err) {
     res.send(err);
   });

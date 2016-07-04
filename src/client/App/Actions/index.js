@@ -322,6 +322,7 @@ export const createGroup = (name, userId, userName, otherUsersArray) => (
     .catch(err => console.log(err))
 );
 
+
 // To handle editing a group name
 export const editGroup = (edit) => (
   {
@@ -337,10 +338,18 @@ export const showModal = () => (
   }
 );
 
-export const setModal = (modal) => (
+const setModal = (modal) => (
   {
     type: 'SET_MODAL',
     modal,
+  }
+);
+
+// To handle creating a group
+export const createNewGroup = () => (
+  dispatch => {
+    dispatch(setModal('createGroup'));
+    dispatch(showModal());
   }
 );
 
@@ -435,4 +444,24 @@ export const acceptInvite = (groupId, userId, accept) => (
       dispatch(removeInvites(groupId));
       dispatch(loadGroupsDB(userId));
     })
+);
+
+// To handle showing members of a group
+const loadMembers = (members) => (
+  {
+    type: 'SHOW_MEMBERS',
+    members,
+  }
+);
+
+export const showMembers = (groupId) => (
+  dispatch => {
+    dispatch(setModal('members'));
+    return fetch(`http://localhost:3000/api/groups/members?GroupId=${groupId}`)
+    .then(response => response.json())
+    .then(members => {
+      dispatch(loadMembers(members));
+      dispatch(showModal());
+    });
+  }
 );

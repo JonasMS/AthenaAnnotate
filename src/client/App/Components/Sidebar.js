@@ -12,7 +12,7 @@ const Sidebar = ({
   group,
   createGroup,
   editGroup,
-  showModal,
+  createNewGroup,
 }) => (
   <div className="col-md-3">
     <ul className="nav nav-sidebar affix">
@@ -37,7 +37,7 @@ const Sidebar = ({
             createGroup={createGroup}
             editGroup={editGroup}
             setFilter={setFilter}
-            showModal={showModal}
+            createNewGroup={createNewGroup}
           />
           :
           null
@@ -64,7 +64,7 @@ Sidebar.propTypes = {
   group: PropTypes.object,
   createGroup: PropTypes.func.isRequired,
   editGroup: PropTypes.func.isRequired,
-  showModal: PropTypes.func.isRequired,
+  createNewGroup: PropTypes.func.isRequired,
 };
 
 export default Sidebar;
