@@ -28,7 +28,8 @@ class App extends Component {
     this.props.actions.fetchAnnotations(
       this.props.user.id,
       this.props.filter,
-      this.props.group.selected
+      this.props.group.selected,
+      this.props.following.selected
     );
     if (!this.props.following.loaded) {
       this.props.actions.loadFollowingDB(this.props.user.id);

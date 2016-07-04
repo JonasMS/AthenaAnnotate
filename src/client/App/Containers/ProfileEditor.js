@@ -21,6 +21,15 @@ const mapDispatchToProps = (dispatch) => (
     acceptInvite: (group, user, bool) => {
       dispatch(actions.acceptInvite(group, user, bool));
     },
+    setGroup: (groupId) => {
+      dispatch(actions.setGroup(groupId));
+    },
+    setFilter: (filter) => {
+      dispatch(actions.setFilter(filter));
+    },
+    setUser: (userId) => {
+      dispatch(actions.setUser(userId));
+    },
   }
 );
 

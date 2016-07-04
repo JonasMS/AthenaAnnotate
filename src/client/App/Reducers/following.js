@@ -15,6 +15,10 @@ const following = (state = { loaded: false }, action) => {
         ),
         loaded: false,
       });
+    case 'SET_USER':
+      return Object.assign({}, state, {
+        selected: action.userId,
+      });
     default:
       return state;
   }

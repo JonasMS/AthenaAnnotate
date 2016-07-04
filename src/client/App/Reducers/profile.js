@@ -4,6 +4,8 @@ const profile = (state = false, action) => {
       return true;
     case 'EXIT_PROFILE':
       return false;
+    // case 'FILTER':
+    //   return false;
     default:
       return state;
   }

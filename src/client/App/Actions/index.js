@@ -17,7 +17,7 @@ const loadAnnotations = (annotations) => (
   }
 );
 
-export const fetchAnnotations = (id, filter, groupId) => {
+export const fetchAnnotations = (id, filter, groupId, userId) => {
   let url;
   if (filter === 'Discover') {
     url = `http://localhost:3000/api/discover?UserId=${id}`;
@@ -25,6 +25,8 @@ export const fetchAnnotations = (id, filter, groupId) => {
     url = `http://localhost:3000/api/following?UserId=${id}`;
   } else if (filter === 'Groups') {
     url = `http://localhost:3000/api/group?GroupId=${groupId}`;
+  } else if (filter === 'User') {
+    url = `http://localhost:3000/api/user?UserId=${userId}`;
   } else {
     url = `http://localhost:3000/api/annotations?UserId=${id}`;
   }
@@ -192,10 +194,17 @@ export const switchView = () => (
 );
 
 // To handle switching between different lists
-export const setFilter = filter => (
+const changeFilter = filter => (
   {
     type: 'FILTER',
     filter,
+  }
+);
+
+export const setFilter = filter => (
+  dispatch => {
+    dispatch(changeFilter(filter));
+    dispatch(exitProfile());
   }
 );
 
@@ -463,5 +472,12 @@ export const showMembers = (groupId) => (
       dispatch(loadMembers(members));
       dispatch(showModal());
     });
+  }
+);
+
+export const setUser = (userId) => (
+  {
+    type: 'SET_USER',
+    userId,
   }
 );

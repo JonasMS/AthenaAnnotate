@@ -44,9 +44,6 @@ const Sidebar = ({
         }
       </li>
       <li>
-        <a>Settings</a>
-      </li>
-      <li>
         <a>Help</a>
       </li>
     </ul>
@@ -71,4 +68,8 @@ export default Sidebar;
 
 /*  <li>
       <FacebookLogout logout={logout} />
-    </li> */
+    </li>
+    <li>
+      <a>Settings</a>
+    </li>
+ */

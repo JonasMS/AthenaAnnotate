@@ -28,6 +28,12 @@ const mapDispatchToProps = (dispatch) => (
     followUser: (userId, id) => {
       dispatch(actions.followUser(userId, id));
     },
+    setFilter: (filter) => {
+      dispatch(actions.setFilter(filter));
+    },
+    setUser: (userId) => {
+      dispatch(actions.setUser(userId));
+    },
   }
 );
 

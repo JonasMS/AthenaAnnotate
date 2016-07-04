@@ -400,9 +400,9 @@ router.get('/api/group', function(req, res) {
   });
 });
 
-router.get('/api/scrape', function(req, res) {
-  scraper(req.query.url, res);
-});
+// router.get('/api/scrape', function(req, res) {
+//   scraper(req.query.url, res);
+// });
 
 // To handle joining an existing Group
 router.post('/api/group', function(req, res) {
@@ -491,12 +491,13 @@ router.get('/api/channels', function (req, res) {
     }
   }).then(function(list) {
     var groups = list[0].groups.map(function(group) {
-      return { id: group.id, name: group.name };
+      return { id: group.id, name: group.name, type: 'group' };
     });
     var following = list[0].follows.map(function(user) {
-      return { id: user.id, name: user.name };
+      return { id: user.id, name: user.name, type: 'user' };
     });
-    res.send({ groups: groups, following: following });
+    var results = groups.concat(following);
+    res.send(results);
   });
 });
 
@@ -583,5 +584,25 @@ router.get('/api/groups/members', function(req, res) {
     }));
   }).catch(function(err) {
     res.send(err);
+  });
+});
+
+// Get a specific User's annotations
+router.get('/api/user', function(req, res) {
+  models.Annotation.findAll({
+    include: [{
+      model: models.User
+    }, {
+      model: models.Doc
+    }],
+    where: {
+      UserId: req.query.UserId,
+      private: 'Public'
+    },
+    order: [['updatedAt', 'DESC']]
+  }).then(function(annotations) {
+    res.send(annotations);
+  }).catch(function(error) {
+    res.send(error);
   });
 });

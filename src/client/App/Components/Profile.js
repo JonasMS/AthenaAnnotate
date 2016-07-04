@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 
-const Profile = ({ user, invites, exitProfile, acceptInvite, group, following }) => {
+const Profile = ({ user, invites, exitProfile, acceptInvite, group, following, setGroup, setFilter, setUser }) => {
   const invitesList = invites.invites.map(invite => (
     <li key={invite.id}>
       <span>{invite.sentFrom} has invited you to join {invite.GroupId}.</span>
@@ -10,12 +10,26 @@ const Profile = ({ user, invites, exitProfile, acceptInvite, group, following })
   ));
   const groupList = group.groups.map(grp => (
     <li key={grp.id}>
-      <a>{grp.name}</a>
+      <a
+        onClick={() => {
+          setGroup(grp.id);
+          setFilter('Groups');
+        }}
+      >
+        {grp.name}
+      </a>
     </li>
   ));
   const followList = following.users.map(followedUser => (
     <li key={followedUser.id}>
-      <a>{followedUser.name}</a>
+      <a
+        onClick={() => {
+          setUser(followedUser.id);
+          setFilter('User');
+        }}
+      >
+        {followedUser.name}
+      </a>
     </li>
   ));
   const style = {
@@ -72,6 +86,9 @@ Profile.propTypes = {
   following: PropTypes.object.isRequired,
   exitProfile: PropTypes.func.isRequired,
   acceptInvite: PropTypes.func.isRequired,
+  setGroup: PropTypes.func.isRequired,
+  setFilter: PropTypes.func.isRequired,
+  setUser: PropTypes.func.isRequired,
 };
 
 export default Profile;
