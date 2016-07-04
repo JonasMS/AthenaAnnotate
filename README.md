@@ -6,7 +6,7 @@ Annotate the web.
 
 ## Development Workflow
 
-### Install
+### Clone & Install Repo
 
 ```sh
 $ git clone [this repo]
@@ -19,7 +19,7 @@ Read [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ### Install DB
 
-1. Install [Postgres DB]()
+1. Install Postgres DB
 1. Start Postgres DB
 1. Run `npm run create`
 
@@ -27,13 +27,11 @@ Read [CONTRIBUTING.md](CONTRIBUTING.md).
 
 Copy `.env.example` to `.env` and set any API keys or config variables in this file. Here are typical setting for these variables:
 
-```sh
 |Variable|Setting|
 |---|---|
 | ATHENA_HOST | localhost |
 | HTTP_PORT | 3000 |
 | HTTPS_PORT | 8443 |
-```
 
 You'll also need to setup your SSL key and certification. Here are some instructions:
 
@@ -63,13 +61,8 @@ This will create a build directory as follows:
 ```sh
 build/
 ├── athena/
-│   ├── 448c34a56d699c29117adc64c43affeb.woff2
-│   ├── 89889688147bd7575d6327160d64e760.svg
 │   ├── athena.html
 │   ├── athena.js
-│   ├── e18bbf611f2a2e43afc071aa2f4e1512.ttf
-│   ├── f4769f9bdb7466be65088239c12046d1.eot
-│   └── fa2772327f55d8198301fdb8bcfc8158.woff
 ├── extension/
 │   ├── content.js
 │   └── manifest.json
@@ -80,9 +73,9 @@ build/
 
 ### Watch Source & Start Server
 
-Open terminals and do the following.
+The table below lists commands to run in their own terminal window. 
 
-|Terminal No.|Endpoint|
+|Terminal No.|Command|
 |---|---|
 | 1 | `npm run watch-app` |
 | 2 | `npm run watch-ext` |
@@ -90,8 +83,8 @@ Open terminals and do the following.
 | 4 | `npm run watch-athena` |
 | 5 | `npm start` |
 
-> See `package.json` for build scripts that build an individual module
-> Notice the server is listening on two ports - one for **HTTP** and one for **HTTPS**.
+> 1. See `package.json` for build scripts that build an individual module.
+> 1. Notice the server is listening on two ports - one for **HTTP** and one for **HTTPS**.
 
 ### Load Extension in Browser
 
