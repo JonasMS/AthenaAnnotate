@@ -36,8 +36,8 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       private: {
-        type: Sequelize.STRING // ,
-        // allowNull: false
+        type: Sequelize.BOOLEAN,
+        allowNull: false
       },
       groupId: {
         type: Sequelize.INTEGER
