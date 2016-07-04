@@ -45,15 +45,15 @@ export const login = (cb) => {
   }, { scope: 'public_profile,email' });
 };
 
-// export const login = () => (
-//   dispatch => (
-//     window.FB.login(res => {
-//       if (res.status === 'connected') {
-//         getUserFromFB().then(user => dispatch(getUserFromDB(user)));
-//       }
-//     }, { scope: 'public_profile,email' })
-//   )
-// );
+export const webAppLogin = () => (
+  dispatch => (
+    window.FB.login(res => {
+      if (res.status === 'connected') {
+        getUserFromFB().then(user => dispatch(getUserFromDB(user)));
+      }
+    }, { scope: 'public_profile,email' })
+  )
+);
 
 export const logout = () => (
   dispatch => (
