@@ -1,20 +1,7 @@
-import Modal from 'react-modal';
 import React, { PropTypes } from 'react';
-
-const customStyles = {
-  content: {
-    top: '50%',
-    left: '50%',
-    right: 'auto',
-    bottom: 'auto',
-    marginRight: '-50%',
-    transform: 'translate(-50%, -50%)',
-  },
-};
 
 const createGroupModal = ({
   group,
-  modal,
   user,
   search,
   showModal,
@@ -39,12 +26,7 @@ const createGroupModal = ({
     </li>
   ));
   return (
-    <Modal
-      isOpen={modal.show}
-      // onAfterOpen={this.afterOpenModal}
-      onRequestClose={() => showModal()}
-      style={customStyles}
-    >
+    <div>
       <p>Create a new group</p>
       <input
         type="text"
@@ -66,7 +48,7 @@ const createGroupModal = ({
           ?
           null
           :
-          <ul className="autocomplete">
+          <ul className="dropdown-menu autocomplete">
             {userList}
           </ul>
         }
@@ -92,12 +74,11 @@ const createGroupModal = ({
         Create
       </button>
       <button className="btn btn-default" onClick={() => showModal()}>Cancel</button>
-    </Modal>
+    </div>
   );
 };
 
 createGroupModal.propTypes = {
-  modal: PropTypes.object.isRequired,
   user: PropTypes.object.isRequired,
   group: PropTypes.object.isRequired,
   showModal: PropTypes.func.isRequired,

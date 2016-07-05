@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import Doc from './Doc';
 
-const DocList = ({ user, docs, onDocDelete, listView, switchView, filter }) => {
+const DocList = ({ user, docs, onDocDelete, listView, switchView, filter, showMembers, group }) => {
   const docList = docs.map(doc => (
     <Doc
       key={doc.id}
@@ -24,9 +24,7 @@ const DocList = ({ user, docs, onDocDelete, listView, switchView, filter }) => {
       {filter === 'Groups'
         ?
         <a
-          onClick={() => {
-            setModal('Members');
-          }}
+          onClick={() => showMembers(group.selected)}
         >
           Members
         </a>
@@ -46,6 +44,8 @@ DocList.propTypes = {
   listView: PropTypes.bool.isRequired,
   switchView: PropTypes.func.isRequired,
   filter: PropTypes.string.isRequired,
+  showMembers: PropTypes.func.isRequired,
+  group: PropTypes.object.isRequired,
 };
 
 export default DocList;

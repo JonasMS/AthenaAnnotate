@@ -73,7 +73,9 @@ router.put('/api/annotations', function(req, res) {
     // exact: req.body.target.selector.exact,
     // prefix: req.body.target.selector.prefix,
     // suffix: req.body.target.selector.suffix,
-    text: req.body.body.text
+    text: req.body.body.text,
+    private: req.body.private,
+    groupId: req.body.groupId
   }, {
     where: { url: req.body.id },
     returning: true
@@ -276,7 +278,7 @@ router.post('/api/follow', function(req, res) {
   });
 });
 
-// BOTH - loads a list of userIds that a user is following
+// BOTH - loads a list of Users that a User is following
 router.get('/api/follow', function(req, res) {
   models.Follows.findAll({
     include: [{
@@ -288,9 +290,11 @@ router.get('/api/follow', function(req, res) {
     }
     // attributes: ['followsId']
   }).then(function(users) {
-    // console.log(users);
+    console.log(users.map(function(user) {
+      return user.dataValues.follows;
+    }));
     res.send(users.map(function(user) {
-      return user.dataValues.follows.id;
+      return user.dataValues.follows;
     }));
     // res.send(users);
   }).catch(function(err) {
@@ -340,7 +344,7 @@ router.get('/api/groups', function(req, res) {
       UserId: req.query.UserId
     }
   }).then(function(groups) {
-    // console.log(groups);
+    console.log(groups);
     res.send(groups.map(function(group) {
       return group.dataValues.users;
     }));
@@ -387,7 +391,7 @@ router.get('/api/group', function(req, res) {
       model: models.Doc
     }],
     where: {
-      private: 'Group',
+      // private: 'Group',
       groupId: req.query.GroupId
     },
     order: [['updatedAt', 'DESC']]
@@ -398,9 +402,9 @@ router.get('/api/group', function(req, res) {
   });
 });
 
-router.get('/api/scrape', function(req, res) {
-  scraper(req.query.url, res);
-});
+// router.get('/api/scrape', function(req, res) {
+//   scraper(req.query.url, res);
+// });
 
 // To handle joining an existing Group
 router.post('/api/group', function(req, res) {
@@ -489,12 +493,13 @@ router.get('/api/channels', function (req, res) {
     }
   }).then(function(list) {
     var groups = list[0].groups.map(function(group) {
-      return { id: group.id, name: group.name };
+      return { id: group.id, name: group.name, type: 'group' };
     });
     var following = list[0].follows.map(function(user) {
-      return { id: user.id, name: user.name };
+      return { id: user.id, name: user.name, type: 'user' };
     });
-    res.send({ groups: groups, following: following });
+    var results = groups.concat(following);
+    res.send(results);
   });
 });
 
@@ -554,5 +559,52 @@ router.get('/api/following/doc', function(req, res) {
     annotationConstructor(annotations, res);
   }).catch(function(err) {
     res.send(err);
+  });
+});
+
+// Get a list of all members of a group, sorted alphabetically
+router.get('/api/groups/members', function(req, res) {
+  models.UserGroup.findAll({
+    include: [{
+      model: models.User,
+      as: 'groups'
+    }],
+    where: {
+      GroupId: req.query.GroupId
+    }
+  }).then(function(users) {
+    var members = users.map(function(user) {
+      return user.dataValues.groups.dataValues;
+    });
+    res.send(members.sort(function(a, b) {
+      if (a.name.toUpperCase() < b.name.toUpperCase()) {
+        return -1;
+      } else if (a.name.toUpperCase() > b.name.toUpperCase()) {
+        return 1;
+      }
+      return 0;
+    }));
+  }).catch(function(err) {
+    res.send(err);
+  });
+});
+
+// Get a specific User's annotations
+router.get('/api/user', function(req, res) {
+  models.Annotation.findAll({
+    include: [{
+      model: models.User
+    }, {
+      model: models.Doc
+    }],
+    where: {
+      UserId: req.query.UserId,
+      private: 'Public'
+    },
+    order: [['updatedAt', 'DESC']]
+  }).then(function(annotations) {
+    res.send(annotations);
+  }).catch(function(error) {
+    res.send(error);
   });
 });

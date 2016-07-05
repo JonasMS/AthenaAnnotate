@@ -17,7 +17,7 @@ const loadAnnotations = (annotations) => (
   }
 );
 
-export const fetchAnnotations = (id, filter, groupId) => {
+export const fetchAnnotations = (id, filter, groupId, userId) => {
   let url;
   if (filter === 'Discover') {
     url = `http://localhost:3000/api/discover?UserId=${id}`;
@@ -25,6 +25,8 @@ export const fetchAnnotations = (id, filter, groupId) => {
     url = `http://localhost:3000/api/following?UserId=${id}`;
   } else if (filter === 'Groups') {
     url = `http://localhost:3000/api/group?GroupId=${groupId}`;
+  } else if (filter === 'User') {
+    url = `http://localhost:3000/api/user?UserId=${userId}`;
   } else {
     url = `http://localhost:3000/api/annotations?UserId=${id}`;
   }
@@ -97,7 +99,7 @@ const saveEditFail = id => (
   }
 );
 
-export const editAnnotationDB = (id, body, url) => (
+export const editAnnotationDB = (id, body, privacy, group, url) => (
   dispatch =>
     fetch('http://localhost:3000/api/annotations', {
       method: 'PUT',
@@ -109,6 +111,8 @@ export const editAnnotationDB = (id, body, url) => (
           text: body,
         },
         id: url,
+        private: privacy,
+        groupId: group,
       }),
     })
       .then(response => response.json())
@@ -192,10 +196,17 @@ export const switchView = () => (
 );
 
 // To handle switching between different lists
-export const setFilter = filter => (
+const changeFilter = filter => (
   {
     type: 'FILTER',
     filter,
+  }
+);
+
+export const setFilter = filter => (
+  dispatch => {
+    dispatch(changeFilter(filter));
+    dispatch(exitProfile());
   }
 );
 
@@ -337,10 +348,18 @@ export const showModal = () => (
   }
 );
 
-export const setModal = (modal) => (
+const setModal = (modal) => (
   {
     type: 'SET_MODAL',
     modal,
+  }
+);
+
+// To handle creating a group
+export const createNewGroup = () => (
+  dispatch => {
+    dispatch(setModal('createGroup'));
+    dispatch(showModal());
   }
 );
 
@@ -435,4 +454,47 @@ export const acceptInvite = (groupId, userId, accept) => (
       dispatch(removeInvites(groupId));
       dispatch(loadGroupsDB(userId));
     })
+);
+
+// To handle showing members of a group
+const loadMembers = (members) => (
+  {
+    type: 'SHOW_MEMBERS',
+    members,
+  }
+);
+
+export const showMembers = (groupId) => (
+  dispatch => {
+    dispatch(setModal('members'));
+    return fetch(`http://localhost:3000/api/groups/members?GroupId=${groupId}`)
+    .then(response => response.json())
+    .then(members => {
+      dispatch(loadMembers(members));
+      dispatch(showModal());
+    });
+  }
+);
+
+export const setUser = (userId) => (
+  {
+    type: 'SET_USER',
+    userId,
+  }
+);
+
+// To handle changing of privacy settings
+export const updatePrivacy = (privacy) => (
+  {
+    type: 'UPDATE_PRIVACY',
+    privacy,
+  }
+);
+
+// To handle changing of group for annotation
+export const updateGroup = (groupId) => (
+  {
+    type: 'UPDATE_GROUP',
+    groupId,
+  }
 );

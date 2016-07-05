@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 
-const GroupList = ({ user, leaveGroupDB, setGroup, showModal, setFilter, group }) => {
+const GroupList = ({ user, leaveGroupDB, setGroup, createNewGroup, setFilter, group }) => {
   const groups = group.groups.map(groupObj => (
     <li key={groupObj.id}>
       <a
@@ -25,7 +25,7 @@ const GroupList = ({ user, leaveGroupDB, setGroup, showModal, setFilter, group }
         <a
           className="nav-header"
           data-target="#groups"
-          onClick={() => showModal()}
+          onClick={() => createNewGroup()}
         >
           Create a new Group
         </a>
@@ -39,7 +39,7 @@ GroupList.propTypes = {
   leaveGroupDB: PropTypes.func.isRequired,
   setGroup: PropTypes.func.isRequired,
   group: PropTypes.object,
-  showModal: PropTypes.func.isRequired,
+  createNewGroup: PropTypes.func.isRequired,
   setFilter: PropTypes.func.isRequired,
 };
 

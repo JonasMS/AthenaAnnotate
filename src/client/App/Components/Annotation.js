@@ -18,15 +18,27 @@ const Annotation = (
     followUser,
     user,
     following,
+    setFilter,
+    setUser,
   }
 ) => (
   <li className="annotation">
     {filter !== 'Self' ?
       <div>
-        <span className="username">{userName}</span>
+        <a
+          className="username"
+          onClick={() => {
+            setFilter('User');
+            setUser(userId);
+          }}
+        >
+          {userName}
+        </a>
         {user.id === userId ? null :
-          <a className="follow" onClick={() => followUser(userId, user.id)}>{following[userId] === 1
-            ? 'unfollow' : 'follow'}</a>
+          <a className="follow" onClick={() => followUser(userId, user.id)}>
+            {following.users.filter(followedUser => followedUser.id === userId).length !== 0
+            ? 'unfollow' : 'follow'}
+          </a>
         }
       </div>
       : null}
@@ -40,15 +52,15 @@ const Annotation = (
         <div
           className="card-action"
         >
-          {edit && (/* filter === 'Self' || */user.id === userId) ?
+          {edit && (user.id === userId) ?
             <BodyEditor
               body={body}
               onCancel={() => onEditBody(id)}
-              onSave={(txt) => onSaveEdit(id, txt, url)}
+              onSave={(txt, privacy, grp) => onSaveEdit(id, txt, privacy, grp, url)}
               onDelete={() => onDeleteBody(id, url)}
             />
             : null}
-          {!edit && (/* filter === 'Self' || */user.id === userId) ?
+          {!edit && (user.id === userId) ?
             <button
               className="waves-effect waves-light btn-floating"
               onClick={() => onEditBody(id)}
@@ -60,7 +72,7 @@ const Annotation = (
       </div>
     : null}
     </div>
-    {/* filter !== 'Self' || */user.id !== userId ? null :
+    {user.id !== userId ? null :
       <button
         className="waves-effect waves-light btn-floating"
         onClick={onAnnotationDelete}
@@ -86,6 +98,8 @@ Annotation.propTypes = {
   followUser: PropTypes.func.isRequired,
   user: PropTypes.object.isRequired,
   following: PropTypes.object.isRequired,
+  setFilter: PropTypes.func.isRequired,
+  setUser: PropTypes.func.isRequired,
 };
 
 export default Annotation;

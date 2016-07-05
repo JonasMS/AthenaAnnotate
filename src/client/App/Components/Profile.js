@@ -1,11 +1,35 @@
 import React, { PropTypes } from 'react';
 
-const Profile = ({ user, invites, exitProfile, acceptInvite }) => {
+const Profile = ({ user, invites, exitProfile, acceptInvite, group, following, setGroup, setFilter, setUser }) => {
   const invitesList = invites.invites.map(invite => (
     <li key={invite.id}>
       <span>{invite.sentFrom} has invited you to join {invite.GroupId}.</span>
       <button onClick={() => acceptInvite(invite.GroupId, user.id, true)}>Acccept</button>
       <button onClick={() => acceptInvite(invite.GroupId, user.id,  false)}>Decline</button>
+    </li>
+  ));
+  const groupList = group.groups.map(grp => (
+    <li key={grp.id}>
+      <a
+        onClick={() => {
+          setGroup(grp.id);
+          setFilter('Groups');
+        }}
+      >
+        {grp.name}
+      </a>
+    </li>
+  ));
+  const followList = following.users.map(followedUser => (
+    <li key={followedUser.id}>
+      <a
+        onClick={() => {
+          setUser(followedUser.id);
+          setFilter('User');
+        }}
+      >
+        {followedUser.name}
+      </a>
     </li>
   ));
   const style = {
@@ -28,7 +52,15 @@ const Profile = ({ user, invites, exitProfile, acceptInvite }) => {
           <input type="text" className="form-control" id="title" defaultValue={user.title} />
         </div>
         <button type="submit" className="btn btn-default">Save</button>
-        <button className="btn btn-default" onClick={() => exitProfile()}>Cancel</button>
+        <button
+          className="btn btn-default"
+          onClick={(e) => {
+            e.preventDefault();
+            exitProfile();
+          }}
+        >
+          Cancel
+        </button>
       </form>
       <div>
         <div>
@@ -38,13 +70,15 @@ const Profile = ({ user, invites, exitProfile, acceptInvite }) => {
           </ul>
         </div>
         <div>
-          <h5>Following</h5>
+          <h5>Following:</h5>
           <ul>
+            {followList}
           </ul>
         </div>
         <div>
-          <h5>Groups</h5>
+          <h5>Groups:</h5>
           <ul>
+            {groupList}
           </ul>
         </div>
 
@@ -60,6 +94,9 @@ Profile.propTypes = {
   following: PropTypes.object.isRequired,
   exitProfile: PropTypes.func.isRequired,
   acceptInvite: PropTypes.func.isRequired,
+  setGroup: PropTypes.func.isRequired,
+  setFilter: PropTypes.func.isRequired,
+  setUser: PropTypes.func.isRequired,
 };
 
 export default Profile;

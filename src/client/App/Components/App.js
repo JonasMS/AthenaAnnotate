@@ -24,11 +24,11 @@ class App extends Component {
   }
 
   componentDidUpdate() {
-    // this.props.actions.fetchDocs(this.props.user.id);
     this.props.actions.fetchAnnotations(
       this.props.user.id,
       this.props.filter,
-      this.props.group.selected
+      this.props.group.selected,
+      this.props.following.selected
     );
     if (!this.props.following.loaded) {
       this.props.actions.loadFollowingDB(this.props.user.id);
@@ -39,7 +39,6 @@ class App extends Component {
     if (!this.props.invites.loaded) {
       this.props.actions.updateInvites(this.props.user.id);
     }
-    // this.props.actions.fetchStuff(this.props.user.id);
   }
 
   render() {
@@ -59,7 +58,7 @@ class App extends Component {
         createGroup,
         editGroup,
         loadProfile,
-        showModal,
+        createNewGroup,
       },
     } = this.props;
     return (
@@ -77,7 +76,6 @@ class App extends Component {
               />
               <Sidebar
                 user={user}
-                // logout={logout}
                 setFilter={setFilter}
                 filter={filter}
                 group={group}
@@ -86,7 +84,7 @@ class App extends Component {
                 showGroups={showGroups}
                 createGroup={createGroup}
                 editGroup={editGroup}
-                showModal={showModal}
+                createNewGroup={createNewGroup}
               />
               {loading ? <Loading /> : <Main profile={profile} user={user} />}
             </div>
