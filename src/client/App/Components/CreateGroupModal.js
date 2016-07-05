@@ -27,7 +27,7 @@ const createGroupModal = ({
   const userList = search.users.map(u => (
     <li key={u.id}>
       <a onClick={() => selectUser(u.name)}>
-      {u.name}
+        {u.name}
       </a>
     </li>
   ));

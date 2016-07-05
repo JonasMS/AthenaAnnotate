@@ -21,6 +21,17 @@ const DocList = ({ user, docs, onDocDelete, listView, switchView, filter }) => {
       >
         <span className="glyphicon glyphicon-th-list" aria-hidden="true"></span>
       </button>
+      {filter === 'Groups'
+        ?
+        <a
+          onClick={() => {
+            setModal('Members');
+          }}
+        >
+          Members
+        </a>
+        : null
+      }
       <ul className="list-group">
         {docList}
       </ul>

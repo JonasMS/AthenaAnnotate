@@ -473,3 +473,86 @@ router.get('/api/invites', function(req, res) {
     res.send(error);
   });
 });
+
+// Get a list of groups and users followed
+router.get('/api/channels', function (req, res) {
+  models.User.findAll({
+    include: [{
+      model: models.Group,
+      as: 'groups'
+    }, {
+      model: models.User,
+      as: 'follows'
+    }],
+    where: {
+      id: req.query.UserId
+    }
+  }).then(function(list) {
+    var groups = list[0].groups.map(function(group) {
+      return { id: group.id, name: group.name };
+    });
+    var following = list[0].follows.map(function(user) {
+      return { id: user.id, name: user.name };
+    });
+    res.send({ groups: groups, following: following });
+  });
+});
+
+// Get a list of annotations for a Group for a Doc
+router.get('/api/group/doc', function(req, res) {
+  models.UserGroup.findAll({
+    include: [{
+      model: models.User,
+      as: 'groups'
+    }],
+    where: {
+      GroupId: req.query.GroupId
+    }
+  }).then(function(users) {
+    var userList = users.map(function(user) {
+      return user.UserId;
+    });
+    models.Annotation.findAll({
+      include: [{
+        model: models.User
+      }, {
+        model: models.Doc
+      }],
+      where: {
+        UserId: {
+          $in: userList
+        },
+        source: req.query.source,
+        private: 'Public'
+      },
+      order: [['createdAt', 'ASC']]
+    }).then(function(annotations) {
+      annotationConstructor(annotations, res);
+    }).catch(function(err) {
+      res.send(err);
+    });
+  }).catch(function(err) {
+    res.send(err);
+  });
+});
+
+// Get a list of annotations for a followed User for a Doc
+router.get('/api/following/doc', function(req, res) {
+  models.Annotation.findAll({
+    include: [{
+      model: models.User
+    }, {
+      model: models.Doc
+    }],
+    where: {
+      UserId: req.query.UserId,
+      source: req.query.source,
+      private: 'Public'
+    },
+    order: [['createdAt', 'ASC']]
+  }).then(function(annotations) {
+    annotationConstructor(annotations, res);
+  }).catch(function(err) {
+    res.send(err);
+  });
+});
