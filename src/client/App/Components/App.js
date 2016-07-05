@@ -50,8 +50,8 @@ class App extends Component {
       group,
       profile,
       actions: {
-        login,
         logout,
+        webAppLogin,
         setFilter,
         setGroup,
         leaveGroupDB,
@@ -91,7 +91,7 @@ class App extends Component {
               {loading ? <Loading /> : <Main profile={profile} user={user} />}
             </div>
           :
-            <Splash login={login} />
+            <Splash login={webAppLogin} />
         }
       </div>
     );
