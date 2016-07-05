@@ -1,3 +1,5 @@
+require('dotenv').config({ silent: true });
+
 var fs = require('fs');
 var http = require('http');
 var https = require('https');
@@ -11,16 +13,9 @@ var homeRoute = require('./routes/home');
 var apiRoute = require('./routes/api');
 var specRoute = require('./routes/spec');
 var Sequelize = require('sequelize');
-var sequelize = new Sequelize('postgres://postgres@localhost:5432/annotate');
-var privateKey  = fs.readFileSync(__dirname + '/sslcert/server.key', 'utf8');
-var certificate = fs.readFileSync(__dirname + '/sslcert/server.crt', 'utf8');
-var credentials = { key: privateKey, cert: certificate };
+
+var sequelize = new Sequelize(process.env.DATABASE_URL);
 var server = express();
-var host;
-var port;
-
-require('dotenv').config({ silent: true });
-
 var host = process.env.HOST || 'localhost';
 var httpPort = process.env.HTTP_PORT || 3000;
 var httpsPort = process.env.HTTPS_PORT || 8443;
@@ -56,16 +51,35 @@ server
   .use(specRoute)
   .use(homeRoute);
 
-http
-  .createServer(server)
-  .listen(httpPort);
+var privateKey;
+var certificate;
+var credentials;
+var env = process.env.NODE_ENV;
 
-https
-  .createServer(credentials, server)
-  .listen(httpsPort);
+if (env === 'production') {
+  http
+    .createServer(server)
+    .listen(httpsPort);
 
-console.log('[HTTP]: Server listening on http://' + host + ':' + httpPort + '\n');
-console.log('[HTTPS]: Server listening on https://' + host + ':' + httpsPort + '\n');
+  console.log('[HTTP]: Server listening on http://' + host + ':' + httpsPort + '\n');
+} else {
+  http
+    .createServer(server)
+    .listen(httpPort);
+
+  console.log('[HTTP]: Server listening on http://' + host + ':' + httpPort + '\n');
+
+  privateKey  = fs.readFileSync(__dirname + '/sslcert/server.key', 'utf8');
+  certificate = fs.readFileSync(__dirname + '/sslcert/server.crt', 'utf8');
+  credentials = { key: privateKey, cert: certificate };
+
+  https
+    .createServer(credentials, server)
+    .listen(httpsPort);
+
+  console.log('[HTTPS]: Server listening on https://' + host + ':' + httpsPort + '\n');
+}
+
 console.log('\nUse <ctrl-c> to stop servers.\n\n');
 
 module.exports = sequelize;
