@@ -3,6 +3,8 @@ require('es6-promise').polyfill();
 import { saveUserToStore } from '../../../libs/athena/src/actions';
 export * from '../../../libs/athena/src/actions';
 
+const baseUrl = `${process.env.HOST}:${process.env.PORT}`;
+
 // To load all annotations based on filter
 const requestAnnotations = () => (
   {
@@ -20,15 +22,15 @@ const loadAnnotations = (annotations) => (
 export const fetchAnnotations = (id, filter, groupId, userId) => {
   let url;
   if (filter === 'Discover') {
-    url = `http://localhost:3000/api/discover?UserId=${id}`;
+    url = `${baseUrl}/api/discover?UserId=${id}`;
   } else if (filter === 'Following') {
-    url = `http://localhost:3000/api/following?UserId=${id}`;
+    url = `${baseUrl}/api/following?UserId=${id}`;
   } else if (filter === 'Groups') {
-    url = `http://localhost:3000/api/group?GroupId=${groupId}`;
+    url = `${baseUrl}/api/group?GroupId=${groupId}`;
   } else if (filter === 'User') {
-    url = `http://localhost:3000/api/user?UserId=${userId}`;
+    url = `${baseUrl}/api/user?UserId=${userId}`;
   } else {
-    url = `http://localhost:3000/api/annotations?UserId=${id}`;
+    url = `${baseUrl}/api/annotations?UserId=${id}`;
   }
   return dispatch => {
     dispatch(requestAnnotations());
@@ -57,7 +59,7 @@ const deleteAnnotationFail = id => (
 
 export const deleteAnnotationDB = (id, url) => (
   dispatch =>
-    fetch(`http://localhost:3000/api/annotations?id=${url}`, {
+    fetch(`${baseUrl}/api/annotations?id=${url}`, {
       method: 'DELETE',
     })
       .then(response => {
@@ -101,7 +103,7 @@ const saveEditFail = id => (
 
 export const editAnnotationDB = (id, body, privacy, group, url) => (
   dispatch =>
-    fetch('http://localhost:3000/api/annotations', {
+    fetch(`${baseUrl}/api/annotations`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -141,7 +143,7 @@ const deleteBodyFail = id => (
 
 export const deleteBodyDB = (id, url) => (
   dispatch =>
-    fetch('http://localhost:3000/api/annotations', {
+    fetch(`${baseUrl}/api/annotations`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -178,7 +180,7 @@ export const deleteDoc = id => (
 
 export const deleteDocDB = (docId, userId) => (
   dispatch =>
-    fetch(`http://localhost:3000/api/docs?UserId=${userId}&&DocId=${docId}`, {
+    fetch(`${baseUrl}/api/docs?UserId=${userId}&&DocId=${docId}`, {
       method: 'DELETE',
     }).then(response => {
       if (response.status === 200) {
@@ -205,7 +207,7 @@ const toggleFollowUser = (userId) => (
 
 export const followUser = (userId, id) => (
   dispatch =>
-    fetch('http://localhost:3000/api/follow', {
+    fetch(`${baseUrl}/api/follow`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -235,7 +237,7 @@ const loadFollowing = (following) => (
 
 export const loadFollowingDB = (id) => (
   dispatch =>
-    fetch(`http://localhost:3000/api/follow?UserId=${id}`)
+    fetch(`${baseUrl}/api/follow?UserId=${id}`)
       .then(response => response.json())
       .then(users => {
         dispatch(loadFollowing(users));
@@ -253,7 +255,7 @@ const loadGroups = (groups) => (
 
 export const loadGroupsDB = (userId) => (
   dispatch =>
-    fetch(`http://localhost:3000/api/groups?UserId=${userId}`)
+    fetch(`${baseUrl}/api/groups?UserId=${userId}`)
     .then(response => response.json())
     .then(groups => {
       dispatch(loadGroups(groups));
@@ -271,7 +273,7 @@ export const showGroups = () => (
 // To leave a Group
 export const leaveGroupDB = (groupId, userId) => (
   dispatch =>
-    fetch(`http://localhost:3000/api/groups?UserId=${userId}&&GroupId=${groupId}`, {
+    fetch(`${baseUrl}/api/groups?UserId=${userId}&&GroupId=${groupId}`, {
       method: 'DELETE',
     })
       .then(response => response.json())
@@ -292,7 +294,7 @@ export const setGroup = (groupId) => (
 // To handle creating a group
 export const createGroup = (name, userId, userName, otherUsersArray) => (
   dispatch =>
-    fetch('http://localhost:3000/api/groups', {
+    fetch(`${baseUrl}/api/groups`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -372,7 +374,7 @@ export const searchUsers = (query, user) => (
     if (query.length < 1) {
       dispatch(loadUserSearchResults([]));
     } else {
-      fetch(`http://localhost:3000/api/search/users?user=${user}&&name=${query}`)
+      fetch(`${baseUrl}/api/search/users?user=${user}&&name=${query}`)
       .then(response => response.json())
       .then(users => {
         dispatch(loadUserSearchResults(users.slice(0, 10)));
@@ -405,7 +407,7 @@ const loadInvites = invitesArray => (
 
 export const updateInvites = (userId) => (
   dispatch =>
-    fetch(`http://localhost:3000/api/invites?user=${userId}`)
+    fetch(`${baseUrl}/api/invites?user=${userId}`)
     .then(response => response.json())
     .then(invites => {
       dispatch(loadInvites(invites));
@@ -422,7 +424,7 @@ const removeInvites = groupId => (
 
 export const acceptInvite = (groupId, userId, accept) => (
   dispatch =>
-    fetch('http://localhost:3000/api/groups/join', {
+    fetch(`${baseUrl}/api/groups/join`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -451,7 +453,7 @@ const loadMembers = (info) => (
 export const showMembers = (groupId) => (
   dispatch => {
     dispatch(setModal('members'));
-    return fetch(`http://localhost:3000/api/groups/members?GroupId=${groupId}`)
+    return fetch(`${baseUrl}/api/groups/members?GroupId=${groupId}`)
     .then(response => response.json())
     .then(members => {
       dispatch(loadMembers(members));

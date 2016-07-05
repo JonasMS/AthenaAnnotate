@@ -26,6 +26,6 @@ module.exports = {
     ],
   },
   plugins: [
-    new webpack.EnvironmentPlugin(['ATHENA_HOST', 'HTTP_PORT', 'HTTPS_PORT', 'NODE_ENV']),
+    new webpack.EnvironmentPlugin(['HOST', 'PORT', 'NODE_ENV']),
   ],
 };

@@ -16,9 +16,10 @@ var Sequelize = require('sequelize');
 
 var sequelize = new Sequelize(process.env.DATABASE_URL);
 var server = express();
-var host = process.env.HOST || 'localhost';
-var httpPort = process.env.HTTP_PORT || 3000;
-var httpsPort = process.env.HTTPS_PORT || 8443;
+var host = process.env.HOST || 'https://localhost';
+var port = process.env.PORT || 3000;
+// var httpPort = process.env.HTTP_PORT || 3000;
+// var httpsPort = process.env.HTTPS_PORT || 8443;
 
 sequelize
   .authenticate()
@@ -51,35 +52,45 @@ server
   .use(specRoute)
   .use(homeRoute);
 
-var privateKey;
-var certificate;
-var credentials;
-var env = process.env.NODE_ENV;
-
-if (env === 'production') {
+if (process.env.NODE_ENV === 'production') {
   http
     .createServer(server)
-    .listen(httpsPort);
-
-  console.log('[HTTP]: Server listening on http://' + host + ':' + httpsPort + '\n');
+    .listen(port);
 } else {
-  http
-    .createServer(server)
-    .listen(httpPort);
-
-  console.log('[HTTP]: Server listening on http://' + host + ':' + httpPort + '\n');
-
-  privateKey  = fs.readFileSync(__dirname + '/sslcert/server.key', 'utf8');
-  certificate = fs.readFileSync(__dirname + '/sslcert/server.crt', 'utf8');
-  credentials = { key: privateKey, cert: certificate };
+  var privateKey  = fs.readFileSync(__dirname + '/sslcert/server.key', 'utf8');
+  var certificate = fs.readFileSync(__dirname + '/sslcert/server.crt', 'utf8');
+  var credentials = { key: privateKey, cert: certificate };
 
   https
     .createServer(credentials, server)
-    .listen(httpsPort);
-
-  console.log('[HTTPS]: Server listening on https://' + host + ':' + httpsPort + '\n');
+    .listen(port);
 }
+console.log('Server listening on ' + host + ':' + port + '\n');
 
-console.log('\nUse <ctrl-c> to stop servers.\n\n');
+// if (process.env.NODE_ENV === 'production') {
+//   var port = process.env.PORT || httpsPort;
+
+//   http
+//     .createServer(server)
+//     .listen(port);
+
+//   console.log('Server listening on http://' + host + ':' + port + '\n');
+// } else {
+//   http
+//     .createServer(server)
+//     .listen(httpPort);
+
+//   console.log('[HTTP]: Server listening on http://' + host + ':' + httpPort + '\n');
+
+//   var privateKey  = fs.readFileSync(__dirname + '/sslcert/server.key', 'utf8');
+//   var certificate = fs.readFileSync(__dirname + '/sslcert/server.crt', 'utf8');
+//   var credentials = { key: privateKey, cert: certificate };
+
+//   https
+//     .createServer(credentials, server)
+//     .listen(httpsPort);
+
+//   console.log('[HTTPS]: Server listening on https://' + host + ':' + httpsPort + '\n');
+// }
 
 module.exports = sequelize;

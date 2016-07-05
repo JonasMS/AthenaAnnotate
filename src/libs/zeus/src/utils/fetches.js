@@ -3,7 +3,7 @@ require('es6-promise').polyfill();
 import { checkStatus, createPOST } from './fetch';
 import * as options from '../constants/fetchOptions';
 
-const baseUrl = `https://${process.env.ATHENA_HOST}:${process.env.HTTPS_PORT}`;
+const baseUrl = `${process.env.HOST}:${process.env.PORT}`;
 
 export const saveAnnote = (annote) => {
   fetch(

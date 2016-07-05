@@ -4,21 +4,7 @@ import { render } from 'react-dom';
 import App from './components/App';
 import { IFRAME_CLASS, HIDE_IFRAME_CLASS } from './constants';
 
-let protocol;
-let host;
-let port;
-let baseUrl;
-
-if (process.env.NODE_ENV === 'production') {
-  baseUrl = `HTTPS:${process.env.ATHENA_HOST}:${process.env.HTTPS_PORT}`;
-} else {
-  protocol = document.location.protocol;
-  host = process.env.ATHENA_HOST;
-  port = protocol.toUpperCase() === 'HTTP:'
-       ? process.env.HTTP_PORT
-       : process.env.HTTPS_PORT;
-  baseUrl = `${protocol}//${host}:${port}`;
-}
+const baseUrl = `${process.env.HOST}:${process.env.PORT}`;
 
 const app = document.createElement('div');
 app.id = 'app-anchor';
@@ -36,5 +22,3 @@ render(
   <App iframe={iframe} />,
   document.getElementById('app-anchor')
 );
-
-// export default iframe;
