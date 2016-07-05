@@ -3,7 +3,9 @@ require('es6-promise').polyfill();
 import { saveUserToStore } from '../../../libs/athena/src/actions';
 export * from '../../../libs/athena/src/actions';
 
-const baseUrl = `${process.env.HOST}:${process.env.PORT}`;
+const baseUrl = process.env.NODE_ENV === 'production'
+              ? process.env.HOST
+              : `${process.env.HOST}:${process.env.PORT}`;
 
 // To load all annotations based on filter
 const requestAnnotations = () => (
