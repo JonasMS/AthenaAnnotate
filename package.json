@@ -22,6 +22,7 @@
     "drop": "dropdb -U postgres annotate",
     "create": "createdb -U postgres annotate",
     "migrate": "node_modules/.bin/sequelize db:migrate",
+    "unmigrate": "node_modules/.bin/sequelize db:migrate:undo",
     "postinstall": "npm run build"
   },
   "engines": {
