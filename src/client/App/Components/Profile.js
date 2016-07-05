@@ -70,13 +70,13 @@ const Profile = ({ user, invites, exitProfile, acceptInvite, group, following, s
           </ul>
         </div>
         <div>
-          <h5>Following</h5>
+          <h5>Following:</h5>
           <ul>
             {followList}
           </ul>
         </div>
         <div>
-          <h5>Groups</h5>
+          <h5>Groups:</h5>
           <ul>
             {groupList}
           </ul>

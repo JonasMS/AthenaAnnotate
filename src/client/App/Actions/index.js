@@ -331,7 +331,6 @@ export const createGroup = (name, userId, userName, otherUsersArray) => (
     .catch(err => console.log(err))
 );
 
-
 // To handle editing a group name
 export const editGroup = (edit) => (
   {

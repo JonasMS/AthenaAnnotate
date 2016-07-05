@@ -1,10 +1,8 @@
 import React, { PropTypes } from 'react';
-// import FacebookLogout from '../../../libs/athena/src/components/FacebookLogout';
 import GroupList from './GroupList';
 
 const Sidebar = ({
   user,
-  // logout,
   setFilter,
   showGroups,
   leaveGroupDB,
@@ -53,7 +51,6 @@ const Sidebar = ({
 
 Sidebar.propTypes = {
   user: PropTypes.object,
-  // logout: PropTypes.func.isRequired,
   setFilter: PropTypes.func.isRequired,
   showGroups: PropTypes.func.isRequired,
   setGroup: PropTypes.func.isRequired,
@@ -67,9 +64,6 @@ Sidebar.propTypes = {
 export default Sidebar;
 
 /*  <li>
-      <FacebookLogout logout={logout} />
-    </li>
-    <li>
       <a>Settings</a>
     </li>
  */

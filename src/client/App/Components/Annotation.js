@@ -52,7 +52,7 @@ const Annotation = (
         <div
           className="card-action"
         >
-          {edit && (/* filter === 'Self' || */user.id === userId) ?
+          {edit && (user.id === userId) ?
             <BodyEditor
               body={body}
               onCancel={() => onEditBody(id)}
@@ -60,7 +60,7 @@ const Annotation = (
               onDelete={() => onDeleteBody(id, url)}
             />
             : null}
-          {!edit && (/* filter === 'Self' || */user.id === userId) ?
+          {!edit && (user.id === userId) ?
             <button
               className="waves-effect waves-light btn-floating"
               onClick={() => onEditBody(id)}
@@ -72,7 +72,7 @@ const Annotation = (
       </div>
     : null}
     </div>
-    {/* filter !== 'Self' || */user.id !== userId ? null :
+    {user.id !== userId ? null :
       <button
         className="waves-effect waves-light btn-floating"
         onClick={onAnnotationDelete}

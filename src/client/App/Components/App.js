@@ -24,7 +24,6 @@ class App extends Component {
   }
 
   componentDidUpdate() {
-    // this.props.actions.fetchDocs(this.props.user.id);
     this.props.actions.fetchAnnotations(
       this.props.user.id,
       this.props.filter,
@@ -40,7 +39,6 @@ class App extends Component {
     if (!this.props.invites.loaded) {
       this.props.actions.updateInvites(this.props.user.id);
     }
-    // this.props.actions.fetchStuff(this.props.user.id);
   }
 
   render() {
@@ -78,7 +76,6 @@ class App extends Component {
               />
               <Sidebar
                 user={user}
-                // logout={logout}
                 setFilter={setFilter}
                 filter={filter}
                 group={group}
