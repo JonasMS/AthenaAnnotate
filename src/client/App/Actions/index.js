@@ -99,7 +99,7 @@ const saveEditFail = id => (
   }
 );
 
-export const editAnnotationDB = (id, body, url) => (
+export const editAnnotationDB = (id, body, privacy, group, url) => (
   dispatch =>
     fetch('http://localhost:3000/api/annotations', {
       method: 'PUT',
@@ -111,6 +111,8 @@ export const editAnnotationDB = (id, body, url) => (
           text: body,
         },
         id: url,
+        private: privacy,
+        groupId: group,
       }),
     })
       .then(response => response.json())
@@ -478,5 +480,21 @@ export const setUser = (userId) => (
   {
     type: 'SET_USER',
     userId,
+  }
+);
+
+// To handle changing of privacy settings
+export const updatePrivacy = (privacy) => (
+  {
+    type: 'UPDATE_PRIVACY',
+    privacy,
+  }
+);
+
+// To handle changing of group for annotation
+export const updateGroup = (groupId) => (
+  {
+    type: 'UPDATE_GROUP',
+    groupId,
   }
 );

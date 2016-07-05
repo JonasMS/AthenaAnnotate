@@ -73,7 +73,9 @@ router.put('/api/annotations', function(req, res) {
     // exact: req.body.target.selector.exact,
     // prefix: req.body.target.selector.prefix,
     // suffix: req.body.target.selector.suffix,
-    text: req.body.body.text
+    text: req.body.body.text,
+    private: req.body.private,
+    groupId: req.body.groupId
   }, {
     where: { url: req.body.id },
     returning: true
@@ -389,7 +391,7 @@ router.get('/api/group', function(req, res) {
       model: models.Doc
     }],
     where: {
-      private: 'Group',
+      // private: 'Group',
       groupId: req.query.GroupId
     },
     order: [['updatedAt', 'DESC']]

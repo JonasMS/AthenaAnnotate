@@ -56,7 +56,7 @@ const Annotation = (
             <BodyEditor
               body={body}
               onCancel={() => onEditBody(id)}
-              onSave={(txt) => onSaveEdit(id, txt, url)}
+              onSave={(txt, privacy, grp) => onSaveEdit(id, txt, privacy, grp, url)}
               onDelete={() => onDeleteBody(id, url)}
             />
             : null}

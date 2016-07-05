@@ -48,7 +48,7 @@ const createGroupModal = ({
           ?
           null
           :
-          <ul className="autocomplete">
+          <ul className="dropdown-menu autocomplete">
             {userList}
           </ul>
         }

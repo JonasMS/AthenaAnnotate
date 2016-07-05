@@ -19,8 +19,8 @@ const mapDispatchToProps = (dispatch) => (
     onEditBody: (id) => {
       dispatch(actions.editAnnotation(id));
     },
-    onSaveEdit: (id, text, url) => {
-      dispatch(actions.editAnnotationDB(id, text, url));
+    onSaveEdit: (id, text, privacy, group, url) => {
+      dispatch(actions.editAnnotationDB(id, text, privacy, group, url));
     },
     onDeleteBody: (id, url) => {
       dispatch(actions.deleteBodyDB(id, url));
