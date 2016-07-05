@@ -52,7 +52,15 @@ const Profile = ({ user, invites, exitProfile, acceptInvite, group, following, s
           <input type="text" className="form-control" id="title" defaultValue={user.title} />
         </div>
         <button type="submit" className="btn btn-default">Save</button>
-        <button className="btn btn-default" onClick={() => exitProfile()}>Cancel</button>
+        <button
+          className="btn btn-default"
+          onClick={(e) => {
+            e.preventDefault();
+            exitProfile();
+          }}
+        >
+          Cancel
+        </button>
       </form>
       <div>
         <div>
