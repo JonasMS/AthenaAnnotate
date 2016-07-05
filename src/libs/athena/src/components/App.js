@@ -13,7 +13,10 @@ import {
   SEND_USER,
   SEND_ANNOTES,
   MODIFY_BODY,
+  DELETE_ANNOTE,
   DISPLAY_ANNOTE,
+  SEND_CHANNELS,
+  CHANGE_CHANNEL,
 } from '../../../common/messageTypes';
 
 import {
@@ -26,8 +29,10 @@ class App extends Component {
   constructor(props) {
     super(props);
 
+    this.channelSelectHandler = this.channelSelectHandler.bind(this);
     this.loginHandler = this.loginHandler.bind(this);
     this.submitHandler = this.submitHandler.bind(this);
+    this.deleteHandler = this.deleteHandler.bind(this);
     this.displayAnnote = this.displayAnnote.bind(this);
     this.sendUser = this.sendUser.bind(this);
     this.hideFrame = this.hideFrame.bind(this);
@@ -77,7 +82,8 @@ class App extends Component {
   }
 
   createAnnote(annote) {
-    const { actions: { setAnnote } } = this.props;
+    const { actions: { setAnnote, setModify } } = this.props;
+    setModify(false);
     setAnnote(annote); // set annotation
   }
 
@@ -98,28 +104,70 @@ class App extends Component {
     this.postMessageToParent({ type: HIDE_IFRAME });
   }
 
+  channelSelectHandler(channel) {
+    // change curChannel to channel
+    const { actions: { clearAnnote, setCurrentChannel } } = this.props;
+    clearAnnote();
+    setCurrentChannel(channel);
+    this.postMessageToParent({ type: CHANGE_CHANNEL, channel });
+  }
+
   submitHandler() {
-    const { actions: { addAnnote, clearAnnote }, annotation } = this.props;
-    const { body } = annotation;
-    this.postMessageToParent({ type: MODIFY_BODY, body });
+    const { actions: { addAnnote, clearAnnote }, annotation, channels } = this.props;
+    annotation.groupId = channels.current.type === 'group' ?
+      channels.current.id : null;
+    const { body, groupId } = annotation;
+    this.postMessageToParent({ type: MODIFY_BODY, data: { body, groupId } });
     addAnnote(annotation); // add annotation to annotations
     clearAnnote(); // rest annote to empty shape
   }
 
+  login(cb) {
+    window.FB.login(res => {
+      if (res.status === 'connected') {
+        getUserFromFB().then(user => cb(user));
+      } else { console.log('auth fail'); }
+    }, { scope: 'public_profile,email' });
+  }
+
   loginHandler() {
-    const { actions: { login } } = this.props;
+  const { actions: { login } } = this.props;
     login(fbAcc => {
       this.postMessageToParent({ type: SEND_USER, user: fbAcc });
     });
   }
 
+  deleteHandler() {
+    const { annotation: { id } } = this.props;
+    this.postMessageToParent({ type: DELETE_ANNOTE, annoteId: id });
+  }
+
   displayAnnote(annoteId) {
-    const { annotations, actions: { setAnnote } } = this.props;
+    const { annotations, actions: { setAnnote, setModify } } = this.props;
     const annote = annotations.filter(annotation => (
         annotation.id === annoteId
       )
     );
-    setAnnote(annote[0]);
+    if (!!annote) {
+      setModify(true);
+      setAnnote(annote[0]);
+      return annote;
+    }
+    // TODO: handle error in which no annotation was fetched
+    return null;
+  }
+
+  // addAnnotesHander(annotes) {
+  //   const { annotations, actions: { addAnnote } } = this.props;
+  //   // remove all existing annotes
+
+  //   // dispatch annotes
+  // }
+
+  handleChannels(channels) {
+    // filter channels:
+    // channels that have annotations, dispatch to channels
+    // channels that are groups, dispatch to groups
   }
 
   // take action on events we know about
@@ -127,6 +175,7 @@ class App extends Component {
     const { actions: {
       saveUserToStore,
       addAnnote,
+      setChannels,
       },
      } = this.props;
     switch (event.data.type) {
@@ -144,6 +193,8 @@ class App extends Component {
         return addAnnote(event.data.annote);
       case DISPLAY_ANNOTE:
         return this.displayAnnote(event.data.annoteId);
+      case SEND_CHANNELS:
+        return setChannels(event.data.channels);
       default:
         return undefined;
     }
@@ -154,8 +205,13 @@ class App extends Component {
     return (
       <div>
         {
-          this.isUserLoggedIn()
-            ? <AnnotatePanel close={this.hideFrame} submitHandler={this.submitHandler} />
+          this.isUserLoggedIn() ?
+            <AnnotatePanel
+              close={this.hideFrame}
+              del={this.deleteHandler}
+              submit={this.submitHandler}
+              channelSelect={this.channelSelectHandler}
+            />
             : <AuthPanel login={this.loginHandler} close={this.hideFrame} />
         }
       </div>
@@ -165,8 +221,10 @@ class App extends Component {
 
 App.propTypes = {
   user: PropTypes.object,
+  widget: PropTypes.object,
   annotation: PropTypes.object,
   annotations: PropTypes.array,
+  channels: PropTypes.object,
   actions: PropTypes.object,
 };
 

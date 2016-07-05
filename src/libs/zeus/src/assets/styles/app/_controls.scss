@@ -1,3 +1,9 @@
+.controller {
+  position: absolute;
+  z-index: 999999;
+}
+
+
 .controls {
   &-show {
     visibility: visible;

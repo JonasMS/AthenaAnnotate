@@ -5,8 +5,9 @@ import {
   ControlLabel,
   FormControl,
 } from 'react-bootstrap';
-import { saveAnnote } from '../utils/annotation';
+import ChannelsMenu from '../containers/ChannelsMenu';
 import FacebookLogout from './FacebookLogout';
+import { saveAnnote } from '../utils/annotation';
 
 import * as Actions from '../actions';
 
@@ -16,14 +17,13 @@ class AnnotatePanel extends Component {
   }
 
   render () {
-    const { close, submitHandler, annotation, actions } = this.props;
+    const { close, submit, del, channelSelect, widget, annotation, actions } = this.props;
     const { exact } = annotation.target.selector;
 
     return (
       <div>
         <Button onClick={close}> Close </Button>
-        <h1> Annotate Panel </h1>
-
+        <ChannelsMenu channelSelect={channelSelect} />
         <form>
           <FormGroup controlId="annoteFormId">
             <FormControl
@@ -38,10 +38,8 @@ class AnnotatePanel extends Component {
             />
           </FormGroup>
         </form>
-        <Button
-          bsStyle="primary"
-          onClick={submitHandler}
-        > Submit </Button>
+        <Button bsStyle="primary" onClick={submit}> Submit </Button>
+        <div onClick={del}>delete</div>
         <FacebookLogout logout={actions.logout} />
       </div>
     );
@@ -50,11 +48,14 @@ class AnnotatePanel extends Component {
 
 AnnotatePanel.propTypes = {
   user: PropTypes.object,
+  widget: PropTypes.object,
   actions: PropTypes.object,
   annotation: PropTypes.object,
   annotations: PropTypes.array,
+  channels: PropTypes.object,
   close: PropTypes.func.isRequired,
-  submitHandler: PropTypes.func.isRequired,
+  submit: PropTypes.func.isRequired,
+  del: PropTypes.func.isRequired,
   // exact: PropTypes.string.isRequired,
 };
 

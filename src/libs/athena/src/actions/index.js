@@ -65,6 +65,11 @@ export const logout = () => (
   )
 );
 
+export const setModify = (bool) => ({
+  type: types.SET_WIDGET_MODIFY,
+  isOnModify: bool,
+});
+
 // Updates state.annotations.body.text to given value
 export const updateBody = (text) => ({
   type: types.UPDATE_BODY,
@@ -74,6 +79,11 @@ export const updateBody = (text) => ({
 // Resets state.annotation to default / empty values
 export const clearAnnote = () => ({
   type: types.CLEAR_ANNOTATION,
+});
+
+export const setAnnoteGroup = (groupId) => ({
+  type: types.SET_GROUP,
+  groupId,
 });
 
 // Sets the value for state.annotation
@@ -86,4 +96,14 @@ export const setAnnote = annote => ({
 export const addAnnote = annote => ({
   type: types.ADD_ANNOTATION,
   annote,
+});
+
+export const setCurrentChannel = current => ({
+  type: types.SET_CURRENT_CHANNEL,
+  current,
+});
+
+export const setChannels = channels => ({
+  type: types.SET_CHANNELS,
+  channels,
 });

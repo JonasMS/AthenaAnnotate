@@ -5,9 +5,11 @@ import AnnotatePanel from '../components/AnnotatePanel';
 
 const mapStateToProps = (state) => ({
   user: state.user,
+  widget: state.widget,
   annotation: state.annotation,
   annotations: state.annotations,
   exact: state.annotation.target.exact,
+  channels: state.channels,
 });
 
 const mapDispatchToProps = (dispatch) => ({
