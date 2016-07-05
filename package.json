@@ -20,7 +20,8 @@
     "test": "",
     "lint": "eslint src --color",
     "drop": "dropdb -U postgres annotate",
-    "create": "createdb -U postgres annotate && node_modules/.bin/sequelize db:migrate",
+    "create": "createdb -U postgres annotate",
+    "migrate": "node_modules/.bin/sequelize db:migrate",
     "postinstall": "npm run build"
   },
   "engines": {
