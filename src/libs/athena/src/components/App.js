@@ -30,6 +30,7 @@ class App extends Component {
     super(props);
 
     this.channelSelectHandler = this.channelSelectHandler.bind(this);
+    this.login = this.login.bind(this);
     this.loginHandler = this.loginHandler.bind(this);
     this.submitHandler = this.submitHandler.bind(this);
     this.deleteHandler = this.deleteHandler.bind(this);
@@ -126,13 +127,14 @@ class App extends Component {
     window.FB.login(res => {
       if (res.status === 'connected') {
         getUserFromFB().then(user => cb(user));
-      } else { console.log('auth fail'); }
+      } else {
+        console.log('auth fail');
+      }
     }, { scope: 'public_profile,email' });
   }
 
   loginHandler() {
-  const { actions: { login } } = this.props;
-    login(fbAcc => {
+    this.login(fbAcc => {
       this.postMessageToParent({ type: SEND_USER, user: fbAcc });
     });
   }

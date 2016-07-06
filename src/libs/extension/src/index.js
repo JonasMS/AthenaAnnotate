@@ -1,11 +1,7 @@
-const protocol = document.location.protocol;
-const host = process.env.ATHENA_HOST;
-const port = protocol.toUpperCase() === 'HTTP:'
-           ? process.env.HTTP_PORT
-           : process.env.HTTPS_PORT;
+const baseUrl = `${process.env.HOST}:${process.env.PORT}`;
 const req = new XMLHttpRequest();
 
-req.open('GET', `${protocol}//${host}:${port}/zeus/zeus.js`);
+req.open('GET', `${baseUrl}/zeus/zeus.js`);
 req.onload = function() {
   const script = document.createElement('script');
   script.textContent = req.responseText;

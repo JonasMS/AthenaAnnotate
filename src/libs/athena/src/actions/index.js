@@ -37,14 +37,6 @@ export const getUserFromDB = fbUser => {
   };
 };
 
-export const login = (cb) => {
-  window.FB.login(res => {
-    if (res.status === 'connected') {
-      getUserFromFB().then(user => cb(user));
-    }
-  }, { scope: 'public_profile,email' });
-};
-
 export const webAppLogin = () => (
   dispatch => (
     window.FB.login(res => {

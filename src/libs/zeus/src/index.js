@@ -4,17 +4,13 @@ import { render } from 'react-dom';
 import App from './components/App';
 import { IFRAME_CLASS, HIDE_IFRAME_CLASS } from './constants';
 
-const protocol = document.location.protocol;
-const host = process.env.ATHENA_HOST;
-const port = protocol.toUpperCase() === 'HTTP:'
-           ? process.env.HTTP_PORT
-           : process.env.HTTPS_PORT;
+const baseUrl = `${process.env.HOST}:${process.env.PORT}`;
 
 const app = document.createElement('div');
 app.id = 'app-anchor';
 
 const iframe = document.createElement('iframe');
-iframe.src = `${protocol}//${host}:${port}/athena/athena.html`;
+iframe.src = `${baseUrl}/athena/athena.html`;
 iframe.id = 'athena-app';
 iframe.classList.add(HIDE_IFRAME_CLASS);
 iframe.classList.add(IFRAME_CLASS);
@@ -26,5 +22,3 @@ render(
   <App iframe={iframe} />,
   document.getElementById('app-anchor')
 );
-
-// export default iframe;
