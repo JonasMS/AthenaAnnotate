@@ -1,5 +1,8 @@
 import Athena from './element';
 
+const sanitize = str => (
+  str.replace(/[\\^$.*+?()[\]]+/g, '\\$&')
+);
 
 // helper function
 const createRegQuery = selector => {
@@ -10,9 +13,9 @@ const createRegQuery = selector => {
     suffix,
   } = selector;
 
-  query += !!prefix ? `${prefix}\.?` : '';
-  query += `(${exact})\.?`;
-  query += !!suffix ? `${suffix}?` : '';
+  query += !!prefix ? `${sanitize(prefix)}\.?` : '';
+  query += `(${sanitize(exact)})\.?`;
+  query += !!suffix ? `${sanitize(suffix)}?` : '';
 
   return query;
 };
@@ -54,6 +57,7 @@ const getNextNode = (n, f) => {
 
 
 const getEndNode = (node, len) => {
+  console.log('locate');
   let curLen;
   let remLen = len - (node.textNode.length - node.startOffset);
   let curNode = getNextNode(node.textNode, targetNode => targetNode.nodeType === 3);
