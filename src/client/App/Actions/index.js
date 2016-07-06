@@ -496,7 +496,7 @@ const clearSearch = () => (
 
 export const inviteUsers = (otherUsersArray, groupId, userName) => (
   dispatch =>
-    fetch('http://localhost:3000/api/groups/invite', {
+    fetch(`${baseUrl}/api/groups/invite`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -528,7 +528,7 @@ export const updateName = (name) => (
 
 export const updateProfile = (name, title, id) => (
   dispatch =>
-    fetch('http://localhost:3000/api/users', {
+    fetch(`${baseUrl}/api/users`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
