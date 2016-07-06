@@ -127,6 +127,7 @@ class App extends Component {
         fetchAnnotes(user)
           .then(annotes => {
             if (!!annotes.length) {
+              console.log('annotes: ', annotes);
               this.annoteId = this.getAnnoteId(annotes[annotes.length - 1].id);
               annotes.forEach(annote => {
                 retrieveAnnote(document.body, annote, () => {
