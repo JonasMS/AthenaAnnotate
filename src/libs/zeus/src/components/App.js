@@ -24,7 +24,8 @@ import {
   SHOW_CONTROL_BUTTONS_CLASS,
 } from '../constants';
 
-import { wrapAnnote, unwrapAnnote, retrieveAnnote } from '../engine/';
+import { retrieveAnnote } from '../engine/';
+import { wrapAnnote, unwrapAnnote } from '../engine/actors';
 import {
   saveAnnote,
   fetchUser,
