@@ -313,7 +313,8 @@ router.post('/api/groups', function(req, res) {
     } else {
       models.UserGroup.create({
         UserId: req.body.UserId,
-        GroupId: group[0].dataValues.id
+        GroupId: group[0].dataValues.id,
+        adminRights: true
       }).then(function(newGroup) {
         addOtherUsers(req.body.otherUsersArray, group[0].dataValues.id, req.body.creator);
         res.send(JSON.stringify(newGroup.dataValues.GroupId));
@@ -430,7 +431,8 @@ router.post('/api/groups/join', function(req, res) {
     if (req.body.accept === true) {
       models.UserGroup.create({
         UserId: req.body.UserId,
-        GroupId: req.body.GroupId
+        GroupId: req.body.GroupId,
+        adminRights: false
       }).then(function(newAssociation) {
         res.send(JSON.stringify(newAssociation.dataValues.GroupId));
       }).catch(function(error) {
@@ -556,18 +558,19 @@ router.get('/api/groups/members', function(req, res) {
       GroupId: req.query.GroupId
     }
   }).then(function(users) {
+    console.log(users);
     var members = users.map(function(user) {
-      return user.dataValues.groups.dataValues;
+      return { data: user.dataValues.groups.dataValues, rights: user.dataValues.adminRights };
     });
     res.send({
       groupName: users[0].dataValues.users.dataValues.name,
       creator: members.filter(function(member) {
-        return member.id === users[0].dataValues.users.dataValues.creatorId;
+        return member.data.id === users[0].dataValues.users.dataValues.creatorId;
       })[0].name,
       members: members.sort(function(a, b) {
-        if (a.name.toUpperCase() < b.name.toUpperCase()) {
+        if (a.data.name.toUpperCase() < b.data.name.toUpperCase()) {
           return -1;
-        } else if (a.name.toUpperCase() > b.name.toUpperCase()) {
+        } else if (a.data.name.toUpperCase() > b.data.name.toUpperCase()) {
           return 1;
         }
         return 0;
@@ -609,6 +612,21 @@ router.put('/api/annotations/doc', function(req, res) {
     }
   }).then(function(annotations) {
     console.log(annotations);
+  }).catch(function(error) {
+    res.send(error);
+  });
+});
+
+router.put('/api/group/users', function(req, res) {
+  models.UserGroup.update({
+    adminRights: req.body.adminRights
+  }, {
+    where: {
+      UserId: req.body.UserId,
+      GroupId: req.body.GroupId
+    }
+  }).then(function(associations) {
+    console.log(associations);
   }).catch(function(error) {
     res.send(error);
   });

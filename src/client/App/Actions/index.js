@@ -562,6 +562,18 @@ export const setFilter = filter => (
   }
 );
 
+const setDocPrivate = () => (
+  {
+    type: 'DOC_PRIVATE',
+  }
+);
+
+const setDocPublic = () => (
+  {
+    type: 'DOC_PUBLIC',
+  }
+);
+
 export const updateDocPrivacy = (bool, url, userId) => (
   dispatch => {
     fetch('http://localhost:3000/api/annotations/doc', {
@@ -576,6 +588,42 @@ export const updateDocPrivacy = (bool, url, userId) => (
       }),
     })
     .then(response => response.json())
+    .then(() => {
+      if (bool === true) {
+        dispatch(setDocPrivate());
+      } else {
+        dispatch(setDocPublic());
+      }
+    })
+    .catch(error => console.log(error));
+  }
+);
+
+const togglerights = (id, rights) => (
+  {
+    type: 'TOGGLE_RIGHTS',
+    id,
+    rights,
+  }
+);
+
+export const toggleRights = (userId, groupId, rights) => (
+  dispatch => {
+    fetch('http://localhost:3000/api/group/users', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        adminRights: !rights,
+        UserId: userId,
+        GroupId: groupId,
+      }),
+    })
+    .then(response => response.json())
+    .then(() => {
+      dispatch(togglerights(userId, !rights));
+    })
     .catch(error => console.log(error));
   }
 );

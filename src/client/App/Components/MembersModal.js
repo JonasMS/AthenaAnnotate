@@ -9,12 +9,16 @@ const membersModal = ({
   searchUsers,
   deselectUser,
   inviteUsers,
+  toggleRights,
 }) => {
   const members = group.info.members.map(member => (
-    <li key={member.id}>
+    <li key={member.data.id}>
       <a>
-        {member.name}
+        {member.data.name}
       </a>
+      <button onClick={() => toggleRights(member.data.id, group.selected, member.rights)}>
+        {member.rights ? 'REVOKE' : 'GRANT'}
+      </button>
     </li>
   ));
   const userList = search.users.map(u => (
@@ -82,6 +86,7 @@ membersModal.propTypes = {
   showModal: PropTypes.func.isRequired,
   deselectUser: PropTypes.func.isRequired,
   inviteUsers: PropTypes.func.isRequired,
+  toggleRights: PropTypes.func.isRequired,
 };
 
 export default membersModal;

@@ -34,6 +34,9 @@ const mapDispatchToProps = (dispatch) => (
     inviteUsers: (array, groupId, username) => {
       dispatch(actions.inviteUsers(array, groupId, username));
     },
+    toggleRights: (userId, groupId, rights) => {
+      dispatch(actions.toggleRights(userId, groupId, rights));
+    },
   }
 );
 

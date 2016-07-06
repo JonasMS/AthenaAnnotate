@@ -29,14 +29,14 @@ const doc = (state, action) => {
         return state;
       }
       return Object.assign({}, state, {
-        private: true,
+        privacy: true,
       });
     case 'DOC_PUBLIC':
       if (action.id !== state.id) {
         return state;
       }
       return Object.assign({}, state, {
-        private: false,
+        privacy: false,
       });
     default:
       return state;
