@@ -36,7 +36,13 @@ export const getNextNode = (n, f) => {
   let node = n;
   do {
     if (!!node.childNodes.length) {
-      return node.firstChild;
+      // console.log('node has child: ', node.firstChild.data);
+      node = node.firstChild;
+      if (filter(node)) {
+        return node;
+      }
+      continue;
+      // return node.firstChild;
     }
 
     while (!!node && !node.nextSibling) {
