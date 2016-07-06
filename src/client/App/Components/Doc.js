@@ -6,7 +6,7 @@ const changeLocation = (url) => {
 };
 
 const Doc = ({ user, url, privacy, baseUrl, title, image, id, count, onDocDelete, listView, filter, updateDocPrivacy }) => (
-  <li>
+  <li className="object doc">
     {listView
       ?
       <div className="media card" onClick={() => changeLocation(url)}>
@@ -34,7 +34,7 @@ const Doc = ({ user, url, privacy, baseUrl, title, image, id, count, onDocDelete
           ?
           null
           :
-          <div>
+          <div className="buttons">
             <button
               className="waves-effect waves-light btn-floating"
               onClick={onDocDelete}

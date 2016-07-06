@@ -22,7 +22,7 @@ const Annotation = (
     setUser,
   }
 ) => (
-  <li className="annotation">
+  <li className="object annotation">
     {filter !== 'Self' ?
       <div>
         <a
@@ -72,13 +72,15 @@ const Annotation = (
       </div>
     : null}
     </div>
-    {user.id !== userId ? null :
-      <button
-        className="waves-effect waves-light btn-floating"
-        onClick={onAnnotationDelete}
-      >
-        <i className="material-icons">delete</i>
-      </button>}
+    <div className="buttons">
+      {user.id !== userId ? null :
+        <button
+          className="waves-effect waves-light btn-floating"
+          onClick={onAnnotationDelete}
+        >
+          <i className="material-icons">delete</i>
+        </button>}
+    </div>
   </li>
 );
 

@@ -576,7 +576,7 @@ const setDocPublic = () => (
 
 export const updateDocPrivacy = (bool, url, userId) => (
   dispatch => {
-    fetch('http://localhost:3000/api/annotations/doc', {
+    fetch(`${baseUrl}/api/annotations/doc`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -609,7 +609,7 @@ const togglerights = (id, rights) => (
 
 export const toggleRights = (userId, groupId, rights) => (
   dispatch => {
-    fetch('http://localhost:3000/api/group/users', {
+    fetch(`${baseUrl}/api/group/users`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',

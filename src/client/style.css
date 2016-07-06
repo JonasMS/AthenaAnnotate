@@ -109,6 +109,27 @@ ul#groups {
   margin-left: 15px;
 }
 
+li.object {
+  position: relative;
+}
+
+li.object:hover .buttons {
+  display: block;
+  position: absolute;
+  right: 10px;
+}
+
+li.object.doc {
+  top: 10px;
+}
+
+li.object.annotation {
+  bottom: 10px;
+}
+
+li.object .buttons {
+  display: none;
+}
 body {
   padding-top: 20px;
 }
