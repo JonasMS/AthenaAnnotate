@@ -4,7 +4,9 @@ import * as types from '../constants/actionTypes';
 import { getUserFromFB } from '../../../common/auth';
 import config from '../../../../../config';
 
-const baseUrl = `${config.url.host}:${config.url.port}`;
+const baseUrl = process.env.NODE_ENV === 'production'
+              ? config.url.host
+              : `${config.url.host}:${config.url.port}`;
 
 export const failedRequest = error => (
   {
