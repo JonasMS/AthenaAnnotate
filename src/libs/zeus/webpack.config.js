@@ -62,6 +62,6 @@ module.exports = {
     ],
   },
   plugins: [
-    new webpack.EnvironmentPlugin(['HOST', 'PORT', 'NODE_ENV']),
+    new webpack.EnvironmentPlugin(['HOST', 'PORT']),
   ],
 };
