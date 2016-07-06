@@ -1,7 +1,10 @@
-import fetch from 'isomorphic-fetch';
 require('es6-promise').polyfill();
+import fetch from 'isomorphic-fetch';
 import * as types from '../constants/actionTypes';
 import { getUserFromFB } from '../../../common/auth';
+import config from '../../../../../config';
+
+const baseUrl = `${config.url.host}:${config.url.port}`;
 
 export const failedRequest = error => (
   {
@@ -22,7 +25,7 @@ export const getUserFromDB = fbUser => {
   const payload = JSON.stringify(fbUser);
 
   return dispatch => {
-    fetch('/api/users', {
+    fetch(`${baseUrl}/api/users`, {
       method: 'POST',
       headers: {
         'Content-type': 'application/json',
