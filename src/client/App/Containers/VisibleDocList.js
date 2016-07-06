@@ -27,8 +27,8 @@ const mapDispatchToProps = (dispatch) => (
 );
 
 const VisibleDocList = connect(
-	mapStatetoProps,
-	mapDispatchToProps
+  mapStatetoProps,
+  mapDispatchToProps
 )(DocList);
 
 export default VisibleDocList;
