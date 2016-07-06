@@ -23,6 +23,9 @@ const mapDispatchToProps = (dispatch) => (
     showMembers: (groupId) => {
       dispatch(actions.showMembers(groupId));
     },
+    updateDocPrivacy: (bool, url, userId) => {
+      dispatch(actions.updateDocPrivacy(bool, url, userId));
+    },
   }
 );
 

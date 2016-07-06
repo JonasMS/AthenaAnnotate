@@ -24,6 +24,20 @@ const doc = (state, action) => {
         return true;
       }
       return false;
+    case 'DOC_PRIVATE':
+      if (action.id !== state.id) {
+        return state;
+      }
+      return Object.assign({}, state, {
+        private: true,
+      });
+    case 'DOC_PUBLIC':
+      if (action.id !== state.id) {
+        return state;
+      }
+      return Object.assign({}, state, {
+        private: false,
+      });
     default:
       return state;
   }
@@ -50,6 +64,14 @@ const docs = (state = [], action) => {
       );
     case 'DELETE_DOC':
       return state.filter(a =>
+        doc(a, action)
+      );
+    case 'DOC_PRIVATE':
+      return docs.map(a =>
+        doc(a, action)
+      );
+    case 'DOC_PUBLIC':
+      return docs.map(a =>
         doc(a, action)
       );
     default:

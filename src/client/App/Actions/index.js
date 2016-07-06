@@ -561,3 +561,21 @@ export const setFilter = filter => (
     dispatch(exitProfile());
   }
 );
+
+export const updateDocPrivacy = (bool, url, userId) => (
+  dispatch => {
+    fetch('http://localhost:3000/api/annotations/doc', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        private: bool,
+        url,
+        UserId: userId,
+      }),
+    })
+    .then(response => response.json())
+    .catch(error => console.log(error));
+  }
+);

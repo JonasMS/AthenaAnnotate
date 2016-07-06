@@ -1,14 +1,16 @@
 import React, { PropTypes } from 'react';
 import Doc from './Doc';
 
-const DocList = ({ user, docs, onDocDelete, listView, switchView, filter, showMembers, group }) => {
+const DocList = ({ user, docs, onDocDelete, listView, switchView, filter, showMembers, group, updateDocPrivacy }) => {
   const docList = docs.map(doc => (
     <Doc
       key={doc.id}
       {...doc}
+      user={user}
       onDocDelete={() => onDocDelete(doc.id, user.id)}
       listView={listView}
       filter={filter}
+      updateDocPrivacy={updateDocPrivacy}
     />
       ));
   return (
@@ -46,6 +48,7 @@ DocList.propTypes = {
   filter: PropTypes.string.isRequired,
   showMembers: PropTypes.func.isRequired,
   group: PropTypes.object.isRequired,
+  updateDocPrivacy: PropTypes.func.isRequired,
 };
 
 export default DocList;

@@ -597,3 +597,19 @@ router.get('/api/user', function(req, res) {
     res.send(error);
   });
 });
+
+// Update privacy settings for a Doc for a User
+router.put('/api/annotations/doc', function(req, res) {
+  models.Annotation.update({
+    private: req.body.private
+  }, {
+    where: {
+      UserId: req.body.UserId,
+      source: req.body.url
+    }
+  }).then(function(annotations) {
+    console.log(annotations);
+  }).catch(function(error) {
+    res.send(error);
+  });
+});
