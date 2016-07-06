@@ -18,7 +18,7 @@
     "watch-athena": "npm run build-athena -- --watch",
     "start": "node src/server/server.js",
     "lint": "eslint src --color",
-    "mocha": "mocha --compilers js:babel-register --bail --recursive ./specs/client ./specs/server",
+    "mocha": "mocha --compilers js:babel-register --bail --recursive ./specs",
     "test": "",
     "drop": "dropdb -U postgres annotate",
     "create": "createdb -U postgres annotate",
