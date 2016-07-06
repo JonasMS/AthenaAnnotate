@@ -24,7 +24,8 @@ import {
   SHOW_CONTROL_BUTTONS_CLASS,
 } from '../constants';
 
-import { wrapAnnote, unwrapAnnote, retrieveAnnote } from '../engine/';
+import { retrieveAnnote } from '../engine/';
+import { wrapAnnote, unwrapAnnote } from '../engine/actors';
 import {
   saveAnnote,
   fetchUser,
@@ -127,6 +128,7 @@ class App extends Component {
         fetchAnnotes(user)
           .then(annotes => {
             if (!!annotes.length) {
+              console.log('annotes: ', annotes);
               this.annoteId = this.getAnnoteId(annotes[annotes.length - 1].id);
               annotes.forEach(annote => {
                 retrieveAnnote(document.body, annote, () => {
