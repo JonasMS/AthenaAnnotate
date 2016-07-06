@@ -18,8 +18,6 @@ var sequelize = new Sequelize(process.env.DATABASE_URL);
 var server = express();
 var host = process.env.HOST || 'https://localhost';
 var port = process.env.PORT || 3000;
-// var httpPort = process.env.HTTP_PORT || 3000;
-// var httpsPort = process.env.HTTPS_PORT || 8443;
 
 sequelize
   .authenticate()
@@ -66,31 +64,3 @@ if (process.env.NODE_ENV === 'production') {
     .listen(port);
 }
 console.log('Server listening on ' + host + ':' + port + '\n');
-
-// if (process.env.NODE_ENV === 'production') {
-//   var port = process.env.PORT || httpsPort;
-
-//   http
-//     .createServer(server)
-//     .listen(port);
-
-//   console.log('Server listening on http://' + host + ':' + port + '\n');
-// } else {
-//   http
-//     .createServer(server)
-//     .listen(httpPort);
-
-//   console.log('[HTTP]: Server listening on http://' + host + ':' + httpPort + '\n');
-
-//   var privateKey  = fs.readFileSync(__dirname + '/sslcert/server.key', 'utf8');
-//   var certificate = fs.readFileSync(__dirname + '/sslcert/server.crt', 'utf8');
-//   var credentials = { key: privateKey, cert: certificate };
-
-//   https
-//     .createServer(credentials, server)
-//     .listen(httpsPort);
-
-//   console.log('[HTTPS]: Server listening on https://' + host + ':' + httpsPort + '\n');
-// }
-
-module.exports = sequelize;
