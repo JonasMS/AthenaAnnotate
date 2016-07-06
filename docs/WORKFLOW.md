@@ -97,34 +97,9 @@ Load the extension found at `build/extension` into Chrome. (Ensure *Developer Mo
 
 Navigate to **https://localhost:3000** to view the Web App.
 
-## Design
+### View the Extension
 
-There are 5 parts to the application:
+For development, it's best to setup an express server that serves up very simple HTML page on a separate port. (i.e. `http://localhost:3000`). This site would simulate a site visited by your user and the interaction with the extension. The simplicity of the site allows you to see how the extension loads and works without distraction of a real site's inner workings.
 
-1. [The Server](#the-server)
-1. [The Web App](#the-web-app)
-1. [The Chrome extension](#the-chrome-extension)
-1. [The Annotation Engine](#the-annotation-engine)
-1. [Postgres](#postgres)
-
-### The Server
-
-To start the server, issue:
-
-```
-$ npm start
-```
-This starts an express server defaulted to `http://localhost:3000`.
-
-#### Endpoints
-
-|Description|Endpoint|
-|---|---|
-|[Web App](#the-web-app)|GET /|
-|[Annotation iFrame](#the-annotation-iframe)|GET /athena/athena.html|
-|[Annotation Engine](#the-annotation-engine)|GET /athena/athena.js|
-
-### The Web App
-### The Chrome Extension
-### The Annotation Engine
-### Postgres
+Of course, eventually, the extension should be tested on a real site!
+ 
