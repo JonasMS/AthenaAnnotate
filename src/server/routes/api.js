@@ -612,6 +612,7 @@ router.put('/api/annotations/doc', function(req, res) {
     }
   }).then(function(annotations) {
     console.log(annotations);
+    res.send(annotations);
   }).catch(function(error) {
     res.send(error);
   });
@@ -627,6 +628,7 @@ router.put('/api/group/users', function(req, res) {
     }
   }).then(function(associations) {
     console.log(associations);
+    res.send(associations);
   }).catch(function(error) {
     res.send(error);
   });

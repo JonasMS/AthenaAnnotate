@@ -67,11 +67,11 @@ const docs = (state = [], action) => {
         doc(a, action)
       );
     case 'DOC_PRIVATE':
-      return docs.map(a =>
+      return state.map(a =>
         doc(a, action)
       );
     case 'DOC_PUBLIC':
-      return docs.map(a =>
+      return state.map(a =>
         doc(a, action)
       );
     default:

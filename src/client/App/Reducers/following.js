@@ -10,9 +10,9 @@ const following = (state = { loaded: false }, action) => {
       });
     case 'TOGGLE_FOLLOW_USER':
       return Object.assign({}, state, {
-        users: state.users.filter(user =>
-          user.id === action.userId
-        ),
+        // users: state.users.filter(user =>
+        //   user.id === action.userId
+        // ),
         loaded: false,
       });
     case 'SET_USER':

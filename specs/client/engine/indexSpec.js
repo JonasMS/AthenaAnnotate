@@ -1,7 +1,9 @@
 /* global describe it */
+
 import { expect } from 'chai';
 import cheerio from 'cheerio';
 import fs from 'fs';
+
 // import { insertAnnote, retrieveAnnote } from '../../../src/libs/zeus/src/engine/';
 
 // let webDoc;
