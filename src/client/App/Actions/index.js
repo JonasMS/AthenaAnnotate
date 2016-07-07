@@ -464,10 +464,10 @@ export const showMembers = (groupId) => (
   }
 );
 
-export const setUser = (userId) => (
+export const setUser = (user) => (
   {
     type: 'SET_USER',
-    userId,
+    user,
   }
 );
 
@@ -623,4 +623,15 @@ export const toggleRights = (userId, groupId, rights) => (
       dispatch(togglerights(userId, !rights));
     })
     .catch(error => console.log(error))
+);
+
+export const setUserDB = (userId) => (
+  dispatch =>
+    fetch(`${baseUrl}/api/user/profile?id=${userId}`)
+    .then(response => response.json())
+    .then(user => {
+      console.log(user);
+      dispatch(setUser(user));
+      dispatch(setFilter('User'));
+    })
 );

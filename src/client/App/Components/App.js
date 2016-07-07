@@ -34,7 +34,7 @@ class App extends Component {
         this.props.user.id,
         this.props.filter,
         this.props.group.selected,
-        this.props.following.selected
+        this.props.following.selectedId
       );
       if (!this.props.following.loaded) {
         this.props.actions.loadFollowingDB(this.props.user.id);

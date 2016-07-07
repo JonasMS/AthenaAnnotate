@@ -9,6 +9,7 @@ const mapStatetoProps = (state) => (
     listView: state.listView,
     filter: state.filter,
     group: state.group,
+    following: state.following,
   }
 );
 

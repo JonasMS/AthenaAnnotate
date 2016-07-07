@@ -61,6 +61,7 @@ li .username {
 
 div.media.card {
   margin-top: 10px;
+  position: relative;
 }
 
 .card a:hover {
@@ -84,15 +85,20 @@ div.media.card {
 .media-left {
   vertical-align: bottom;
   float: left;
+  padding-right: 7px;
 }
-
+/*
 .media-body {
   display: inline;
-}
+}*/
 
 div.media-body {
-  padding-top: 10px;
-  width: 100%;
+  width: 75%;
+  height: 100%;
+  padding-top: 5px;
+  display: inline-block;
+  position: absolute;
+  /*padding-right: 5px;*/
 }
 
 .card a {
@@ -130,7 +136,66 @@ li.object.annotation {
 li.object .buttons {
   display: none;
 }
-body {
+
+div.closeDoc {
+  display: none;
+  z-index: 100;
+  cursor: pointer;
+  position: absolute;
+  top: 5px;
+  right: 7px;
+}
+
+div.card {
+  position: relative;
+}
+
+div.card:hover .closeDoc{
+  display: block;  
+}
+
+.closeDoc span.glyphicon-remove {
+  color: white;
+  text-shadow: -1px 0 grey, 0 1px grey, 1px 0 grey, 0 -1px grey;
+}
+
+div span.note-count {
+  bottom: 5px;
+  position: absolute;
+}
+
+div.heading {
+  margin-left: 7px;
+}
+
+div.heading h4 {
+  margin-top: 5px;
+  margin-bottom: 1px;
+}
+
+div.privacy {
+  margin-left: 7px;
+}
+
+div.privacy .btn-group {
+  display: inline-block;
+}
+
+div.userPic {
+  display: inline-block;
+  width: 150px;
+  height: 150px;
+}
+
+div.UserInfo .userProfile {
+  display: inline-block;
+}
+
+div.userTitle {
+  font-color: grey;
+  font-size: 12px;
+  font-style: italic;  
+}body {
   padding-top: 20px;
 }
 

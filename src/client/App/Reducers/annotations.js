@@ -10,6 +10,7 @@ const annotation = (state, action) => {
         edit: false,
         deleteFail: false,
         userName: state.User.name,
+        userTitle: state.User.title,
         userId: state.User.id,
       };
     case 'DELETE_ANNOTATION':

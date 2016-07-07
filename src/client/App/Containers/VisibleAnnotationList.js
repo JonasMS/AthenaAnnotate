@@ -31,8 +31,8 @@ const mapDispatchToProps = (dispatch) => (
     setFilter: (filter) => {
       dispatch(actions.setFilter(filter));
     },
-    setUser: (userId) => {
-      dispatch(actions.setUser(userId));
+    setUserDB: (userId) => {
+      dispatch(actions.setUserDB(userId));
     },
   }
 );

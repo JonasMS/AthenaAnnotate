@@ -633,3 +633,16 @@ router.put('/api/group/users', function(req, res) {
     res.send(error);
   });
 });
+
+router.get('/api/user/profile', function(req, res) {
+  models.User.find({
+    where: {
+      id: req.query.id
+    }
+  }).then(function(user) {
+    console.log(user);
+    res.send(user);
+  }).catch(function(error) {
+    res.send(error);
+  });
+});

@@ -4,7 +4,7 @@ const following = (state = { loaded: false }, action) => {
     case 'LOAD_FOLLOWING':
       return Object.assign({}, state, {
         users: action.following.map(user => (
-          { id: user.id, name: user.name }
+          { id: user.id, name: user.name, title: user.title, picture: user.picture }
         )),
         loaded: true,
       });
@@ -17,7 +17,8 @@ const following = (state = { loaded: false }, action) => {
       });
     case 'SET_USER':
       return Object.assign({}, state, {
-        selected: action.userId,
+        selectedId: action.user.id,
+        selected: action.user,
       });
     default:
       return state;

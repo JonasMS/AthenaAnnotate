@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import Doc from './Doc';
 
-const DocList = ({ user, docs, onDocDelete, listView, switchView, filter, showMembers, group, updateDocPrivacy }) => {
+const DocList = ({ following, user, docs, onDocDelete, listView, switchView, filter, showMembers, group, updateDocPrivacy }) => {
   const docList = docs.map(doc => (
     <Doc
       key={doc.id}
@@ -23,6 +23,27 @@ const DocList = ({ user, docs, onDocDelete, listView, switchView, filter, showMe
       >
         <span className="glyphicon glyphicon-th-list" aria-hidden="true"></span>
       </button>
+      {filter === 'User'
+        ?
+        <div className="UserInfo">
+          <div
+            className="circle userPic"
+            style={{ backgroundImage: `url(${following.selected.picture})` }}
+            alt={following.selected.name}
+          />
+          <div className="userProfile">
+            <h4 className="name">{following.selected.name}</h4>
+            {following.selected.title !== undefined
+              ?
+              <span className="title">{following.selected.title}</span>
+              :
+              null
+            }
+          </div>
+        </div>
+        :
+        null
+      }
       {filter === 'Groups'
         ?
         <a
@@ -40,6 +61,7 @@ const DocList = ({ user, docs, onDocDelete, listView, switchView, filter, showMe
 };
 
 DocList.propTypes = {
+  following: PropTypes.object.isRequired,
   user: PropTypes.object.isRequired,
   docs: PropTypes.array.isRequired,
   onDocDelete: PropTypes.func.isRequired,
