@@ -1,6 +1,9 @@
 import config from '../../../../config';
 
-const baseUrl = `${config.url.host}:${config.url.port}`;
+const baseUrl = process.env.NODE_ENV === 'production'
+              ? config.url.host
+              : `${config.url.host}:${config.url.port}`;
+
 const req = new XMLHttpRequest();
 
 req.open('GET', `${baseUrl}/zeus/zeus.js`);

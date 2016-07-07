@@ -1,6 +1,8 @@
 # Deployment
 
-To deploy app changes, simple issue:
+> **This assumes you have Heroku Toolbelt installed.**
+
+To deploy app changes, simply issue:
 
 ```sh
 # git add and commit any changes. then...
@@ -8,8 +10,6 @@ $ git push heroku [your branch]:master
 ```
 
 ## How Deployment was Setup
-
-> Assuming you have Heroku Toolbelt installed.
 
 ### Create App 
 
@@ -23,7 +23,7 @@ $ heroku addons:create heroku-postgresql:hobby-dev
 ```
 ### Setup DB Configuration
 
-The Postgres Add-on installation gives you default user, password, and db url. Set those values in 
+The Postgres Add-on installation provides a default user, password, and database url. Set those values in 
 `src/server/config.json`.
 
 ### Environment Variables
@@ -54,3 +54,20 @@ $ git push heroku [your-branch]:master
 # this will create tables in db
 $ npm run migrate
 ```
+
+## Production Demo
+
+When this application is deployed, visiting [Athena Annotation](https://athena-annotate.herokuapp.com) will serve up the web application.
+
+To use the chrome extension, and have it interact with the production database, follow these steps:
+
+1. Change all variables in the local copy of `.env` to production settings.
+1. Run `npm run build`
+1. Load newly build chrome extension into browser by visiting [chrome extensions setting](chrome://extension).
+1. Open [Washington Post](https://www.washingtonpost.com).
+1. Highlight some text and submit an annotation (log in to Facebook if needed) 
+1. Open [Washington Post](https://www.washingtonpost.com) and see the text annotated highlight
+1. Open [Athena Annotation](https://athena-annotate.herokuapp.com) in a tab. Log in if prompted. See you annotation in the dashboard.
+
+
+
