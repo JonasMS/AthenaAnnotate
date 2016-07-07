@@ -4,7 +4,9 @@ import { checkStatus, createPOST } from './fetch';
 import * as options from '../constants/fetchOptions';
 import config from '../../../../../config';
 
-const baseUrl = `${config.url.host}:${config.url.port}`;
+const baseUrl = process.env.NODE_ENV === 'production'
+              ? config.url.host
+              : `${config.url.host}:${config.url.port}`;
 
 export const saveAnnote = (annote) => {
   fetch(
