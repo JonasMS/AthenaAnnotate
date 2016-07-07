@@ -39,6 +39,8 @@ const group = (state = { showGroups: false, loaded: false }, action) => {
           }),
         }),
       });
+    case 'LOG_OUT':
+      return { showGroups: false, loaded: false };
     default:
       return state;
   }

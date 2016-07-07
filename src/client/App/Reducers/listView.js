@@ -3,6 +3,8 @@ const listView = (state = false, action) => {
     case 'SWITCH_VIEW':
       // window.console.log(state);
       return !state;
+    case 'LOG_OUT':
+      return false;
     default:
       return state;
   }

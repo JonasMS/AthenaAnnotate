@@ -76,6 +76,7 @@ class App extends Component {
         editGroup,
         loadProfile,
         createNewGroup,
+        logoutAction,
       },
     } = this.props;
     return (
@@ -87,7 +88,10 @@ class App extends Component {
           ?
             <div className="row">
               <NavBar
-                logout={() => window.FB.logout(() => saveUserToStore({ id: null }))}
+                logout={() => window.FB.logout(() => {
+                  saveUserToStore({ id: null });
+                  logoutAction();
+                })}
                 user={user}
                 loadProfile={loadProfile}
               />

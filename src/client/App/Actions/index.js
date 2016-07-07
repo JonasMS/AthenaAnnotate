@@ -635,3 +635,9 @@ export const setUserDB = (userId) => (
       dispatch(setFilter('User'));
     })
 );
+
+export const logoutAction = () => (
+  {
+    type: 'LOG_OUT',
+  }
+);

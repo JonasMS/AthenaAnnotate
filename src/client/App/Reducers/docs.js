@@ -74,6 +74,8 @@ const docs = (state = [], action) => {
       return state.map(a =>
         doc(a, action)
       );
+    case 'LOG_OUT':
+      return [];
     default:
       return state;
   }

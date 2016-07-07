@@ -11,6 +11,8 @@ const invites = (state = { invites: [], loaded: false }, action) => {
           action.groupId !== invite.GroupId
         ),
       });
+    case 'LOG_OUT':
+      return { invites: [], loaded: false };
     default:
       return state;
   }

@@ -20,6 +20,8 @@ const following = (state = { loaded: false }, action) => {
         selectedId: action.user.id,
         selected: action.user,
       });
+    case 'LOG_OUT':
+      return { loaded: false };
     default:
       return state;
   }

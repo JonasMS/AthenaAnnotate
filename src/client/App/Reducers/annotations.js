@@ -79,6 +79,8 @@ const annotations = (state = [], action) => {
       return state.map(a =>
         annotation(a, action)
       );
+    case 'LOG_OUT':
+      return [];
     default:
       return state;
   }

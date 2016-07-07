@@ -16,6 +16,8 @@ const profile = (state = { show: false }, action) => {
       return Object.assign({}, state, {
         title: action.title,
       });
+    case 'LOG_OUT':
+      return { show: false };
     default:
       return state;
   }

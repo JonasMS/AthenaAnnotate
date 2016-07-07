@@ -29,6 +29,8 @@ const search = (state = { users: [], selected: [] }, action) => {
         users: [],
         selected: [],
       });
+    case 'LOG_OUT':
+      return { users: [], selected: [] };
     default:
       return state;
   }
