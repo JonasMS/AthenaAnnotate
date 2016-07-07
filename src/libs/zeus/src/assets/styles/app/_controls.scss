@@ -1,6 +1,23 @@
+@font-face {
+  font-family: 'fontello';
+  src: url('../fonts/fontello.eot') format('eot'),
+    url('../fonts/fontello.woff2') format('woff2'),
+    url('../fonts/fontello.woff') format('woff'),
+    url('../fonts/fontello.ttf') format('truetype'),
+    url('../fonts/fontello.svg#fontello') format('svg');
+}
+
+
 .controller {
   position: absolute;
   z-index: 999999;
+  top: 0;
+  left: 0;
+  padding: 0;
+
+  & div {
+    padding: 0;
+  }
 }
 
 

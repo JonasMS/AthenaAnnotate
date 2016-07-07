@@ -1,7 +1,7 @@
 class Annote extends HTMLElement {
   createdCallback() {
     // styling
-    this.style.backgroundColor = 'yellow';
+    this.style.borderBottom = '3px dotted rgb(0, 149, 221)';
   }
   addListener(cb) {
     this.addEventListener('click', cb);

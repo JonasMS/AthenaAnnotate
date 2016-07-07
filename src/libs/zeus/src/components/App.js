@@ -66,11 +66,15 @@ class App extends Component {
     this.user = null;
     this.getUserIntevalId = null;
     this.hasSelection = false;
+    this.mouseDownPos = null;
   }
 
   componentDidMount() {
     window.addEventListener('message', this.handleMessageEvent);
     window.addEventListener('keydown', e => { this.shortcutHandler(e); });
+    window.addEventListener('mousedown', e => {
+      this.mouseDownPos = e.clientX;
+    });
     window.addEventListener('mouseup', e => { this.handleSelectionEvent(e); });
   }
 
@@ -110,9 +114,10 @@ class App extends Component {
   }
 
   setController(e) {
-    const top = `${window.scrollY + e.clientY}px`;
-    const left = `${window.scrollX + e.srcElement.getBoundingClientRect().left +
-    e.srcElement.clientWidth}px`;
+    const top = this.mouseDownPos < e.clientX ?
+      `${window.scrollY + e.clientY + 15}px` : `${window.scrollY + e.clientY - 45}px`;
+    // const top = `${window.scrollY + e.clientY + 15}px`;
+    const left = `${window.scrollX + e.clientX - 37}px`;
     return this.setState({
       controls: SHOW_CONTROL_BUTTONS_CLASS,
       pos: {
@@ -128,7 +133,6 @@ class App extends Component {
         fetchAnnotes(user)
           .then(annotes => {
             if (!!annotes.length) {
-              console.log('annotes: ', annotes);
               this.annoteId = this.getAnnoteId(annotes[annotes.length - 1].id);
               annotes.forEach(annote => {
                 retrieveAnnote(document.body, annote, () => {
