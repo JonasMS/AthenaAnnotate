@@ -24,6 +24,9 @@ import {
   SHOW_CONTROL_BUTTONS_CLASS,
 } from '../constants';
 
+import { NOTE, HIGHLIGHT, HIGHLIGHT_NOTE } from '../../../common/annoteTypes';
+
+
 import { retrieveAnnote } from '../engine/';
 import { wrapAnnote, unwrapAnnote } from '../engine/actors';
 import {
@@ -179,7 +182,7 @@ class App extends Component {
   shortcutHandler(e) {
     if (e.getModifierState('Shift')) {
       if (e.code === 'KeyN' && this.hasSelection) {
-        this.initNote();
+        this.initNote(NOTE);
       } else if (e.code === 'KeyH' && this.hasSelection) {
         this.createHighlight();
       }
@@ -282,14 +285,14 @@ class App extends Component {
     }
   }
 
-  initNote() {
+  initNote(annoteType) {
     this.showAthena();
     if (this.isUserLoggedIn()) {
       const { selector, range } = getText();
-      const annote = createAnnote(selector, this.annoteId, this.user.id);
+      const annote = createAnnote(selector, annoteType, this.annoteId, this.user.id);
       this.annote = annote;
       this.postMessageToFrame({ type: CREATE_ANNOTE, annote });
-      wrapAnnote(range, annote.id, () => {
+      wrapAnnote(range, annote.id, annoteType, () => {
         this.postMessageToFrame({ type: DISPLAY_ANNOTE, annoteId: annote.id });
         this.showAthena();
       });
@@ -298,7 +301,7 @@ class App extends Component {
   }
 
   createNote(data) {
-    // change body of this.annote
+    // type: 'NOTE' or 'HIGHLIGHT_NOTE'
     const { body, groupId } = data;
     this.annote = Object.assign({}, this.annote, {
       body,
@@ -312,13 +315,17 @@ class App extends Component {
     if (this.isUserLoggedIn()) {
       this.setState({ controls: HIDE_CONTROL_BUTTONS_CLASS });
       const { selector, range } = getText();
-      const annote = createAnnote(selector, this.annoteId, this.user.id);
+      // type: 'HIGHLIGHT'
+      const annote = createAnnote(selector, HIGHLIGHT, this.annoteId, this.user.id);
+
       saveAnnote(annote); // POST annote to server to be stored in db
       this.postMessageToFrame({ type: ADD_ANNOTE, annote });
-      wrapAnnote(range, annote.id, () => {
+
+      wrapAnnote(range, annote.id, HIGHLIGHT, () => {
         this.postMessageToFrame({ type: DISPLAY_ANNOTE, annoteId: annote.id });
         this.showAthena();
       });
+
       this.annoteId++; // TODO: move into createAnnote
     } else {
       this.showAthena();
@@ -326,7 +333,6 @@ class App extends Component {
   }
 
   deleteAnnote(annoteId) {
-    // make DELETE request to api/annotations
     fetchDelete(annoteId);
     unwrapAnnote(annoteId);
   }
@@ -342,7 +348,7 @@ class App extends Component {
       <div className={this.state.controls} style={controllerPos}>
         <div>
           <ControlButton
-            handler={() => { this.initNote(); }}
+            handler={() => { this.initNote(NOTE); }}
             label={'N'}
           />
           <ControlButton

@@ -47,13 +47,9 @@ export const getAnnoteId = idString => {
   return parseInt(idString.substring(startIdx, endIdx), 10) + 1;
 };
 
-export const createAnnote = ( // TODO: move somewhere
-  selector,
-  annoteId,
-  userId
-) => {
+export const createAnnote = (selector, type, annoteId, userId) => {
   const url = window.location.href;
-
+  debugger;
   // TODO: do not use annotations.length to determine
   // annotation id, will be problematic in event of an
   // annotation deletion
@@ -63,6 +59,7 @@ export const createAnnote = ( // TODO: move somewhere
   const id = `${url}/annote${annoteId}/${userId}`;
   return {
     id,
+    type,
     creator: userId,
     body: {
       lastModified: '',

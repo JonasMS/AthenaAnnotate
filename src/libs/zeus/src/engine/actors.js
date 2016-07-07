@@ -6,17 +6,20 @@ Range.prototype.canSurroundContents = function() {
 };
 
 // creates the html element used for marking annotations
-export const createAnnoteElement = (annoteId, cb) => {
+export const createAnnoteElement = (annoteId, type, cb) => {
   const athena = new Athena;
+  athena.setStyle(type);
   athena.addDataProp('id', annoteId);
   athena.addListener(cb);
   return athena;
 };
 
-export const wrapAnnote = (range, annoteId, cb) => {
+export const wrapAnnote = (range, annoteId, type, cb) => {
   // if canSurroundContents
+  // setStyle(athena, type)
+  console.log(type);
   if (range.canSurroundContents()) {
-    const athena = createAnnoteElement(annoteId, cb);
+    const athena = createAnnoteElement(annoteId, type, cb);
     range.surroundContents(athena);
     range.detach();
     return range;
@@ -37,4 +40,5 @@ export const unwrapAnnote = (annote) => {
   const textNode = document.createTextNode(content);
   parentNode.removeChild(node);
   parentNode.insertBefore(textNode, nextSibling);
+  return textNode;
 };

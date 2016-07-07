@@ -3,15 +3,6 @@ import { wrapAnnote } from './actors';
 import { locateAnnote } from './processors';
 import parseDoc from './retrievers';
 
-// returns range
-// wraps the selected text in a custom
-// html element
-export const insertAnnote = (startNode, endNode, cb) => {
-  const range = createRange(startNode, endNode);
-  wrapAnnote(range, cb);
-  return range;
-};
-
 // Returns Range of retrieved annotation or null
 // if the annotation could not be retrieved
 export function retrieveAnnote(doc, annote, cb) {
@@ -23,7 +14,7 @@ export function retrieveAnnote(doc, annote, cb) {
   if (!!annoteLocation) {
     const { startNode, endNode } = annoteLocation;
     const range = createRange(startNode, endNode);
-    wrapAnnote(range, annote.id, cb);
+    wrapAnnote(range, annote.id, annote.type, cb);
     return range;
   }
   return null;
