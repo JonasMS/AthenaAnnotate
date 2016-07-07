@@ -49,7 +49,6 @@ export const getAnnoteId = idString => {
 
 export const createAnnote = (selector, type, annoteId, userId) => {
   const url = window.location.href;
-  debugger;
   // TODO: do not use annotations.length to determine
   // annotation id, will be problematic in event of an
   // annotation deletion

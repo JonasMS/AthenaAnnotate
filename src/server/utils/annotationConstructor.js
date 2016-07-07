@@ -24,6 +24,7 @@ module.exports = function(array, res) {
     };
     obj.groupId = item.groupId;
     obj.private = item.private;
+    obj.type = item.type;
     obj.groupId = item.groupId;
     result.push(obj);
   });
