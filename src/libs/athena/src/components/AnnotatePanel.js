@@ -2,8 +2,10 @@ import React, { PropTypes, Component } from 'react';
 import {
   Button,
   FormGroup,
-  ControlLabel,
   FormControl,
+  Grid,
+  Row,
+  Col,
 } from 'react-bootstrap';
 import ChannelsMenu from '../containers/ChannelsMenu';
 import FacebookLogout from './FacebookLogout';
@@ -18,28 +20,28 @@ class AnnotatePanel extends Component {
     const { exact } = annotation.target.selector;
 
     return (
-      <div>
+      <div className="athena">
         <Button onClick={close}> Close </Button>
         <ChannelsMenu channelSelect={channelSelect} />
         <form>
-          <FormGroup controlId="annoteFormId">
-            <FormControl
-              type="text"
-              value={exact}
-            />
-            <ControlLabel>Your Note</ControlLabel>
+          <div className="targetText">{exact}</div>
+          <FormGroup controlId="annoteFormId" className="bodyText">
             <FormControl
               componentClass="textarea"
               value={annotation.body.text}
               onChange={(e) => actions.updateBody(e.target.value)}
             />
+            <Grid>
+              <Row>
+                <Col xs={4} />
+                <Col xs={4} xsOffset={4}>
+                  <button className="delBtn" onClick={del}>delete</button>
+                  <button className="submitBtn" onClick={submit}>Submit</button>
+                </Col>
+              </Row>
+            </Grid>
           </FormGroup>
         </form>
-        <Button bsStyle="primary" onClick={submit}> Submit </Button>
-        <div onClick={del}>delete</div>
-        <FacebookLogout
-          logout={() => window.FB.logout(() => actions.saveUserToStore({ id: null }))}
-        />
       </div>
     );
   }
