@@ -1,6 +1,10 @@
 const path = require('path');
 const webpack = require('webpack');
-// const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const config = require('../../../config');
+const baseUrl = process.env.NODE_ENV === 'production'
+              ? config.url.host
+              : `${config.url.host}:${config.url.port}`;
+
 const PATHS = {
   app: path.join(__dirname, 'src'),
   build: path.join(__dirname, '../../../build/zeus'),
@@ -13,7 +17,7 @@ module.exports = {
     app: PATHS.app,
   },
   output: {
-    publicPath: 'https://localhost:3000/zeus/',
+    publicPath: baseUrl + '/zeus/',
     path: PATHS.build,
     filename: 'zeus.js',
   },
