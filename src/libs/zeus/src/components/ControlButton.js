@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react';
 
 const ControlButton = ({ handler, label }) => (
   <span>
+    <i className="fa fa-twitter"></i>
     <button className="control-btn control-btn-default" onClick={handler}> {label} </button>
   </span>
 );
