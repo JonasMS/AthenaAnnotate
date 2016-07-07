@@ -13,7 +13,7 @@ class App extends Component {
     this.login = this.login.bind(this);
   }
 
-  componentDidMount() {
+  componentWillMount() {
     initFB()
       .then(() => getUserStatusFromFB())
       .then(status => {
