@@ -1,7 +1,11 @@
-import fetch from 'isomorphic-fetch';
 require('es6-promise').polyfill();
+import fetch from 'isomorphic-fetch';
 import * as types from '../constants/actionTypes';
-import { getUserFromFB } from '../../../common/auth';
+import config from '../../../../../config';
+
+const baseUrl = process.env.NODE_ENV === 'production'
+              ? config.url.host
+              : `${config.url.host}:${config.url.port}`;
 
 export const failedRequest = error => (
   {
@@ -10,7 +14,6 @@ export const failedRequest = error => (
   }
 );
 
-// Sets state.user
 export const saveUserToStore = userData => (
   {
     type: types.SAVE_USER_TO_STORE,
@@ -22,7 +25,7 @@ export const getUserFromDB = fbUser => {
   const payload = JSON.stringify(fbUser);
 
   return dispatch => {
-    fetch('/api/users', {
+    return fetch(`${baseUrl}/api/users`, {
       method: 'POST',
       headers: {
         'Content-type': 'application/json',
@@ -36,26 +39,6 @@ export const getUserFromDB = fbUser => {
     .catch(err => dispatch(failedRequest(err)));
   };
 };
-
-export const webAppLogin = () => (
-  dispatch => (
-    window.FB.login(res => {
-      if (res.status === 'connected') {
-        getUserFromFB().then(user => dispatch(getUserFromDB(user)));
-      }
-    }, { scope: 'public_profile,email' })
-  )
-);
-
-export const logout = () => (
-  dispatch => (
-    window.FB.logout(() => (
-      dispatch(saveUserToStore({
-        id: null,
-      }))
-    ))
-  )
-);
 
 export const setModify = (bool) => ({
   type: types.SET_WIDGET_MODIFY,

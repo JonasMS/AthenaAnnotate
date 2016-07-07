@@ -1,11 +1,12 @@
 require('isomorphic-fetch');
 require('es6-promise').polyfill();
 import { saveUserToStore } from '../../../libs/athena/src/actions';
+import config from '../../../../config';
 export * from '../../../libs/athena/src/actions';
 
 const baseUrl = process.env.NODE_ENV === 'production'
-              ? process.env.HOST
-              : `${process.env.HOST}:${process.env.PORT}`;
+              ? config.url.host
+              : `${config.url.host}:${config.url.port}`;
 
 // To load all annotations based on filter
 const requestAnnotations = () => (

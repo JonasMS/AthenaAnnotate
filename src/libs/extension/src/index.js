@@ -1,4 +1,6 @@
-const baseUrl = `${process.env.HOST}:${process.env.PORT}`;
+import config from '../../../../config';
+
+const baseUrl = `${config.url.host}:${config.url.port}`;
 const req = new XMLHttpRequest();
 
 req.open('GET', `${baseUrl}/zeus/zeus.js`);

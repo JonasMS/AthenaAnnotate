@@ -62,6 +62,6 @@ module.exports = {
     ],
   },
   plugins: [
-    new webpack.EnvironmentPlugin(['FACEBOOK_APP_ID', 'HOST', 'PORT']),
+    new webpack.EnvironmentPlugin(['FACEBOOK_APP_ID', 'HOST', 'PORT', 'NODE_ENV']),
   ],
 };

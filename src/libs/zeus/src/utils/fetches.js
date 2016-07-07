@@ -2,8 +2,9 @@ import fetch from 'isomorphic-fetch';
 require('es6-promise').polyfill();
 import { checkStatus, createPOST } from './fetch';
 import * as options from '../constants/fetchOptions';
+import config from '../../../../../config';
 
-const baseUrl = `${process.env.HOST}:${process.env.PORT}`;
+const baseUrl = `${config.url.host}:${config.url.port}`;
 
 export const saveAnnote = (annote) => {
   fetch(

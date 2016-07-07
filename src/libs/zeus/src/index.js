@@ -3,8 +3,9 @@ import React from 'react';
 import { render } from 'react-dom';
 import App from './components/App';
 import { IFRAME_CLASS, HIDE_IFRAME_CLASS } from './constants';
+import config from '../../../../config';
 
-const baseUrl = `${process.env.HOST}:${process.env.PORT}`;
+const baseUrl = `${config.url.host}:${config.url.port}`;
 
 const app = document.createElement('div');
 app.id = 'app-anchor';
