@@ -2,27 +2,44 @@
 
 Annotate the web.
 
-## Table of Contents
-
-* [Getting Started](#getting-started)
-* [Tech Stack](#tech-stack)
-* [Project Structure](#project-structure)
-* [Design](#design)
-* [Workflow](docs/WORKFLOW.md)
-* [Deployment](docs/DEPLOYMENT.md)
-* [Resources](#resources)
-* [Contributing](docs/CONTRIBUTING.md)
-* [License](docs/LICENSE.md)
-
 ## Getting Started
 
+Visit [Athena Annotate](https://athena-annotate.herokuapp.com/).
+
+To use the extension, see [Design](#chrome-extension) Section.
+
 ## Tech Stack
+
+* React
+* Redux
+* Postgres
+* Facebook SDK
 
 ## Project Structure
 
 ## Design
 
+### Server
+
+### Web App
+
+### Chrome Extension 
+See [Chrome Extension](docs/CHROME_EXTENSION.md).
+
+### Annotation Engine
+
+
+## Workflow
+See [Workflow](docs/WORKFLOW.md).
+
+## Deployment
+See [Deployment](docs/DEPLOYMENT.md).
+
 ## Resources
 
+## Contributing
+See [Contributing](docs/CONTRIBUTING.md).
 
+## License
+See [License](docs/LICENSE.md).
 
