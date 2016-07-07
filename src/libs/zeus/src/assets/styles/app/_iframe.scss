@@ -1,9 +1,10 @@
 .iframe {
   position: fixed;
-    width: 30%;
-    height: 100%;
-    top: 0;
-    border: none;
+  width: 30%;
+  height: 100%;
+  top: 0;
+  border: none;
+  z-index: 2147483647;
 }
 
 .iframe {
