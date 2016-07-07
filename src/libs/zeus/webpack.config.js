@@ -1,5 +1,10 @@
 const path = require('path');
 const webpack = require('webpack');
+const config = require('../../../config');
+const baseUrl = process.env.NODE_ENV === 'production'
+              ? config.url.host
+              : `${config.url.host}:${config.url.port}`;
+
 const PATHS = {
   app: path.join(__dirname, 'src'),
   build: path.join(__dirname, '../../../build/zeus'),
@@ -12,6 +17,7 @@ module.exports = {
     app: PATHS.app,
   },
   output: {
+    publicPath: baseUrl + '/zeus/',
     path: PATHS.build,
     filename: 'zeus.js',
   },
@@ -23,13 +29,22 @@ module.exports = {
         exclude: /(node_modules|bower_components)/,
         loader: 'babel',
       },
+      // {
+      //   test: /\.css$/,
+      //   // loaders: ExtractTextPlugin.extract('style', 'css'),
+      //   loader: 'style',
+      // },
+      // {
+      //   test: /\.css$/,
+      //   loader: 'css?root=https://localhost:3000',
+      // },
       {
         test: /\.css$/,
         loaders: ['style', 'css'],
       },
       {
         test: /\.png$/,
-        loader: 'url-loader?limit=100000',
+        loader: 'url?limit=100000',
       },
       {
         test: /\.scss$/,
@@ -41,7 +56,7 @@ module.exports = {
       },
       {
         test: /\.jpg$/,
-        loader: 'file-loader',
+        loader: 'file',
       },
       {
         test: /\.(woff|woff2)(\?v=\d+\.\d+\.\d+)?$/,
@@ -63,5 +78,6 @@ module.exports = {
   },
   plugins: [
     new webpack.EnvironmentPlugin(['HOST', 'PORT', 'NODE_ENV']),
+    // new ExtractTextPlugin('bundle.css'),
   ],
 };

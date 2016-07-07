@@ -26,14 +26,13 @@ Copy `.env.example` to `.env` and set any API keys or config variables in this f
 
 |Variable|Setting|
 |---|---|
-| NODE_ENV[^1] ||
 | DATABASE_URL | postgres://postgres@localhost:5432/annotate |
 | HOST | https://localhost |
 | PORT | 3000 |
 | FACEBOOK_APP_ID ||
 | FACEBOOK_APP_SECRET ||
 
-[^1]: Default value for NODE_ENV is **development**. Only set this for production. See [DEPLOYMENT](DEPLOYMENT.md).
+> Only set NODE_ENV in production. See [DEPLOYMENT](DEPLOYMENT.md).
 
 You'll also need to setup your SSL key and certification **(only in development environment)**. Here are some instructions:
 
@@ -99,7 +98,4 @@ Navigate to **https://localhost:3000** to view the Web App.
 
 ### View the Extension
 
-For development, it's best to setup an express server that serves up very simple HTML page on a separate port. (i.e. `http://localhost:3000`). This site would simulate a site visited by your user and the interaction with the extension. The simplicity of the site allows you to see how the extension loads and works without distraction of a real site's inner workings.
-
-Of course, eventually, the extension should be tested on a real site!
- 
+For development, it's best to setup an express server that serves up a very simple HTML page on a separate port. (i.e. `http://localhost:3333`). This setup would simulate a site visited by your user and the interaction with the extension. The simplicity of the site allows you to see how the extension loads and works without distraction of a real site's inner workings. Alternatively, you may use **https://localhost:3000/api/test** as a simple test page.

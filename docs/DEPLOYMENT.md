@@ -59,7 +59,7 @@ $ npm run migrate
 
 When this application is deployed, visiting [Athena Annotation](https://athena-annotate.herokuapp.com) will serve up the web application.
 
-To use the chrome extension, and have it interact with the production database, follow these steps:
+To use the chrome extension and have it interact with the production database, follow these steps:
 
 1. Change all variables in the local copy of `.env` to production settings.
 1. Run `npm run build`
@@ -67,7 +67,7 @@ To use the chrome extension, and have it interact with the production database, 
 1. Open [Washington Post](https://www.washingtonpost.com).
 1. Highlight some text and submit an annotation (log in to Facebook if needed) 
 1. Open [Washington Post](https://www.washingtonpost.com) and see the text annotated highlight
-1. Open [Athena Annotation](https://athena-annotate.herokuapp.com) in a tab. Log in if prompted. See you annotation in the dashboard.
+1. Open [Athena Annotation](https://athena-annotate.herokuapp.com) in a tab. Log in if prompted. See your annotation in the dashboard.
 
 
 
