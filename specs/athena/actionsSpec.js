@@ -1,11 +1,13 @@
-/* global describe it */
+/* global describe it xdescribe xit afterEach */
 import 'isomorphic-fetch';
 import { expect } from 'chai';
-// import nock from 'nock';
-// import thunk from 'redux-thunk';
-// import cfgMockStore from 'redux-mock-store';
+import nock from 'nock';
+import thunk from 'redux-thunk';
+import cfgMockStore from 'redux-mock-store';
 import * as actions from '../../src/libs/athena/src/actions';
 import * as types from '../../src/libs/athena/src/constants/actionTypes';
+
+const mockStore = cfgMockStore([thunk]);
 
 describe('Athena Action Creators', () => {
   describe('failedRequest', () => {
@@ -37,20 +39,33 @@ describe('Athena Action Creators', () => {
   });
 
   describe('getUserFromDB', () => {
+    afterEach(() => {
+      nock.cleanAll();
+    });
+
     it('it should be a function', () => {
       expect(actions.getUserFromDB).to.be.a('function');
+    });
+
+    it('should create SAVE_USER_TO_STORE action after fetching a user is done', () => {
+      const store = mockStore({});
+      const user = { name: 'joe' };
+      const expectedActions = [{ type: types.SAVE_USER_TO_STORE, data: user }];
+
+      nock('https://localhost:3000')
+        .post('/api/users', user)
+        .reply(200, user);
+
+      return store.dispatch(actions.getUserFromDB(user))
+        .then(() => {
+          expect(store.getActions()).to.deep.equal(expectedActions);
+        });
     });
   });
 
   describe('webAppLogin', () => {
     it('it should be a function', () => {
       expect(actions.webAppLogin).to.be.a('function');
-    });
-  });
-
-  describe('logout', () => {
-    it('it should be a function', () => {
-      expect(actions.logout).to.be.a('function');
     });
   });
 

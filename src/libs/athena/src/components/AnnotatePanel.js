@@ -7,9 +7,9 @@ import {
 } from 'react-bootstrap';
 import ChannelsMenu from '../containers/ChannelsMenu';
 import FacebookLogout from './FacebookLogout';
-import { saveAnnote } from '../utils/annotation';
+// import { saveAnnote } from '../utils/annotation';
 
-import * as Actions from '../actions';
+// import * as Actions from '../actions';
 
 class AnnotatePanel extends Component {
   constructor(props) {
@@ -40,7 +40,9 @@ class AnnotatePanel extends Component {
         </form>
         <Button bsStyle="primary" onClick={submit}> Submit </Button>
         <div onClick={del}>delete</div>
-        <FacebookLogout logout={actions.logout} />
+        <FacebookLogout
+          logout={() => window.FB.logout(() => actions.saveUserToStore({ id: null }))}
+        />
       </div>
     );
   }

@@ -27,7 +27,7 @@ export const getUserFromDB = fbUser => {
   const payload = JSON.stringify(fbUser);
 
   return dispatch => {
-    fetch(`${baseUrl}/api/users`, {
+    return fetch(`${baseUrl}/api/users`, {
       method: 'POST',
       headers: {
         'Content-type': 'application/json',
@@ -49,16 +49,6 @@ export const webAppLogin = () => (
         getUserFromFB().then(user => dispatch(getUserFromDB(user)));
       }
     }, { scope: 'public_profile,email' })
-  )
-);
-
-export const logout = () => (
-  dispatch => (
-    window.FB.logout(() => (
-      dispatch(saveUserToStore({
-        id: null,
-      }))
-    ))
   )
 );
 
