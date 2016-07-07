@@ -7,9 +7,6 @@ import {
 } from 'react-bootstrap';
 import ChannelsMenu from '../containers/ChannelsMenu';
 import FacebookLogout from './FacebookLogout';
-// import { saveAnnote } from '../utils/annotation';
-
-// import * as Actions from '../actions';
 
 class AnnotatePanel extends Component {
   constructor(props) {
@@ -58,7 +55,6 @@ AnnotatePanel.propTypes = {
   close: PropTypes.func.isRequired,
   submit: PropTypes.func.isRequired,
   del: PropTypes.func.isRequired,
-  // exact: PropTypes.string.isRequired,
 };
 
 export default AnnotatePanel;

@@ -8,6 +8,11 @@ import GroupModal from '../Containers/Modal';
 import { initFB, getUserFromFB, getUserStatusFromFB } from '../../../libs/common/auth';
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+    this.login = this.login.bind(this);
+  }
+
   componentDidMount() {
     initFB()
       .then(() => getUserStatusFromFB())
@@ -43,6 +48,17 @@ class App extends Component {
     }
   }
 
+  login(res) {
+    if (res.status === 'connected') {
+      getUserFromFB()
+        .then(user => {
+          if (user) {
+            this.props.actions.getUserFromDB(user);
+          }
+        });
+    }
+  }
+
   render() {
     const {
       user,
@@ -51,8 +67,7 @@ class App extends Component {
       group,
       profile,
       actions: {
-        logout,
-        webAppLogin,
+        saveUserToStore,
         setFilter,
         setGroup,
         leaveGroupDB,
@@ -72,7 +87,7 @@ class App extends Component {
           ?
             <div className="row">
               <NavBar
-                logout={logout}
+                logout={() => window.FB.logout(() => saveUserToStore({ id: null }))}
                 user={user}
                 loadProfile={loadProfile}
               />
@@ -91,7 +106,7 @@ class App extends Component {
               {loading ? <Loading /> : <Main profile={profile} user={user} />}
             </div>
           :
-            <Splash login={webAppLogin} />
+            <Splash login={() => window.FB.login(this.login)} />
         }
       </div>
     );

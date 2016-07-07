@@ -63,12 +63,6 @@ describe('Athena Action Creators', () => {
     });
   });
 
-  describe('webAppLogin', () => {
-    it('it should be a function', () => {
-      expect(actions.webAppLogin).to.be.a('function');
-    });
-  });
-
   describe('setModify', () => {
     it('it should be a function', () => {
       expect(actions.setModify).to.be.a('function');

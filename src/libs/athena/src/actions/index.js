@@ -1,7 +1,6 @@
 require('es6-promise').polyfill();
 import fetch from 'isomorphic-fetch';
 import * as types from '../constants/actionTypes';
-import { getUserFromFB } from '../../../common/auth';
 import config from '../../../../../config';
 
 const baseUrl = process.env.NODE_ENV === 'production'
@@ -15,7 +14,6 @@ export const failedRequest = error => (
   }
 );
 
-// Sets state.user
 export const saveUserToStore = userData => (
   {
     type: types.SAVE_USER_TO_STORE,
@@ -41,16 +39,6 @@ export const getUserFromDB = fbUser => {
     .catch(err => dispatch(failedRequest(err)));
   };
 };
-
-export const webAppLogin = () => (
-  dispatch => (
-    window.FB.login(res => {
-      if (res.status === 'connected') {
-        getUserFromFB().then(user => dispatch(getUserFromDB(user)));
-      }
-    }, { scope: 'public_profile,email' })
-  )
-);
 
 export const setModify = (bool) => ({
   type: types.SET_WIDGET_MODIFY,
