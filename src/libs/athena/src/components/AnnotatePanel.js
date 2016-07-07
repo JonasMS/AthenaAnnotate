@@ -21,10 +21,12 @@ class AnnotatePanel extends Component {
 
     return (
       <div className="athena">
-        <Button onClick={close}> Close </Button>
+        <div className="heading">
+          <span className="title">Athena</span>
+        </div>
         <ChannelsMenu channelSelect={channelSelect} />
         <form>
-          <div className="targetText">{exact}</div>
+          <div className="targetText"> {exact} </div>
           <FormGroup controlId="annoteFormId" className="bodyText">
             <FormControl
               componentClass="textarea"
@@ -35,8 +37,8 @@ class AnnotatePanel extends Component {
               <Row>
                 <Col xs={4} />
                 <Col xs={4} xsOffset={4}>
-                  <button className="delBtn" onClick={del}>delete</button>
-                  <button className="submitBtn" onClick={submit}>Submit</button>
+                  <button className="delBtn" onClick={del}> delete </button>
+                  <button className="submitBtn" onClick={submit}> Submit </button>
                 </Col>
               </Row>
             </Grid>

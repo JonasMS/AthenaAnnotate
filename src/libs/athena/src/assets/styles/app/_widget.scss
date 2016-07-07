@@ -7,6 +7,16 @@
   background-color: rgba(241, 241, 241, 0.60);
   z-index: 9999999;
 
+  & .closeBtn {
+    width: 40px;
+    height: 40px;
+    /* display: block; */
+    float: right;
+    margin-top: 5px;
+    background-size: 70% 70%;
+    background-repeat: no-repeat;    background-image: url('../images/close_sm.png');
+  }
+
   & .targetText {
     width: 90%;
     margin: 40px auto 40px;
