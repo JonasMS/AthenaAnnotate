@@ -124,7 +124,7 @@ class App extends Component {
 
   setController(e) {
     const top = this.mouseDownPos < e.clientX ?
-      `${window.scrollY + e.clientY + 20}px` : `${window.scrollY + e.clientY - 50}px`;
+      `${window.scrollY + e.clientY + 10}px` : `${window.scrollY + e.clientY - 60}px`;
     // const top = `${window.scrollY + e.clientY + 15}px`;
     const left = `${window.scrollX + e.clientX - 37}px`;
     return this.setState({
@@ -351,17 +351,18 @@ class App extends Component {
 
 
     return (
-      <div className={this.state.controls} style={controllerPos}>
-        <div>
-          <ControlButton
-            handler={() => { this.initNote(NOTE); }}
-            icon={"fa fa-pencil"}
-          />
-          <ControlButton
-            handler={() => { this.createHighlight(); }}
-            icon={"fa fa-paint-brush"}
-          />
-        </div>
+      <div className={`${this.state.controls} btnContainer`} style={controllerPos}>
+
+        <button
+          className="fa fa-pencil control-btn control-btn-default control-btn-left"
+          onClick={() => { this.initNote(NOTE); }}
+        ></button>
+
+        <button
+          className="fa fa-paint-brush control-btn control-btn-default control-btn-right"
+          onClick={() => { this.createHighlight(); }}
+        ></button>
+
       </div>
     );
   }

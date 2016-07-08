@@ -1,12 +1,3 @@
-@font-face {
-  font-family: 'fontello';
-  src: url('../fonts/fontello.eot') format('eot'),
-    url('../fonts/fontello.woff2') format('woff2'),
-    url('../fonts/fontello.woff') format('woff'),
-    url('../fonts/fontello.ttf') format('truetype'),
-    url('../fonts/fontello.svg#fontello') format('svg');
-}
-
 .controller {
   position: absolute;
   z-index: 999999;
@@ -19,6 +10,15 @@
   }
 }
 
+.control-btn-left {
+  border: 1px solid #4c4b4b;
+  border-radius: 4px 0 0 4px;
+}
+
+.control-btn-right {
+  border: 1px solid #4c4b4b;
+  border-radius: 0 4px 4px 0;
+}
 
 .controls {
   all: unset;
@@ -50,9 +50,9 @@
       -ms-user-select: none;
           user-select: none;
   background-image: none;
-  border: 1px solid transparent;
+/*  border: 1px solid transparent;
   border-radius: 4px;
-}
+*/}
 .control-btn:focus,
 .control-btn:active:focus,
 .control-btn.active:focus,
@@ -90,9 +90,9 @@ fieldset[disabled] a.control-btn {
   pointer-events: none;
 }
 .control-btn-default {
-  color: #333;
-  background-color: #fff;
-  border-color: #ccc;
+  color: #e0d8d8;
+  background-color: #4c4b4b;
+  border-color: #4c4b4b;
 }
 .control-btn-default:focus,
 .control-btn-default.focus {
@@ -103,7 +103,7 @@ fieldset[disabled] a.control-btn {
 .control-btn-default:hover {
   color: #333;
   background-color: #e6e6e6;
-  border-color: #adadad;
+  border-color: #e6e6e6;
 }
 .control-btn-default:active,
 .control-btn-default.active,
