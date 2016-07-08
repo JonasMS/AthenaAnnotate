@@ -36,7 +36,13 @@ export const getNextNode = (n, f) => {
   let node = n;
   do {
     if (!!node.childNodes.length) {
-      return node.firstChild;
+      // console.log('node has child: ', node.firstChild.data);
+      node = node.firstChild;
+      if (filter(node)) {
+        return node;
+      }
+      continue;
+      // return node.firstChild;
     }
 
     while (!!node && !node.nextSibling) {
@@ -64,3 +70,34 @@ export const createRange = (startNode, endNode) => {
   return range;
 };
 
+export const getText = () => {
+  const sel = window.getSelection();
+  const range = sel.getRangeAt(0);
+  const { startOffset } = range;
+  const { endOffset } = range;
+
+  const exact = range.cloneContents().textContent;
+
+  const prefix = range.startContainer
+                .textContent
+                .substring(
+                startOffset - 20,
+                startOffset
+                );
+
+  const suffix = range.endContainer
+                .textContent
+                .substring(
+                  endOffset,
+                  endOffset + 20
+                );
+
+  return {
+    range,
+    selector: {
+      exact,
+      prefix,
+      suffix,
+    },
+  };
+};

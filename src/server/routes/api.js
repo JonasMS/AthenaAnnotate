@@ -27,6 +27,7 @@ router.post('/api/create', function(req, res) {
       prefix: req.body.target.selector.prefix,
       suffix: req.body.target.selector.suffix,
       private: req.body.private,
+      type: req.body.type,
       groupId: req.body.groupId
     }).then(function(note) {
       models.Annotation.findAll({

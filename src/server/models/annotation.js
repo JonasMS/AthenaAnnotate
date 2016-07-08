@@ -10,6 +10,7 @@ module.exports = function(sequelize, DataTypes) {
     UserId: DataTypes.INTEGER,
     DocId: DataTypes.INTEGER,
     private: DataTypes.BOOLEAN,
+    type: DataTypes.STRING,
     groupId: DataTypes.INTEGER
   }, {
     classMethods: {
