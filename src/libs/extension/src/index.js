@@ -1,5 +1,11 @@
 import config from '../../../../config';
 
+var blacklist = ['www.facebook.com'];
+
+if (blacklist.indexOf(document.location.hostname) !== -1) {
+  exit;
+}
+
 const baseUrl = process.env.NODE_ENV === 'production'
               ? config.url.host
               : `${config.url.host}:${config.url.port}`;
