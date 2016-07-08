@@ -15,6 +15,7 @@ const search = (state = { users: [], selected: [] }, action) => {
         selected.push(action.name);
       }
       return Object.assign({}, state, {
+        users: [],
         selected,
       });
     case 'DESELECT_USER':

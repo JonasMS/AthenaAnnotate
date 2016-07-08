@@ -24,7 +24,14 @@ const Sidebar = ({
         <a onClick={() => setFilter('Following')}>Following</a>
       </li>
       <li>
-        <a onClick={() => showGroups()}>Groups</a>
+        <a onClick={() => showGroups()}>
+          {group.showGroups
+            ?
+            <span className="glyphicon glyphicon-menu-down" />
+            :
+            <span className="glyphicon glyphicon-menu-right" />
+          }Groups
+        </a>
         {group.showGroups
           ?
           <GroupList

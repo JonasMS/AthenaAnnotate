@@ -27,6 +27,9 @@ const mapDispatchToProps = (dispatch) => (
     updateDocPrivacy: (bool, url, userId) => {
       dispatch(actions.updateDocPrivacy(bool, url, userId));
     },
+    followUser: (followId, userId) => {
+      dispatch(actions.followUser(followId, userId));
+    },
   }
 );
 

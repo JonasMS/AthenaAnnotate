@@ -58,6 +58,9 @@ const ModalComponent = ({
         inviteUsers={inviteUsers}
         toggleRights={toggleRights}
       /> : null}
+    <div className="closeModal" onClick={() => showModal()}>
+      <span className="glyphicon glyphicon-remove" aria-hidden="true" />
+    </div>
   </Modal>
   );
 

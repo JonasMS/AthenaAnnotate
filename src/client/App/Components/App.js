@@ -94,6 +94,7 @@ class App extends Component {
                 })}
                 user={user}
                 loadProfile={loadProfile}
+                setFilter={setFilter}
               />
               <Sidebar
                 user={user}

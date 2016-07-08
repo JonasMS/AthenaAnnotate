@@ -38,6 +38,12 @@ const mapDispatchToProps = (dispatch) => (
     updateProfile: (name, title, id) => {
       dispatch(actions.updateProfile(name, title, id));
     },
+    leaveGroupDB: (groupId, userId) => {
+      dispatch(actions.leaveGroupDB(groupId, userId));
+    },
+    selectTab: (tab) => {
+      dispatch(actions.selectTab(tab));
+    },
   }
 );
 

@@ -12,16 +12,13 @@ const GroupList = ({ user, leaveGroupDB, setGroup, createNewGroup, setFilter, gr
         }}
       >
         {groupObj.name}
-        <button onClick={() => leaveGroupDB(groupObj.id, user.id)}>
-          X
-        </button>
       </a>
     </li>
   ));
   return (
     <ul className="nav nav-list" id="groups">
       {groups}
-      <li>
+      <li key="00">
         <a
           className="nav-header"
           data-target="#groups"
@@ -44,3 +41,7 @@ GroupList.propTypes = {
 };
 
 export default GroupList;
+
+// <button onClick={() => leaveGroupDB(groupObj.id, user.id)}>
+//   X
+// </button>

@@ -1,4 +1,4 @@
-const profile = (state = { show: false }, action) => {
+const profile = (state = { show: false, selected: 'pending' }, action) => {
   switch (action.type) {
     case 'LOAD_PROFILE':
       return Object.assign({}, state, {
@@ -7,6 +7,7 @@ const profile = (state = { show: false }, action) => {
     case 'EXIT_PROFILE':
       return Object.assign({}, state, {
         show: false,
+        selected: 'pending',
       });
     case 'UPDATE_NAME':
       return Object.assign({}, state, {
@@ -16,8 +17,12 @@ const profile = (state = { show: false }, action) => {
       return Object.assign({}, state, {
         title: action.title,
       });
+    case 'SELECT_TAB':
+      return Object.assign({}, state, {
+        selected: action.tab,
+      });
     case 'LOG_OUT':
-      return { show: false };
+      return { show: false, selected: 'pending' };
     default:
       return state;
   }

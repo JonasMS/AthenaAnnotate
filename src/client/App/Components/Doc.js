@@ -1,84 +1,110 @@
 import React, { PropTypes } from 'react';
 import VisibleAnnotationList from '../Containers/VisibleAnnotationList';
 
-const changeLocation = (url) => {
-  window.location = url;
-};
+// const changeLocation = (url) => {
+//   window.location = url;
+// };
 
-const Doc = ({ user, url, privacy, baseUrl, title, image, id, count, onDocDelete, listView, filter, updateDocPrivacy }) => (
-  <li className="object doc">
-    {listView
-      ?
-      <div className="media card" onClick={() => changeLocation(url)}>
-        <a>
-          <div className="media-left">
-            <img className="media-object docimage small" src={image} alt="Thumbnail" />
-          </div>
-          <div className="media-body">
-            <h4 className="media-heading">{title}</h4>
-            <p className="url">{baseUrl}</p>
-            <span className="note-count">Annotations: {count}</span>
-          </div>
-        </a>
-        {filter !== 'Self'
-          ?
-          null
-          :
-          <div className="closeDoc" onClick={onDocDelete}>
-            <span className="glyphicon glyphicon-remove" aria-hidden="true" />
-          </div>
-        }
-      </div>
-      :
-      <div className="detail card">
-        <a className="docInfo" onClick={() => changeLocation(url)}>
-          <div className="image">
-            <img className="docimage large" src={image} alt="Document" />
-          </div>
-          <div className="heading">
-            <h4>{title}</h4>
-            <p className="url">{baseUrl}</p>
-          </div>
-        </a>
-        <div className="privacy">
+const Doc = ({
+  user,
+  url,
+  privacy,
+  baseUrl,
+  title,
+  image,
+  id,
+  count,
+  onDocDelete,
+  listView,
+  filter,
+  updateDocPrivacy,
+}) => {
+  const placeholder = 'http://www.pacinno.eu/wp-content/uploads/2014/05/placeholder1.png';
+  return (
+    <li className="object doc">
+      {listView
+        ?
+        <div className="media card" onClick={() => { window.location = url; }}>
+          <a>
+            <div className="media-left">
+              <img
+                className="media-object docimage small"
+                src={image !== null ? image : placeholder}
+                alt="Thumbnail"
+              />
+            </div>
+            <div className="media-body">
+              <h4 className="media-heading">{title}</h4>
+              <p className="url">{baseUrl}</p>
+              <span className="note-count">Annotations: {count}</span>
+            </div>
+          </a>
           {filter !== 'Self'
             ?
             null
             :
-            <div>
-              <span>Set all annotations: </span>
-              <div className="btn-group">
-                <button
-                  type="button"
-                  className="btn btn-default btn-xs dropdown-toggle"
-                  data-toggle="dropdown"
-                  aria-haspopup="true"
-                  aria-expanded="false"
-                >
-                  {privacy ? 'Private' : 'Public'}
-                  <span className="caret"></span>
-                </button>
-                <ul className="dropdown-menu">
-                  <li><a onClick={() => updateDocPrivacy(true, url, user.id)}>Private</a></li>
-                  <li><a onClick={() => updateDocPrivacy(false, url, user.id)}>Public</a></li>
-                </ul>
-              </div>
+            <div className="closeDoc" onClick={onDocDelete}>
+              <span className="glyphicon glyphicon-remove" aria-hidden="true" />
             </div>
           }
         </div>
-        {filter !== 'Self'
-          ?
-          null
-          :
-          <div className="closeDoc" onClick={onDocDelete}>
-            <span className="glyphicon glyphicon-remove" aria-hidden="true" />
+        :
+        <div className="detail card">
+          <div className="docInfo"  onClick={() => { window.location = url; }}>
+            <a className="docInfo"/* changeLocation(url)*/>
+              <div className="image">
+                <img
+                  className="docimage large"
+                  src={image !== null ? image : placeholder}
+                  alt="Document"
+                />
+              </div>
+              <div className="heading">
+                <h4>{title}</h4>
+                <p className="url">{baseUrl}</p>
+              </div>
+            </a>
           </div>
-        }
-        <VisibleAnnotationList id={id} />
-      </div>
-    }
-  </li>
-);
+          {filter !== 'Self'
+            ?
+            null
+            :
+            <div className="closeDoc" onClick={onDocDelete}>
+              <span className="glyphicon glyphicon-remove" aria-hidden="true" />
+            </div>
+          }
+          <VisibleAnnotationList id={id} />
+          <div className="privacy">
+            {filter !== 'Self'
+              ?
+              null
+              :
+              <div>
+                <span>Set all annotations: </span>
+                <div className="btn-group">
+                  <button
+                    type="button"
+                    className="btn btn-default btn-xs dropdown-toggle"
+                    data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                  >
+                    {privacy ? 'Private' : 'Public'}
+                    <span className="caret"></span>
+                  </button>
+                  <ul className="dropdown-menu">
+                    <li><a onClick={() => updateDocPrivacy(true, url, user.id)}>Private</a></li>
+                    <li><a onClick={() => updateDocPrivacy(false, url, user.id)}>Public</a></li>
+                  </ul>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      }
+    </li>
+  );
+};
 
 Doc.propTypes = {
   user: PropTypes.object.isRequired,

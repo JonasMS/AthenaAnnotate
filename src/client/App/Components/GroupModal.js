@@ -20,52 +20,67 @@ const createGroupModal = ({
   ));
   const selectedUserList = search.selected.map(u => (
     <li key={u}>
-      <a onClick={() => deselectUser(u)}>
-      {u}
-      </a>
+      <div className="addUser">
+        <span>{u}</span>
+        <a onClick={() => deselectUser(u)}>x</a>
+      </div>
     </li>
   ));
   return (
-    <div>
-      <p>Create a new group</p>
-      <input
-        type="text"
-        placeholder="Group Name"
-        onChange={(e) => {
-          e.preventDefault();
-          editGroup(e.target.value);
-        }}
-      />
+    <div className="createGroup">
+      <div className="createGroup-title">
+        <h4>Create A New Team</h4>
+      </div>
       <form>
-        <label htmlFor="search">Search for users</label>
-        <input
-          id="search"
-          type="text"
-          placeholder="Enter a name"
-          onChange={(e) => searchUsers(e.target.value, user.id)}
-        />
-        {search.users.length === 0
+        <div className="createGroup-input">
+          <label htmlFor="GroupName">Group Name</label>
+          <input
+            type="text"
+            id="GroupName"
+            placeholder="Group Name"
+            aria-hidden="true"
+            autoComplete="off"
+            maxLength="99"
+            onChange={(e) => {
+              e.preventDefault();
+              editGroup(e.target.value);
+            }}
+          />
+        </div>
+        {search.selected.length === 0
           ?
           null
           :
-          <ul>
-            {userList}
-          </ul>
+          <div>
+            <div>Invites</div>
+            <ul>
+              {selectedUserList}
+            </ul>
+          </div>
         }
-      </form>
-      {search.selected.length === 0
-        ?
-        null
-        :
-        <div>
-          <div>Selected Users</div>
-          <ul>
-            {selectedUserList}
-          </ul>
+        <div className="createGroup-input">
+          <label htmlFor="search">Invite Users to the Group</label>
+          <input
+            id="search"
+            type="text"
+            placeholder="Enter a name"
+            aria-hidden="true"
+            autoComplete="off"
+            maxLength="200"
+            onChange={(e) => searchUsers(e.target.value, user.id)}
+          />
+          {search.users.length === 0
+            ?
+            null
+            :
+            <ul>
+              {userList}
+            </ul>
+          }
         </div>
-      }
+      </form>
       <button
-        className="btn btn-default"
+        className="btn btn-default btn-success create"
         onClick={() => {
           createGroup(group.edit, user.id, user.facebook.name, search.selected);
           showModal();
@@ -73,7 +88,6 @@ const createGroupModal = ({
       >
         Create
       </button>
-      <button className="btn btn-default" onClick={() => showModal()}>Cancel</button>
     </div>
   );
 };

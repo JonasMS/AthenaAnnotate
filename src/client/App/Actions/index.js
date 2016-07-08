@@ -641,3 +641,10 @@ export const logoutAction = () => (
     type: 'LOG_OUT',
   }
 );
+
+export const selectTab = (tab) => (
+  {
+    type: 'SELECT_TAB',
+    tab,
+  }
+);

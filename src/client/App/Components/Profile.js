@@ -14,6 +14,8 @@ const Profile = ({
   updateName,
   updateTitle,
   updateProfile,
+  leaveGroupDB,
+  selectTab,
 }) => {
   const invitesList = invites.invites.map(invite => (
     <li key={invite.id}>
@@ -32,13 +34,19 @@ const Profile = ({
       >
         {grp.name}
       </a>
+      <span
+        style={{ 'margin-left': '15px' }}
+        onClick={() => leaveGroupDB(grp.id, user.id)}
+      >
+        Leave Group
+      </span>
     </li>
   ));
   const followList = following.users.map(followedUser => (
     <li key={followedUser.id}>
       <a
         onClick={() => {
-          setUser(followedUser.id);
+          setUser(followedUser);
           setFilter('User');
         }}
       >
@@ -49,6 +57,17 @@ const Profile = ({
   const style = {
     backgroundImage: `url(${user.facebook.picture})`,
   };
+
+  let selectedTab;
+
+  if (profile.selected === 'pending') {
+    selectedTab = <ul>{invitesList}</ul>;
+  } else if (profile.selected === 'following') {
+    selectedTab = <ul>{followList}</ul>;
+  } else {
+    selectedTab = <ul>{groupList}</ul>;
+  }
+
   return (
     <div className="col-md-9">
       <div
@@ -85,38 +104,37 @@ const Profile = ({
             updateProfile(profile.name, profile.title, user.id);
           }}
         >
-          Save
-        </button>
-        <button
-          className="btn btn-default"
-          onClick={(e) => {
-            e.preventDefault();
-            exitProfile();
-          }}
-        >
-          Cancel
+          Update Profile
         </button>
       </form>
+      <div className="profile-extra">
+        <ul className="nav nav-tabs nav-justified">
+          <li
+            className="active"
+            role="presentation"
+            data-toggle="tab"
+            onClick={() => selectTab('pending')}
+          >
+            Pending Invitations
+          </li>
+          <li
+            data-toggle="tab"
+            role="presentation"
+            onClick={() => selectTab('following')}
+          >
+            Following
+          </li>
+          <li
+            data-toggle="tab"
+            role="presentation"
+            onClick={() => selectTab('groups')}
+          >
+            Groups
+          </li>
+        </ul>
+      </div>
       <div>
-        <div>
-          <h5>Pending Invitations:</h5>
-          <ul>
-            {invitesList}
-          </ul>
-        </div>
-        <div>
-          <h5>Following:</h5>
-          <ul>
-            {followList}
-          </ul>
-        </div>
-        <div>
-          <h5>Groups:</h5>
-          <ul>
-            {groupList}
-          </ul>
-        </div>
-
+        {selectedTab}
       </div>
     </div>
   );
@@ -136,6 +154,37 @@ Profile.propTypes = {
   updateName: PropTypes.func.isRequired,
   updateTitle: PropTypes.func.isRequired,
   updateProfile: PropTypes.func.isRequired,
+  leaveGroupDB: PropTypes.func.isRequired,
+  selectTab: PropTypes.func.isRequired,
 };
 
 export default Profile;
+
+// <div>
+//   <h5>Pending Invitations:</h5>
+//   <ul>
+//     {invitesList}
+//   </ul>
+// </div>
+// <div>
+//   <h5>Following:</h5>
+//   <ul>
+//     {followList}
+//   </ul>
+// </div>
+// <div>
+//   <h5>Groups:</h5>
+//   <ul>
+//     {groupList}
+//   </ul>
+// </div>
+
+// <button
+//   className="btn btn-default"
+//   onClick={(e) => {
+//     e.preventDefault();
+//     exitProfile();
+//   }}
+// >
+//   Cancel
+// </button>

@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import Doc from './Doc';
 
-const DocList = ({ following, user, docs, onDocDelete, listView, switchView, filter, showMembers, group, updateDocPrivacy }) => {
+const DocList = ({ following, user, docs, onDocDelete, listView, switchView, filter, showMembers, group, updateDocPrivacy, followUser }) => {
   const docList = docs.map(doc => (
     <Doc
       key={doc.id}
@@ -39,6 +39,16 @@ const DocList = ({ following, user, docs, onDocDelete, listView, switchView, fil
               :
               null
             }
+            <button
+              className={following.users.filter(followedUser =>
+                followedUser.id === following.selected.id).length !== 0
+            ? 'btn btn-danger' : 'btn btn-success'}
+              onClick={() => followUser(following.selected.id, user.id)}
+            >
+              {following.users.filter(followedUser =>
+                followedUser.id === following.selected.id).length !== 0
+            ? 'UNFOLLOW' : 'FOLLOW'}
+            </button>
           </div>
         </div>
         :
@@ -71,6 +81,7 @@ DocList.propTypes = {
   showMembers: PropTypes.func.isRequired,
   group: PropTypes.object.isRequired,
   updateDocPrivacy: PropTypes.func.isRequired,
+  followUser: PropTypes.func.isRequired,
 };
 
 export default DocList;

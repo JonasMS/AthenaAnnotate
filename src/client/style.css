@@ -42,6 +42,9 @@ div.avatar {
 
 li {
   list-style-type: none;
+  list-style-position: none;
+  margin: 0;
+  padding: 0;
 }
 
 li.annotation{
@@ -53,6 +56,11 @@ li blockquote {
   font-style: italic;
   color: grey;
   margin-bottom: 0;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 10px;
+  margin-left: 5px;
+  width: 95%;
 }
 
 li .username {
@@ -119,7 +127,7 @@ li.object {
   position: relative;
 }
 
-li.object:hover .buttons {
+li.annotation:hover .buttons {
   display: block;
   position: absolute;
   right: 10px;
@@ -175,6 +183,7 @@ div.heading h4 {
 
 div.privacy {
   margin-left: 7px;
+  padding-bottom: 5px;
 }
 
 div.privacy .btn-group {
@@ -187,6 +196,13 @@ div.userPic {
   height: 150px;
 }
 
+div.userPic-small {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  margin-right: 5px;
+}
+
 div.UserInfo .userProfile {
   display: inline-block;
 }
@@ -195,7 +211,10 @@ div.userTitle {
   font-color: grey;
   font-size: 12px;
   font-style: italic;  
-}body {
+
+}
+
+body {
   padding-top: 20px;
 }
 
