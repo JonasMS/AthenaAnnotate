@@ -6,7 +6,7 @@
   "scripts": {
     "clean": "rm -rf build",
     "mkdir": "node_modules/.bin/mkdirp ./build/extension ./build/athena",
-    "copy": "npm run mkdir && cp src/libs/athena/src/assets/markup/athena.html ./build/athena && cp src/libs/extension/src/manifest.json ./build/extension",
+    "copy": "npm run mkdir && cp src/libs/athena/src/assets/markup/athena.html ./build/athena && cp src/libs/extension/src/manifest.json ./build/extension && cp src/client/App/Assets/*.png ./build",
     "build-app": "node_modules/.bin/webpack --progress",
     "build-ext": "node_modules/.bin/webpack --config src/libs/extension/webpack.config.js --progress",
     "build-zeus": "node_modules/.bin/webpack --config src/libs/zeus/webpack.config.js --progress",
