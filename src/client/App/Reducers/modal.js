@@ -8,6 +8,8 @@ const modal = (state = { modal: '', show: false }, action) => {
       return Object.assign({}, state, {
         modal: action.modal,
       });
+    case 'LOG_OUT':
+      return { modal: '', show: false };
     default:
       return state;
   }

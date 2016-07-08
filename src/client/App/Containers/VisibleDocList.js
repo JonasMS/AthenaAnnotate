@@ -9,6 +9,7 @@ const mapStatetoProps = (state) => (
     listView: state.listView,
     filter: state.filter,
     group: state.group,
+    following: state.following,
   }
 );
 
@@ -22,6 +23,12 @@ const mapDispatchToProps = (dispatch) => (
     },
     showMembers: (groupId) => {
       dispatch(actions.showMembers(groupId));
+    },
+    updateDocPrivacy: (bool, url, userId) => {
+      dispatch(actions.updateDocPrivacy(bool, url, userId));
+    },
+    followUser: (followId, userId) => {
+      dispatch(actions.followUser(followId, userId));
     },
   }
 );

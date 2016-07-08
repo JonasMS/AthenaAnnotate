@@ -13,33 +13,36 @@ const Annotation = (
     url,
     target,
     userName,
+    userTitle,
     filter,
     userId,
-    followUser,
+    // followUser,
     user,
-    following,
-    setFilter,
-    setUser,
+    // following,
+    // setFilter,
+    setUserDB,
+    userImage,
   }
 ) => (
-  <li className="annotation">
-    {filter !== 'Self' ?
+  <li className="object annotation">
+    {filter !== 'Self' && filter !== 'User' ?
       <div>
-        <a
-          className="username"
-          onClick={() => {
-            setFilter('User');
-            setUser(userId);
-          }}
-        >
-          {userName}
-        </a>
-        {user.id === userId ? null :
-          <a className="follow" onClick={() => followUser(userId, user.id)}>
-            {following.users.filter(followedUser => followedUser.id === userId).length !== 0
-            ? 'unfollow' : 'follow'}
+        <div
+          className="circle userPic-small"
+          style={{ backgroundImage: `url(${userImage})` }}
+          alt={userName}
+        />
+        <div className="userInfo">
+          <a
+            className="username"
+            onClick={() => {
+              setUserDB(userId);
+            }}
+          >
+            <div>{userName}</div>
           </a>
-        }
+          <div className="userTitle">{userTitle}</div>
+        </div>
       </div>
       : null}
     <blockquote>
@@ -72,13 +75,15 @@ const Annotation = (
       </div>
     : null}
     </div>
-    {user.id !== userId ? null :
-      <button
-        className="waves-effect waves-light btn-floating"
-        onClick={onAnnotationDelete}
-      >
-        <i className="material-icons">delete</i>
-      </button>}
+    <div className="buttons">
+      {user.id !== userId ? null :
+        <button
+          className="waves-effect waves-light btn-floating"
+          onClick={onAnnotationDelete}
+        >
+          <i className="material-icons">delete</i>
+        </button>}
+    </div>
   </li>
 );
 
@@ -93,13 +98,22 @@ Annotation.propTypes = {
   url: PropTypes.string.isRequired,
   target: PropTypes.string.isRequired,
   userName: PropTypes.string.isRequired,
+  userTitle: PropTypes.string.isRequired,
   userId: PropTypes.number.isRequired,
   filter: PropTypes.string.isRequired,
   followUser: PropTypes.func.isRequired,
   user: PropTypes.object.isRequired,
   following: PropTypes.object.isRequired,
   setFilter: PropTypes.func.isRequired,
-  setUser: PropTypes.func.isRequired,
+  setUserDB: PropTypes.func.isRequired,
+  userImage: PropTypes.string.isRequired,
 };
 
 export default Annotation;
+
+// {user.id === userId ? null :
+//   <a className="follow" onClick={() => followUser(userId, user.id)}>
+//     {following.users.filter(followedUser => followedUser.id === userId).length !== 0
+//     ? 'unfollow' : 'follow'}
+//   </a>
+// }

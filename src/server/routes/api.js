@@ -11,7 +11,7 @@ var addOtherUsers = require('../utils/addOtherUsers');
 router.post('/api/create', function(req, res) {
   models.Doc.findOrCreate({
     where: { url: req.body.target.source },
-    raw: true
+    raw: true,
   }).then(function(doc) {
     // if doc[1] = true, then send to scraper
     if (doc[1] === true) {
@@ -28,13 +28,13 @@ router.post('/api/create', function(req, res) {
       suffix: req.body.target.selector.suffix,
       private: req.body.private,
       type: req.body.type,
-      groupId: req.body.groupId
+      groupId: req.body.groupId,
     }).then(function(note) {
       models.Annotation.findAll({
         include: [{
-          model: models.User
+          model: models.User,
         }],
-        where: { id: note.dataValues.id }
+        where: { id: note.dataValues.id },
       }).then(function(annotation) {
         annotationConstructor(annotation, res);
       }).catch(function(err) {
@@ -52,15 +52,15 @@ router.post('/api/create', function(req, res) {
 router.get('/api/doc', function(req, res) {
   models.Annotation.findAll({
     include: [{
-      model: models.User
+      model: models.User,
     }, {
-      model: models.Doc
+      model: models.Doc,
     }],
     where: {
       UserId: req.query.UserId,
-      source: req.query.source
+      source: req.query.source,
     },
-    order: [['createdAt', 'ASC']]
+    order: [['createdAt', 'ASC']],
   }).then(function(annotations) {
     annotationConstructor(annotations, res);
   }).catch(function(err) {
@@ -76,16 +76,16 @@ router.put('/api/annotations', function(req, res) {
     // suffix: req.body.target.selector.suffix,
     text: req.body.body.text,
     private: req.body.private,
-    groupId: req.body.groupId
+    groupId: req.body.groupId,
   }, {
     where: { url: req.body.id },
-    returning: true
+    returning: true,
   }).then(function(annotations) {
     models.Annotation.findAll({
       include: [{
-        model: models.User
+        model: models.User,
       }],
-      where: { url: annotations[1][0].dataValues.url }
+      where: { url: annotations[1][0].dataValues.url },
     }).then(function(annotation) {
       annotationConstructor(annotation, res);
     });
@@ -97,7 +97,7 @@ router.put('/api/annotations', function(req, res) {
 // BOTH - deletes an annotation
 router.delete('/api/annotations', function(req, res) {
   models.Annotation.destroy({
-    where: { url: req.query.id }
+    where: { url: req.query.id },
   }).then(function() {
     res.send('deleted');
   }).catch(function() {
@@ -109,13 +109,13 @@ router.delete('/api/annotations', function(req, res) {
 router.post('/api/users', function(req, res) {
   models.User.findOrCreate({
     where: {
-      facebookId: req.body.id
+      facebookId: req.body.id,
     },
     defaults: {
       name: req.body.name,
       email: req.body.email,
-      picture: req.body.picture.data.url
-    }
+      picture: req.body.picture.data.url,
+    },
   }).then(function(user) {
     userConstructor(user[0], res);
   }).catch(function(err) {
@@ -127,10 +127,10 @@ router.post('/api/users', function(req, res) {
 router.put('/api/users', function(req, res) {
   models.User.update({
     name: req.body.name,
-    title: req.body.title
+    title: req.body.title,
   }, {
     where: { id: req.body.id },
-    returning: true
+    returning: true,
   }).then(function(users) {
     userConstructor(users[1][0].dataValues, res);
   }).catch(function(err) {
@@ -142,14 +142,14 @@ router.put('/api/users', function(req, res) {
 router.get('/api/annotations', function(req, res) {
   models.Annotation.findAll({
     include: [{
-      model: models.User
+      model: models.User,
     }, {
-      model: models.Doc
+      model: models.Doc,
     }],
     where: {
-      UserId: req.query.UserId
+      UserId: req.query.UserId,
     },
-    order: [['updatedAt', 'DESC']]
+    order: [['updatedAt', 'DESC']],
   }).then(function(annotations) {
     res.send(annotations);
   }).catch(function(err) {
@@ -161,17 +161,17 @@ router.get('/api/annotations', function(req, res) {
 router.get('/api/discover', function(req, res) {
   models.Annotation.findAll({
     include: [{
-      model: models.User
+      model: models.User,
     }, {
-      model: models.Doc
+      model: models.Doc,
     }],
     where: {
       UserId: {
-        $notIn: [req.query.UserId]
+        $notIn: [req.query.UserId],
       },
-      private: false
+      private: false,
     },
-    order: [['updatedAt', 'DESC']]
+    order: [['updatedAt', 'DESC']],
   }).then(function(annotations) {
     res.send(annotations);
   }).catch(function(err) {
@@ -184,27 +184,27 @@ router.get('/api/following', function(req, res) {
   models.Follows.findAll({
     include: [{
       model: models.User,
-      as: 'follows'
+      as: 'follows',
     }],
     where: {
-      UserId: req.query.UserId
-    }
+      UserId: req.query.UserId,
+    },
   }).then(function(users) {
     models.Annotation.findAll({
       include: [{
-        model: models.User
+        model: models.User,
       }, {
-        model: models.Doc
+        model: models.Doc,
       }],
       where: {
         UserId: {
           $in: users.map(function(user) {
             return user.dataValues.follows.id;
-          })
+          }),
         },
-        private: false
+        private: false,
       },
-      order: [['updatedAt', 'DESC']]
+      order: [['updatedAt', 'DESC']],
     }).then(function(annotations) {
       res.send(annotations);
     }).catch(function(err) {
@@ -219,11 +219,11 @@ router.get('/api/following', function(req, res) {
 router.get('/api/docs', function(req, res) {
   models.Annotation.findAll({
     include: [{
-      model: models.User
+      model: models.User,
     }],
     where: {
-      UserId: req.query.UserId
-    }
+      UserId: req.query.UserId,
+    },
   }).then(function(annotations) {
     listOfDocs(annotations, res);
   }).catch(function(err) {
@@ -236,8 +236,8 @@ router.delete('/api/docs', function(req, res) {
   models.Annotation.destroy({
     where: {
       UserId: req.query.UserId,
-      DocId: req.query.DocId
-    }
+      DocId: req.query.DocId,
+    },
   }).then(function() {
     res.send('deleted');
   }).catch(function() {
@@ -250,13 +250,14 @@ router.post('/api/follow', function(req, res) {
   models.Follows.findAll({
     where: {
       UserId: req.body.id,
-      followsId: req.body.userId
-    }, attributes: ['id']
+      followsId: req.body.userId,
+    },
+    attributes: ['id'],
   }).then(function(join) {
     if (join.length === 0) {
       models.Follows.create({
         UserId: req.body.id,
-        followsId: req.body.userId
+        followsId: req.body.userId,
       }).then(function(newjoin) {
         res.send(newjoin);
       }).catch(function(err) {
@@ -265,8 +266,8 @@ router.post('/api/follow', function(req, res) {
     } else {
       models.Follows.destroy({
         where: {
-          id: join[0].id
-        }
+          id: join[0].id,
+        },
       }).then(function() {
         res.send(JSON.stringify({ UserId: 'deleted' }));
       }).catch(function() {
@@ -282,11 +283,11 @@ router.get('/api/follow', function(req, res) {
   models.Follows.findAll({
     include: [{
       model: models.User,
-      as: 'follows'
+      as: 'follows',
     }],
     where: {
-      UserId: req.query.UserId
-    }
+      UserId: req.query.UserId,
+    },
   }).then(function(users) {
     res.send(users.map(function(user) {
       return user.dataValues.follows;
@@ -302,18 +303,19 @@ router.get('/api/follow', function(req, res) {
 router.post('/api/groups', function(req, res) {
   models.Group.findOrCreate({
     where: {
-      name: req.body.name
+      name: req.body.name,
     },
     defaults: {
-      creatorId: req.body.UserId
-    }
+      creatorId: req.body.UserId,
+    },
   }).then(function(group) {
     if (group[1] === false) {
       res.send(JSON.stringify('Group Already Exists!'));
     } else {
       models.UserGroup.create({
         UserId: req.body.UserId,
-        GroupId: group[0].dataValues.id
+        GroupId: group[0].dataValues.id,
+        adminRights: true,
       }).then(function(newGroup) {
         addOtherUsers(req.body.otherUsersArray, group[0].dataValues.id, req.body.creator);
         res.send(JSON.stringify(newGroup.dataValues.GroupId));
@@ -331,11 +333,11 @@ router.get('/api/groups', function(req, res) {
   models.UserGroup.findAll({
     include: [{
       model: models.Group,
-      as: 'users'
+      as: 'users',
     }],
     where: {
-      UserId: req.query.UserId
-    }
+      UserId: req.query.UserId,
+    },
   }).then(function(groups) {
     res.send(groups.map(function(group) {
       return group.dataValues.users;
@@ -350,17 +352,17 @@ router.delete('/api/groups', function(req, res) {
   models.UserGroup.destroy({
     where: {
       UserId: req.query.UserId,
-      GroupId: req.query.GroupId
-    }
+      GroupId: req.query.GroupId,
+    },
   }).then(function() {
     models.UserGroup.findAll({
       include: [{
         model: models.Group,
-        as: 'users'
+        as: 'users',
       }],
       where: {
-        UserId: req.query.UserId
-      }
+        UserId: req.query.UserId,
+      },
     }).then(function(groups) {
       res.send(groups.map(function(group) {
         return group.dataValues.users;
@@ -377,15 +379,15 @@ router.delete('/api/groups', function(req, res) {
 router.get('/api/group', function(req, res) {
   models.Annotation.findAll({
     include: [{
-      model: models.User
+      model: models.User,
     }, {
-      model: models.Doc
+      model: models.Doc,
     }],
     where: {
       // private: 'Group',
-      groupId: req.query.GroupId
+      groupId: req.query.GroupId,
     },
-    order: [['updatedAt', 'DESC']]
+    order: [['updatedAt', 'DESC']],
   }).then(function(annotations) {
     res.send(annotations);
   }).catch(function(err) {
@@ -404,12 +406,12 @@ router.get('/api/search/users', function(req, res) {
   models.User.findAll({
     where: {
       name: {
-        $iLike: req.query.name + '%'
+        $iLike: req.query.name + '%',
       },
       id: {
-        $ne: req.query.user
-      }
-    }
+        $ne: req.query.user,
+      },
+    },
   }).then(function(users) {
     res.send(users);
   }).catch(function(error) {
@@ -424,13 +426,14 @@ router.post('/api/groups/join', function(req, res) {
   models.UserInvite.destroy({
     where: {
       UserId: req.body.UserId,
-      GroupId: req.body.GroupId
-    }
+      GroupId: req.body.GroupId,
+    },
   }).then(function() {
     if (req.body.accept === true) {
       models.UserGroup.create({
         UserId: req.body.UserId,
-        GroupId: req.body.GroupId
+        GroupId: req.body.GroupId,
+        adminRights: false,
       }).then(function(newAssociation) {
         res.send(JSON.stringify(newAssociation.dataValues.GroupId));
       }).catch(function(error) {
@@ -448,8 +451,8 @@ router.post('/api/groups/join', function(req, res) {
 router.get('/api/invites', function(req, res) {
   models.UserInvite.findAll({
     where: {
-      UserId: req.query.user
-    }
+      UserId: req.query.user,
+    },
   }).then(function(associations) {
     res.send(associations);
   }).catch(function(error) {
@@ -462,14 +465,14 @@ router.get('/api/channels', function (req, res) {
   models.User.findAll({
     include: [{
       model: models.Group,
-      as: 'groups'
+      as: 'groups',
     }, {
       model: models.User,
-      as: 'follows'
+      as: 'follows',
     }],
     where: {
-      id: req.query.UserId
-    }
+      id: req.query.UserId,
+    },
   }).then(function(list) {
     var groups = list[0].groups.map(function(group) {
       return { id: group.id, name: group.name, type: 'group' };
@@ -487,30 +490,30 @@ router.get('/api/group/doc', function(req, res) {
   models.UserGroup.findAll({
     include: [{
       model: models.User,
-      as: 'groups'
+      as: 'groups',
     }],
     where: {
-      GroupId: req.query.GroupId
-    }
+      GroupId: req.query.GroupId,
+    },
   }).then(function(users) {
     var userList = users.map(function(user) {
       return user.UserId;
     });
     models.Annotation.findAll({
       include: [{
-        model: models.User
+        model: models.User,
       }, {
-        model: models.Doc
+        model: models.Doc,
       }],
       where: {
         UserId: {
-          $in: userList
+          $in: userList,
         },
         source: req.query.source,
-        groupId: req.query.GroupId
+        groupId: req.query.GroupId,
         // private: 'Public'
       },
-      order: [['createdAt', 'ASC']]
+      order: [['createdAt', 'ASC']],
     }).then(function(annotations) {
       annotationConstructor(annotations, res);
     }).catch(function(err) {
@@ -525,16 +528,16 @@ router.get('/api/group/doc', function(req, res) {
 router.get('/api/following/doc', function(req, res) {
   models.Annotation.findAll({
     include: [{
-      model: models.User
+      model: models.User,
     }, {
-      model: models.Doc
+      model: models.Doc,
     }],
     where: {
       UserId: req.query.UserId,
       source: req.query.source,
-      private: false
+      private: false,
     },
-    order: [['createdAt', 'ASC']]
+    order: [['createdAt', 'ASC']],
   }).then(function(annotations) {
     annotationConstructor(annotations, res);
   }).catch(function(err) {
@@ -547,31 +550,32 @@ router.get('/api/groups/members', function(req, res) {
   models.UserGroup.findAll({
     include: [{
       model: models.User,
-      as: 'groups'
+      as: 'groups',
     }, {
       model: models.Group,
-      as: 'users'
+      as: 'users',
     }],
     where: {
-      GroupId: req.query.GroupId
-    }
+      GroupId: req.query.GroupId,
+    },
   }).then(function(users) {
+    // console.log(users);
     var members = users.map(function(user) {
-      return user.dataValues.groups.dataValues;
+      return { data: user.dataValues.groups.dataValues, rights: user.dataValues.adminRights };
     });
     res.send({
       groupName: users[0].dataValues.users.dataValues.name,
       creator: members.filter(function(member) {
-        return member.id === users[0].dataValues.users.dataValues.creatorId;
+        return member.data.id === users[0].dataValues.users.dataValues.creatorId;
       })[0].name,
       members: members.sort(function(a, b) {
-        if (a.name.toUpperCase() < b.name.toUpperCase()) {
+        if (a.data.name.toUpperCase() < b.data.name.toUpperCase()) {
           return -1;
-        } else if (a.name.toUpperCase() > b.name.toUpperCase()) {
+        } else if (a.data.name.toUpperCase() > b.data.name.toUpperCase()) {
           return 1;
         }
         return 0;
-      })
+      }),
     });
   }).catch(function(err) {
     res.send(err);
@@ -582,17 +586,63 @@ router.get('/api/groups/members', function(req, res) {
 router.get('/api/user', function(req, res) {
   models.Annotation.findAll({
     include: [{
-      model: models.User
+      model: models.User,
     }, {
-      model: models.Doc
+      model: models.Doc,
     }],
     where: {
       UserId: req.query.UserId,
-      private: false
+      private: false,
     },
-    order: [['updatedAt', 'DESC']]
+    order: [['updatedAt', 'DESC']],
   }).then(function(annotations) {
     res.send(annotations);
+  }).catch(function(error) {
+    res.send(error);
+  });
+});
+
+// Update privacy settings for a Doc for a User
+router.put('/api/annotations/doc', function(req, res) {
+  models.Annotation.update({
+    private: req.body.private,
+  }, {
+    where: {
+      UserId: req.body.UserId,
+      source: req.body.url,
+    },
+  }).then(function(annotations) {
+    // console.log(annotations);
+    res.send(annotations);
+  }).catch(function(error) {
+    res.send(error);
+  });
+});
+
+router.put('/api/group/users', function(req, res) {
+  models.UserGroup.update({
+    adminRights: req.body.adminRights,
+  }, {
+    where: {
+      UserId: req.body.UserId,
+      GroupId: req.body.GroupId,
+    },
+  }).then(function(associations) {
+    // console.log(associations);
+    res.send(associations);
+  }).catch(function(error) {
+    res.send(error);
+  });
+});
+
+router.get('/api/user/profile', function(req, res) {
+  models.User.find({
+    where: {
+      id: req.query.id,
+    },
+  }).then(function(user) {
+    // console.log(user);
+    res.send(user);
   }).catch(function(error) {
     res.send(error);
   });

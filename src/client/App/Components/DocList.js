@@ -1,14 +1,16 @@
 import React, { PropTypes } from 'react';
 import Doc from './Doc';
 
-const DocList = ({ user, docs, onDocDelete, listView, switchView, filter, showMembers, group }) => {
+const DocList = ({ following, user, docs, onDocDelete, listView, switchView, filter, showMembers, group, updateDocPrivacy, followUser }) => {
   const docList = docs.map(doc => (
     <Doc
       key={doc.id}
       {...doc}
+      user={user}
       onDocDelete={() => onDocDelete(doc.id, user.id)}
       listView={listView}
       filter={filter}
+      updateDocPrivacy={updateDocPrivacy}
     />
       ));
   return (
@@ -21,6 +23,37 @@ const DocList = ({ user, docs, onDocDelete, listView, switchView, filter, showMe
       >
         <span className="glyphicon glyphicon-th-list" aria-hidden="true"></span>
       </button>
+      {filter === 'User'
+        ?
+        <div className="UserInfo">
+          <div
+            className="circle userPic"
+            style={{ backgroundImage: `url(${following.selected.picture})` }}
+            alt={following.selected.name}
+          />
+          <div className="userProfile">
+            <h4 className="name">{following.selected.name}</h4>
+            {following.selected.title !== undefined
+              ?
+              <span className="title">{following.selected.title}</span>
+              :
+              null
+            }
+            <button
+              className={following.users.filter(followedUser =>
+                followedUser.id === following.selected.id).length !== 0
+            ? 'btn btn-danger' : 'btn btn-success'}
+              onClick={() => followUser(following.selected.id, user.id)}
+            >
+              {following.users.filter(followedUser =>
+                followedUser.id === following.selected.id).length !== 0
+            ? 'UNFOLLOW' : 'FOLLOW'}
+            </button>
+          </div>
+        </div>
+        :
+        null
+      }
       {filter === 'Groups'
         ?
         <a
@@ -38,6 +71,7 @@ const DocList = ({ user, docs, onDocDelete, listView, switchView, filter, showMe
 };
 
 DocList.propTypes = {
+  following: PropTypes.object.isRequired,
   user: PropTypes.object.isRequired,
   docs: PropTypes.array.isRequired,
   onDocDelete: PropTypes.func.isRequired,
@@ -46,6 +80,8 @@ DocList.propTypes = {
   filter: PropTypes.string.isRequired,
   showMembers: PropTypes.func.isRequired,
   group: PropTypes.object.isRequired,
+  updateDocPrivacy: PropTypes.func.isRequired,
+  followUser: PropTypes.func.isRequired,
 };
 
 export default DocList;

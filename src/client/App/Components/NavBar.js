@@ -6,13 +6,14 @@ const NavBar = ({
   logout,
   user,
   loadProfile,
+  setFilter,
 }) => {
   const style = { backgroundImage: `url(${user.facebook.picture})` };
   return (
     <nav className="navbar navbar-default navbar-fixed-top">
       <div className="container">
         <div className="navbar-header">
-          <a className="navbar-brand" href="#">Athena</a>
+          <a className="navbar-brand" href="#" onClick={() => setFilter('Self')}>Athena</a>
         </div>
         <div className="collapse navbar-collapse">
           <ul className="nav navbar-nav navbar-right">
@@ -58,7 +59,7 @@ NavBar.propTypes = {
   user: PropTypes.object,
   logout: PropTypes.func.isRequired,
   loadProfile: PropTypes.func.isRequired,
-
+  setFilter: PropTypes.func.isRequired,
 };
 
 export default NavBar;

@@ -26,6 +26,21 @@ const group = (state = { showGroups: false, loaded: false }, action) => {
       return Object.assign({}, state, {
         info: action.info,
       });
+    case 'TOGGLE_RIGHTS':
+      return Object.assign({}, state, {
+        info: Object.assign({}, state.info, {
+          members: state.info.members.map(member => {
+            if (member.data.id !== action.id) {
+              return member;
+            }
+            return Object.assign({}, member, {
+              rights: !member.rights,
+            });
+          }),
+        }),
+      });
+    case 'LOG_OUT':
+      return { showGroups: false, loaded: false };
     default:
       return state;
   }

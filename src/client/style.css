@@ -42,6 +42,9 @@ div.avatar {
 
 li {
   list-style-type: none;
+  list-style-position: none;
+  margin: 0;
+  padding: 0;
 }
 
 li.annotation{
@@ -53,6 +56,11 @@ li blockquote {
   font-style: italic;
   color: grey;
   margin-bottom: 0;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 10px;
+  margin-left: 5px;
+  width: 95%;
 }
 
 li .username {
@@ -61,6 +69,7 @@ li .username {
 
 div.media.card {
   margin-top: 10px;
+  position: relative;
 }
 
 .card a:hover {
@@ -84,15 +93,20 @@ div.media.card {
 .media-left {
   vertical-align: bottom;
   float: left;
+  padding-right: 7px;
 }
-
+/*
 .media-body {
   display: inline;
-}
+}*/
 
 div.media-body {
-  padding-top: 10px;
-  width: 100%;
+  width: 75%;
+  height: 100%;
+  padding-top: 5px;
+  display: inline-block;
+  position: absolute;
+  /*padding-right: 5px;*/
 }
 
 .card a {
@@ -109,10 +123,101 @@ ul#groups {
   margin-left: 15px;
 }
 
-body {
-  padding-top: 20px;
+li.object {
+  position: relative;
 }
 
+li.annotation:hover .buttons {
+  display: block;
+  position: absolute;
+  right: 10px;
+}
+
+li.object.doc {
+  top: 10px;
+}
+
+li.object.annotation {
+  bottom: 10px;
+}
+
+li.object .buttons {
+  display: none;
+}
+
+div.closeDoc {
+  display: none;
+  z-index: 100;
+  cursor: pointer;
+  position: absolute;
+  top: 5px;
+  right: 7px;
+}
+
+div.card {
+  position: relative;
+}
+
+div.card:hover .closeDoc{
+  display: block;  
+}
+
+.closeDoc span.glyphicon-remove {
+  color: white;
+  text-shadow: -1px 0 grey, 0 1px grey, 1px 0 grey, 0 -1px grey;
+}
+
+div span.note-count {
+  bottom: 5px;
+  position: absolute;
+}
+
+div.heading {
+  margin-left: 7px;
+}
+
+div.heading h4 {
+  margin-top: 5px;
+  margin-bottom: 1px;
+}
+
+div.privacy {
+  margin-left: 7px;
+  padding-bottom: 5px;
+}
+
+div.privacy .btn-group {
+  display: inline-block;
+}
+
+div.userPic {
+  display: inline-block;
+  width: 150px;
+  height: 150px;
+}
+
+div.userPic-small {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  margin-right: 5px;
+}
+
+div.UserInfo .userProfile {
+  display: inline-block;
+}
+
+div.userTitle {
+  font-color: grey;
+  font-size: 12px;
+  font-style: italic;  
+
+}
+
+/*body {
+  padding-top: 20px;
+}
+*/
 .heading {
   font-family: 'Indie Flower', cursive;
   font-size: 4em;
@@ -222,4 +327,94 @@ body {
     padding-right: 0;
     padding-left: 0;
   }
+}
+
+/* additional styling after rebase */
+.createGroup {
+  position: relative;
+}
+
+.closeModal {
+  display: block;
+  z-index: 100;
+  cursor: pointer;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+.createGroup-title h4{
+  text-align:center;
+}
+
+.createGroup label {
+  display: inline;
+}
+
+.createGroup-input>input {
+  width: 100%;
+  display:inline-block;
+  padding: 5px;
+  border: 1px solid #ddd;
+  border-radius: 2px;
+  transition: border 0.3s;
+  -webkit-transform: translate(0, 2%);
+  -ms-transform: translate(0, 2%);
+  transform: translate(0, 2%);
+}
+
+.createGroup-input>input:focus,
+.createGroup-input>input.focus{
+  border: solid 1px #40E0D0;
+  outline: none;
+}
+
+button.create {
+  margin-top: 10px;
+  float: right;
+}
+
+div.addUser {
+  background-color: grey;
+  border-radius: 500px;
+}
+
+div.addUser a {
+  display: none;
+  position: relative;
+}
+
+div.addUser:hover a{
+  display: block;
+  position: absolute;
+  right: 5px;
+
+}
+
+ul.nav-justified {
+  margin-top: 10px;
+}
+
+.profile-extra li {
+  text-align: center;
+  border-bottom: 1px solid #ccc;
+  padding: 0 5px;
+}
+
+.profile-extra li:hover {
+  background-color: #eee;
+}
+
+.profile-extra li.active {
+  border: 1px solid #ccc;
+  border-radius: 5px 5px 0 0;
+  border-bottom: none;
+}
+
+.userInfo {
+  display: inline-block;
+}
+
+.docInfo {
+  margin-bottom: 15px;
 }

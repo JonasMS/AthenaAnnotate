@@ -13,6 +13,8 @@ const editor = (state = {}, action) => {
         group: action.groupId,
         groupName: action.groupName,
       });
+    case 'LOG_OUT':
+      return {};
     default:
       return state;
   }

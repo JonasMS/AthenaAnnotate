@@ -14,18 +14,18 @@ class App extends Component {
   }
 
   componentWillMount() {
-    initFB()
-      .then(() => getUserStatusFromFB())
-      .then(status => {
-        if (status === 'connected') {
-          getUserFromFB()
-            .then(user => {
-              if (user) {
-                this.props.actions.getUserFromDB(user);
-              }
-            });
-        }
-      });
+    initFB();
+      // .then(() => getUserStatusFromFB())
+      // .then(status => {
+      //   if (status === 'connected') {
+      //     getUserFromFB()
+      //       .then(user => {
+      //         if (user) {
+      //           this.props.actions.getUserFromDB(user);
+      //         }
+      //       });
+      //   }
+      // });
   }
 
   componentDidUpdate() {
@@ -34,7 +34,7 @@ class App extends Component {
         this.props.user.id,
         this.props.filter,
         this.props.group.selected,
-        this.props.following.selected
+        this.props.following.selectedId
       );
       if (!this.props.following.loaded) {
         this.props.actions.loadFollowingDB(this.props.user.id);
@@ -76,6 +76,7 @@ class App extends Component {
         editGroup,
         loadProfile,
         createNewGroup,
+        logoutAction,
       },
     } = this.props;
     return (
@@ -87,9 +88,13 @@ class App extends Component {
           ?
             <div className="row">
               <NavBar
-                logout={() => window.FB.logout(() => saveUserToStore({ id: null }))}
+                logout={() => window.FB.logout(() => {
+                  saveUserToStore({ id: null });
+                  logoutAction();
+                })}
                 user={user}
                 loadProfile={loadProfile}
+                setFilter={setFilter}
               />
               <Sidebar
                 user={user}

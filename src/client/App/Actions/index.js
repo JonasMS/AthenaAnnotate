@@ -9,13 +9,13 @@ const baseUrl = process.env.NODE_ENV === 'production'
               : `${config.url.host}:${config.url.port}`;
 
 // To load all annotations based on filter
-const requestAnnotations = () => (
+export const requestAnnotations = () => (
   {
     type: 'REQUEST_ANNOTATIONS',
   }
 );
 
-const loadAnnotations = (annotations) => (
+export const loadAnnotations = (annotations) => (
   {
     type: 'LOAD_ANNOTATIONS',
     annotations,
@@ -53,7 +53,7 @@ export const deleteAnnotation = id => (
   }
 );
 
-const deleteAnnotationFail = id => (
+export const deleteAnnotationFail = id => (
   {
     type: 'DELETE_ANNOTATION_FAIL',
     id,
@@ -89,7 +89,7 @@ export const editAnnotation = id => (
   }
 );
 
-const saveEdit = (id, body) => (
+export const saveEdit = (id, body) => (
   {
     type: 'SAVE_EDIT',
     id,
@@ -97,7 +97,7 @@ const saveEdit = (id, body) => (
   }
 );
 
-const saveEditFail = id => (
+export const saveEditFail = id => (
   {
     type: 'SAVE_EDIT_FAIL',
     id,
@@ -130,14 +130,14 @@ export const editAnnotationDB = (id, body, privacy, group, url) => (
 );
 
 // To handle deletion of annotations from the DB
-const deleteBody = id => (
+export const deleteBody = id => (
   {
     type: 'DELETE_BODY',
     id,
   }
 );
 
-const deleteBodyFail = id => (
+export const deleteBodyFail = id => (
   {
     type: 'DELETE_BODY_FAIL',
     id,
@@ -167,7 +167,7 @@ export const deleteBodyDB = (id, url) => (
 );
 
 // To handle deletion of doc for a specific user
-const deleteDocFail = id => (
+export const deleteDocFail = id => (
   {
     type: 'DELETE_DOC_FAIL',
     id,
@@ -201,7 +201,7 @@ export const switchView = () => (
 );
 
 // To handle following a user
-const toggleFollowUser = (userId) => (
+export const toggleFollowUser = (userId) => (
   {
     type: 'TOGGLE_FOLLOW_USER',
     userId,
@@ -231,7 +231,7 @@ export const followUser = (userId, id) => (
 );
 
 // To handle loading followers
-const loadFollowing = (following) => (
+export const loadFollowing = (following) => (
   {
     type: 'LOAD_FOLLOWING',
     following,
@@ -249,7 +249,7 @@ export const loadFollowingDB = (id) => (
 );
 
 // To handle loading groups
-const loadGroups = (groups) => (
+export const loadGroups = (groups) => (
   {
     type: 'LOAD_GROUPS',
     groups,
@@ -294,7 +294,7 @@ export const setGroup = (groupId) => (
   }
 );
 
-// To handle creating a group
+// To handle creating a group NOTE THIS IS NOT AN ACTION CREATOR AND NEEDS TO BE MOVED
 export const createGroup = (name, userId, userName, otherUsersArray) => (
   dispatch =>
     fetch(`${baseUrl}/api/groups`, {
@@ -338,7 +338,7 @@ export const showModal = () => (
   }
 );
 
-const setModal = (modal) => (
+export const setModal = (modal) => (
   {
     type: 'SET_MODAL',
     modal,
@@ -365,7 +365,7 @@ export const exitProfile = () => (
   }
 );
 
-const loadUserSearchResults = (users) => (
+export const loadUserSearchResults = (users) => (
   {
     type: 'LOAD_SEARCH_USERS',
     users,
@@ -375,14 +375,13 @@ const loadUserSearchResults = (users) => (
 export const searchUsers = (query, user) => (
   dispatch => {
     if (query.length < 1) {
-      dispatch(loadUserSearchResults([]));
-    } else {
-      fetch(`${baseUrl}/api/search/users?user=${user}&&name=${query}`)
+      return dispatch(loadUserSearchResults([]));
+    }
+    return fetch(`${baseUrl}/api/search/users?user=${user}&&name=${query}`)
       .then(response => response.json())
       .then(users => {
         dispatch(loadUserSearchResults(users.slice(0, 10)));
       });
-    }
   }
 );
 
@@ -401,7 +400,7 @@ export const deselectUser = name => (
 );
 
 // To handle loading all Invites for a User
-const loadInvites = invitesArray => (
+export const loadInvites = invitesArray => (
   {
     type: 'LOAD_INVITES',
     invitesArray,
@@ -418,7 +417,7 @@ export const updateInvites = (userId) => (
 );
 
 // To handle removing an Invite after interacting with it
-const removeInvites = groupId => (
+export const removeInvites = groupId => (
   {
     type: 'REMOVE_INVITES',
     groupId,
@@ -446,7 +445,7 @@ export const acceptInvite = (groupId, userId, accept) => (
 );
 
 // To handle showing members of a group
-const loadMembers = (info) => (
+export const loadMembers = (info) => (
   {
     type: 'SHOW_INFO',
     info,
@@ -465,10 +464,10 @@ export const showMembers = (groupId) => (
   }
 );
 
-export const setUser = (userId) => (
+export const setUser = (user) => (
   {
     type: 'SET_USER',
-    userId,
+    user,
   }
 );
 
@@ -489,7 +488,7 @@ export const updateGroup = (groupId, groupName) => (
   }
 );
 
-const clearSearch = () => (
+export const clearSearch = () => (
   {
     type: 'CLEAR_SEARCH',
   }
@@ -548,7 +547,7 @@ export const updateProfile = (name, title, id) => (
 );
 
 // To handle switching between different lists
-const changeFilter = filter => (
+export const changeFilter = filter => (
   {
     type: 'FILTER',
     filter,
@@ -559,5 +558,93 @@ export const setFilter = filter => (
   dispatch => {
     dispatch(changeFilter(filter));
     dispatch(exitProfile());
+  }
+);
+
+export const setDocPrivate = () => (
+  {
+    type: 'DOC_PRIVATE',
+  }
+);
+
+export const setDocPublic = () => (
+  {
+    type: 'DOC_PUBLIC',
+  }
+);
+
+export const updateDocPrivacy = (bool, url, userId) => (
+  dispatch =>
+    fetch(`${baseUrl}/api/annotations/doc`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        private: bool,
+        url,
+        UserId: userId,
+      }),
+    })
+    .then(response => response.json())
+    .then(() => {
+      if (bool === true) {
+        dispatch(setDocPrivate());
+      } else {
+        dispatch(setDocPublic());
+      }
+    })
+    .catch(error => console.log(error))
+);
+
+export const togglerights = (id, rights) => (
+  {
+    type: 'TOGGLE_RIGHTS',
+    id,
+    rights,
+  }
+);
+
+export const toggleRights = (userId, groupId, rights) => (
+  dispatch =>
+    fetch(`${baseUrl}/api/group/users`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        adminRights: !rights,
+        UserId: userId,
+        GroupId: groupId,
+      }),
+    })
+    .then(response => response.json())
+    .then(() => {
+      dispatch(togglerights(userId, !rights));
+    })
+    .catch(error => console.log(error))
+);
+
+export const setUserDB = (userId) => (
+  dispatch =>
+    fetch(`${baseUrl}/api/user/profile?id=${userId}`)
+    .then(response => response.json())
+    .then(user => {
+      console.log(user);
+      dispatch(setUser(user));
+      dispatch(setFilter('User'));
+    })
+);
+
+export const logoutAction = () => (
+  {
+    type: 'LOG_OUT',
+  }
+);
+
+export const selectTab = (tab) => (
+  {
+    type: 'SELECT_TAB',
+    tab,
   }
 );

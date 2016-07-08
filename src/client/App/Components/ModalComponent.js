@@ -26,6 +26,7 @@ const ModalComponent = ({
   selectUser,
   deselectUser,
   inviteUsers,
+  toggleRights,
 }) => (
   <Modal
     isOpen={modal.show}
@@ -55,7 +56,11 @@ const ModalComponent = ({
         group={group}
         showModal={showModal}
         inviteUsers={inviteUsers}
+        toggleRights={toggleRights}
       /> : null}
+    <div className="closeModal" onClick={() => showModal()}>
+      <span className="glyphicon glyphicon-remove" aria-hidden="true" />
+    </div>
   </Modal>
   );
 
@@ -71,6 +76,7 @@ ModalComponent.propTypes = {
   selectUser: PropTypes.func.isRequired,
   deselectUser: PropTypes.func.isRequired,
   inviteUsers: PropTypes.func.isRequired,
+  toggleRights: PropTypes.func.isRequired,
 };
 
 export default ModalComponent;

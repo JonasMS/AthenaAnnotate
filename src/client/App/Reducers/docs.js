@@ -24,6 +24,20 @@ const doc = (state, action) => {
         return true;
       }
       return false;
+    case 'DOC_PRIVATE':
+      if (action.id !== state.id) {
+        return state;
+      }
+      return Object.assign({}, state, {
+        privacy: true,
+      });
+    case 'DOC_PUBLIC':
+      if (action.id !== state.id) {
+        return state;
+      }
+      return Object.assign({}, state, {
+        privacy: false,
+      });
     default:
       return state;
   }
@@ -52,6 +66,16 @@ const docs = (state = [], action) => {
       return state.filter(a =>
         doc(a, action)
       );
+    case 'DOC_PRIVATE':
+      return state.map(a =>
+        doc(a, action)
+      );
+    case 'DOC_PUBLIC':
+      return state.map(a =>
+        doc(a, action)
+      );
+    case 'LOG_OUT':
+      return [];
     default:
       return state;
   }

@@ -10,7 +10,9 @@ const annotation = (state, action) => {
         edit: false,
         deleteFail: false,
         userName: state.User.name,
+        userTitle: state.User.title,
         userId: state.User.id,
+        userImage: state.User.picture,
       };
     case 'DELETE_ANNOTATION':
       if (state.id !== action.id) {
@@ -78,6 +80,8 @@ const annotations = (state = [], action) => {
       return state.map(a =>
         annotation(a, action)
       );
+    case 'LOG_OUT':
+      return [];
     default:
       return state;
   }
