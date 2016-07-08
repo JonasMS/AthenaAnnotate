@@ -1,12 +1,11 @@
+/* global describe it */
+
 import { expect, assert } from 'chai';
 import cheerio from 'cheerio';
 import fs from 'fs';
 import path from 'path';
 import { getNextNode } from '../../../src/libs/zeus/src/engine/utils';
 
-// let webDoc;
-
-// console.log('dirname: ', path.resolve(__dirname, '/../../../src/server/views/spec/basic'));
 const filePath = path.join(__dirname, '/../../../src/server/views/spec/basic.html');
 const webDoc = fs.readFileSync(filePath, 'utf8');
 
@@ -14,7 +13,6 @@ let $ = cheerio.load(webDoc);
 
 const paras = $('div p');
 const para1 = paras[0];
-const para2 = paras[1];
 
 // select nodes
 const node1 = para1.childNodes[0]; // text

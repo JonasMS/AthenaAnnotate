@@ -4,9 +4,9 @@ class Annote extends HTMLElement {
 
   setStyle(type) {
     if (type === NOTE) {
-      this.style.borderBottom = '3px dotted rgb(0, 149, 221)';
+      this.style.borderBottom = '2px dotted rgba(0,180,221, 1)';
     } else if (type === HIGHLIGHT || type === HIGHLIGHT_NOTE) {
-      this.style.backgroundColor = 'rgba(0, 149, 221, 0.3)';
+      this.style.backgroundColor = 'rgba(0,180,221,0.3)';
     }
   }
 
