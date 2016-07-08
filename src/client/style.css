@@ -214,10 +214,10 @@ div.userTitle {
 
 }
 
-body {
+/*body {
   padding-top: 20px;
 }
-
+*/
 .heading {
   font-family: 'Indie Flower', cursive;
   font-size: 4em;
@@ -327,4 +327,94 @@ body {
     padding-right: 0;
     padding-left: 0;
   }
+}
+
+/* additional styling after rebase */
+.createGroup {
+  position: relative;
+}
+
+.closeModal {
+  display: block;
+  z-index: 100;
+  cursor: pointer;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+.createGroup-title h4{
+  text-align:center;
+}
+
+.createGroup label {
+  display: inline;
+}
+
+.createGroup-input>input {
+  width: 100%;
+  display:inline-block;
+  padding: 5px;
+  border: 1px solid #ddd;
+  border-radius: 2px;
+  transition: border 0.3s;
+  -webkit-transform: translate(0, 2%);
+  -ms-transform: translate(0, 2%);
+  transform: translate(0, 2%);
+}
+
+.createGroup-input>input:focus,
+.createGroup-input>input.focus{
+  border: solid 1px #40E0D0;
+  outline: none;
+}
+
+button.create {
+  margin-top: 10px;
+  float: right;
+}
+
+div.addUser {
+  background-color: grey;
+  border-radius: 500px;
+}
+
+div.addUser a {
+  display: none;
+  position: relative;
+}
+
+div.addUser:hover a{
+  display: block;
+  position: absolute;
+  right: 5px;
+
+}
+
+ul.nav-justified {
+  margin-top: 10px;
+}
+
+.profile-extra li {
+  text-align: center;
+  border-bottom: 1px solid #ccc;
+  padding: 0 5px;
+}
+
+.profile-extra li:hover {
+  background-color: #eee;
+}
+
+.profile-extra li.active {
+  border: 1px solid #ccc;
+  border-radius: 5px 5px 0 0;
+  border-bottom: none;
+}
+
+.userInfo {
+  display: inline-block;
+}
+
+.docInfo {
+  margin-bottom: 15px;
 }

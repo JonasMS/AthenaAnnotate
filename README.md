@@ -17,6 +17,11 @@ To use the extension, see [Design](#chrome-extension) Section.
 
 ## Design
 
+### Database
+![image of code injection](docs/images/AnnotateSchema.PNG)
+
+### Web App
+
 ### Chrome Extension
 
 The chrome extension is composed of one small program that injects a script tag onto the visited site. 

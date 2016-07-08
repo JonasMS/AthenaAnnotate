@@ -14,18 +14,18 @@ class App extends Component {
   }
 
   componentWillMount() {
-    initFB()
-      .then(() => getUserStatusFromFB())
-      .then(status => {
-        if (status === 'connected') {
-          getUserFromFB()
-            .then(user => {
-              if (user) {
-                this.props.actions.getUserFromDB(user);
-              }
-            });
-        }
-      });
+    initFB();
+      // .then(() => getUserStatusFromFB())
+      // .then(status => {
+      //   if (status === 'connected') {
+      //     getUserFromFB()
+      //       .then(user => {
+      //         if (user) {
+      //           this.props.actions.getUserFromDB(user);
+      //         }
+      //       });
+      //   }
+      // });
   }
 
   componentDidUpdate() {

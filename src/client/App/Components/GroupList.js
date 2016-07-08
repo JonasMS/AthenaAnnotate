@@ -24,7 +24,7 @@ const GroupList = ({ user, leaveGroupDB, setGroup, createNewGroup, setFilter, gr
           data-target="#groups"
           onClick={() => createNewGroup()}
         >
-          Create a new Group
+          + Create a new Group
         </a>
       </li>
     </ul>
