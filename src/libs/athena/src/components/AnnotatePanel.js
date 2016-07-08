@@ -16,13 +16,13 @@ class AnnotatePanel extends Component {
   }
 
   render () {
-    const { close, submit, del, channelSelect, widget, annotation, actions } = this.props;
+    const { submit, del, channelSelect, annotation, actions } = this.props;
     const { exact } = annotation.target.selector;
 
     return (
       <div className="athena">
         <div className="heading">
-          <span className="title">Athena</span>
+          <div className="title">Athena</div>
         </div>
         <ChannelsMenu channelSelect={channelSelect} />
         <form>

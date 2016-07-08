@@ -121,7 +121,7 @@ class App extends Component {
 
   setController(e) {
     const top = this.mouseDownPos < e.clientX ?
-      `${window.scrollY + e.clientY + 10}px` : `${window.scrollY + e.clientY - 60}px`;
+      `${window.scrollY + e.clientY + 15}px` : `${window.scrollY + e.clientY - 60}px`;
     // const top = `${window.scrollY + e.clientY + 15}px`;
     const left = `${window.scrollX + e.clientX - 37}px`;
     return this.setState({
