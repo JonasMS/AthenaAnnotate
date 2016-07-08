@@ -517,3 +517,13 @@ blockquote.bodyQ {
 .inviteList, .search-results {
   padding-left: 0;
 }
+
+.listview {
+  position: relative;
+  margin-bottom: 15px;
+}
+
+.glyphicon-th-list {
+  position: absolute;
+  right: 20px;
+}
