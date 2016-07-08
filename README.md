@@ -15,31 +15,28 @@ To use the extension, see [Design](#chrome-extension) Section.
 * Postgres
 * Facebook SDK
 
-## Project Structure
-
 ## Design
 
-### Server
+### Chrome Extension
 
-### Web App
+The chrome extension is composed of one small program that injects a script tag onto the visited site. 
 
-### Chrome Extension 
-See [Chrome Extension](docs/CHROME_EXTENSION.md).
+Here's a visual of the code injection.
 
-### Annotation Engine
+![image of code injection](docs/images/injection.svg)
+
+And a quick overview of the communication between the modules.
+
+![image of code communcation](docs/images/communication.svg)
+
+For more information, read [chrome extension details page](docs/CHROME_EXTENSION.md).
 
 
-## Workflow
-See [Workflow](docs/WORKFLOW.md).
+## [Workflow](docs/WORKFLOW.md)
 
-## Deployment
-See [Deployment](docs/DEPLOYMENT.md).
+## [Deployment](docs/DEPLOYMENT.md)
 
-## Resources
+## [Contributing](docs/CONTRIBUTING.md)
 
-## Contributing
-See [Contributing](docs/CONTRIBUTING.md).
-
-## License
-See [License](docs/LICENSE.md).
+## [License](docs/LICENSE.md)
 

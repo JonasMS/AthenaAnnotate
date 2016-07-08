@@ -1,10 +1,10 @@
 # Chrome Extension
 
-## Content Script
+## `content.js` 
 
-The chrome extension is composed of one content script that injects a script tag into each page visited. The script tag fetches `zeus.js` from this app's server. 
+This is the chrome extension code. It injects `zeus.js`.
 
-### `zeus.js` 
+## `zeus.js` 
 
 Zeus is a React App that performs the following duties:
 
@@ -18,11 +18,11 @@ Zeus is a React App that performs the following duties:
 
 The iframe fetches `athena.html`.
 
-### `athena.html`
+## `athena.html`
 
 This iframe page contains one script tag to fetch `athena.js`. 
 
-### `athena.js`
+## `athena.js`
 
 Athena is a React App that performs the following duties:
 
@@ -31,10 +31,9 @@ Athena is a React App that performs the following duties:
 1. Presents a UI to create an annotation
 1. Communicates with Zeus 
 
+# Design Challenges 
 
-## Design Challenges 
-
-#### Athena
+## Athena
 
 The Athena React app is wrapped in an iframe for two reasons:
 
@@ -53,7 +52,7 @@ This particular issue is a [bug](https://bugs.chromium.org/p/chromium/issues/det
 
 Unfortunately, it is not possible to inject javascript (inline or otherwise) into the first iframe as a way to bridge the communication barrier. Programmatically accessing an iframe from one source into a sub iframe with a difference source is a cross origin security violation.
 
-#### Zeus
+## Zeus
 
 The Zeus React App is an injected script tag for one reason:
 
@@ -69,13 +68,13 @@ This design has a few concerns:
 Refused to apply inline style because it violates the following Content Security Policy directive: "style-src 'self' https://maxcdn.bootstrapcdn.com https://fonts.googleapis.com". Either the 'unsafe-inline' keyword, a hash ('sha256-47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU='), or a nonce ('nonce-...') is required to enable inline execution.
 ```
 
-### Content Security Policy
+# Content Security Policy
 
 > TODO: explain this a bit.
 
-## Proposed Solution
+# Proposed Solution
 
-### Content Script
+## Content Script
 
 When loaded, this script performs the following duties:
 
@@ -83,17 +82,17 @@ When loaded, this script performs the following duties:
 1. Sends an XHR request to the server for `zeus.js`. Again, the returned stream of code is set to a script tag that is injected into the visited page. 
 1. Adds a message event handler to receive messages from Athena and Zeus. The content script is the central communication controller that routes messages (with data) between Athena, Zeus and the server. Again, content scripts can make cross origin requests, so communication to the server works without security violation. This loading also maintains the requirement that `zeus.js` must be able to create a custom HTML element.
 
-### Athena
+## Athena
 
 When loaded, `athena.js` creates a custom HTML element and then mounts to that element.
 
-### Zeus
+## Zeus
 
 When loaded, `zeus.js` creates a custom HTML element and then mounts to that element.
 
 > The custom element was believed to protect internal styling. However, it's the shadow-dom that might be the mechanism to achieve this. More investigation is required.
 
-### Authentication
+## Authentication
 
 `athena.js` is the component that handled communication to Facebook. With this new design, `athena.js` no longer has a source that can be registered with Facebook.
 
