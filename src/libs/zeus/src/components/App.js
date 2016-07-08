@@ -121,7 +121,7 @@ class App extends Component {
 
   setController(e) {
     const top = this.mouseDownPos < e.clientX ?
-      `${window.scrollY + e.clientY + 10}px` : `${window.scrollY + e.clientY - 60}px`;
+      `${window.scrollY + e.clientY + 15}px` : `${window.scrollY + e.clientY - 60}px`;
     // const top = `${window.scrollY + e.clientY + 15}px`;
     const left = `${window.scrollX + e.clientX - 37}px`;
     return this.setState({
@@ -139,6 +139,7 @@ class App extends Component {
         fetchAnnotes(user)
           .then(annotes => {
             if (!!annotes.length) {
+              console.log('ANNOTES: ', annotes);
               this.annoteId = this.getAnnoteId(annotes[annotes.length - 1].id);
               annotes.forEach(annote => {
                 retrieveAnnote(document.body, annote, () => {
