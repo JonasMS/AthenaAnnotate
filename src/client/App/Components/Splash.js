@@ -6,7 +6,16 @@ const Splash = ({ login }) => (
     <div className="jumbotron">
       <h1 className="heading">Athena Annotate</h1>
       <p className="lead">Annotate the interwebs!</p>
-      <p><a id="cta" className="btn btn-lg" href="#" role="button" onClick={login}>Login with Facebook</a></p>
+      <p>
+        <a className="btn btn-lg facebook" href="#" role="button" onClick={login}>
+          <i className="fa fa-facebook"></i>&nbsp;
+          Login with Facebook
+        </a>
+        <a className="btn btn-lg github" href="https://github.com/AthenaAnnotate/AthenaAnnotate" role="button" >
+          <i className="fa fa-github"></i>&nbsp;
+          GitHub
+        </a>
+      </p>
     </div>
 
     <div className="row text-center">

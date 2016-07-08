@@ -29,15 +29,6 @@ module.exports = {
         exclude: /(node_modules|bower_components)/,
         loader: 'babel',
       },
-      // {
-      //   test: /\.css$/,
-      //   // loaders: ExtractTextPlugin.extract('style', 'css'),
-      //   loader: 'style',
-      // },
-      // {
-      //   test: /\.css$/,
-      //   loader: 'css?root=https://localhost:3000',
-      // },
       {
         test: /\.css$/,
         loaders: ['style', 'css'],
@@ -78,6 +69,5 @@ module.exports = {
   },
   plugins: [
     new webpack.EnvironmentPlugin(['HOST', 'PORT', 'NODE_ENV']),
-    // new ExtractTextPlugin('bundle.css'),
   ],
 };
