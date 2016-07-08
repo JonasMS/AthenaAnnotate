@@ -1,8 +1,8 @@
 import React, { PropTypes } from 'react';
 
-const ControlButton = ({ handler, label }) => (
+const ControlButton = ({ handler, icon }) => (
   <span>
-    <button className="control-btn control-btn-default" onClick={handler}> {label} </button>
+    <button className={`${icon} control-btn control-btn-default`} onClick={handler}></button>
   </span>
 );
 

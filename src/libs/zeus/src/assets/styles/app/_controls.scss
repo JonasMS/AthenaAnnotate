@@ -7,7 +7,6 @@
     url('../fonts/fontello.svg#fontello') format('svg');
 }
 
-
 .controller {
   position: absolute;
   z-index: 999999;
@@ -22,6 +21,7 @@
 
 
 .controls {
+  all: unset;
   &-show {
     visibility: visible;
   }
@@ -32,6 +32,7 @@
 }
 
 .control-btn {
+  /*all: initial;*/
   display: inline-block;
   padding: 6px 12px;
   margin-bottom: 0;

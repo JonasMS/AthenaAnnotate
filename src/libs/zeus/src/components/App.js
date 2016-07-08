@@ -81,6 +81,12 @@ class App extends Component {
     window.addEventListener('mouseup', e => { this.handleSelectionEvent(e); });
   }
 
+  setControllerStyles() {
+    const controller = document.querySelector('.controller');
+    const shadow = controller.createShadowRoot();
+    shadow.innerHTML += '<style> button { background-color: red; }</style>';
+  }
+
   componentWillUnmount() {
     window.removeEventListener('message');
     window.removeEventListener('keydown');
@@ -118,7 +124,7 @@ class App extends Component {
 
   setController(e) {
     const top = this.mouseDownPos < e.clientX ?
-      `${window.scrollY + e.clientY + 15}px` : `${window.scrollY + e.clientY - 45}px`;
+      `${window.scrollY + e.clientY + 20}px` : `${window.scrollY + e.clientY - 50}px`;
     // const top = `${window.scrollY + e.clientY + 15}px`;
     const left = `${window.scrollX + e.clientX - 37}px`;
     return this.setState({
@@ -349,11 +355,11 @@ class App extends Component {
         <div>
           <ControlButton
             handler={() => { this.initNote(NOTE); }}
-            label={'N'}
+            icon={"fa fa-pencil"}
           />
           <ControlButton
             handler={() => { this.createHighlight(); }}
-            label={'H'}
+            icon={"fa fa-paint-brush"}
           />
         </div>
       </div>
