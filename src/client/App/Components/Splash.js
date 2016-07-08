@@ -1,4 +1,9 @@
 import React, { PropTypes } from 'react';
+import config from '../../../../config';
+
+const baseUrl = process.env.NODE_ENV === 'production'
+              ? config.url.host
+              : `${config.url.host}:${config.url.port}`;
 
 const Splash = ({ login }) => (
   <div id="splash" className="container">
@@ -20,23 +25,23 @@ const Splash = ({ login }) => (
 
     <div className="row text-center">
       <h2 className="section-header">Highlight</h2>
-        <p className="lead">Mark text with a highlight for quick reference.</p>
+      <p className="lead">Mark text with a highlight for quick reference.</p>
       <div className="col-lg-12">
-        <img src="http://placehold.it/800x350" alt="" />
+        <img className="img-responsive" src={`${baseUrl}/athena-highlight.png`} alt="" />
       </div>
     </div>
 
     <div className="row text-center">
       <h2 className="section-header">Annotate</h2>
-        <p className="lead">Create notes for important text passages.</p>
+      <p className="lead">Create notes for important text passages.</p>
       <div className="col-lg-12">
-        <img src="http://placehold.it/800x350" alt="" />
+        <img className="img-responsive" src={`${baseUrl}/athena-ui.png`} alt="" />
       </div>
     </div>
 
     <div className="row text-center">
       <h2 className="section-header">Dashboard</h2>
-        <p className="lead">View your notes and revisit sites that you've annotated.</p>
+      <p className="lead">View your notes and revisit sites that you've annotated.</p>
       <div className="col-lg-12">
         <img src="http://placehold.it/800x350" alt="" />
       </div>

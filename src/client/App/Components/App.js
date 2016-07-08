@@ -5,7 +5,7 @@ import Splash from './Splash';
 import Main from './Main';
 import NavBar from './NavBar';
 import GroupModal from '../Containers/Modal';
-import { initFB, getUserFromFB, getUserStatusFromFB } from '../../../libs/common/auth';
+import { initFB, getUserFromFB } from '../../../libs/common/auth';
 
 class App extends Component {
   constructor(props) {
@@ -15,17 +15,6 @@ class App extends Component {
 
   componentWillMount() {
     initFB();
-      // .then(() => getUserStatusFromFB())
-      // .then(status => {
-      //   if (status === 'connected') {
-      //     getUserFromFB()
-      //       .then(user => {
-      //         if (user) {
-      //           this.props.actions.getUserFromDB(user);
-      //         }
-      //       });
-      //   }
-      // });
   }
 
   componentDidUpdate() {
