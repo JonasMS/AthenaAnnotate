@@ -24,11 +24,6 @@ import {
   SHOW_CONTROL_BUTTONS_CLASS,
 } from '../constants';
 
-import { NOTE, HIGHLIGHT, HIGHLIGHT_NOTE } from '../../../common/annoteTypes';
-
-
-import { retrieveAnnote } from '../engine/';
-import { wrapAnnote, unwrapAnnote } from '../engine/actors';
 import {
   saveAnnote,
   fetchUser,
@@ -39,6 +34,9 @@ import {
 } from '../utils/fetches';
 
 import { getText, createAnnote } from '../utils/utils';
+import { NOTE, HIGHLIGHT, HIGHLIGHT_NOTE } from '../../../common/annoteTypes';
+import { retrieveAnnote } from '../engine/';
+import { wrapAnnote, unwrapAnnote } from '../engine/actors';
 
 class App extends Component {
   constructor(props) {
@@ -60,7 +58,6 @@ class App extends Component {
     this.setUser = this.setUser.bind(this);
     this.initNote = this.initNote.bind(this);
     this.createHighlight = this.createHighlight.bind(this);
-    this.toggleDisplayFrame = this.toggleDisplayFrame.bind(this);
     this.postMessageToFrame = this.postMessageToFrame.bind(this);
     this.handleMessageEvent = this.handleMessageEvent.bind(this);
     this.handleSelectionEvent = this.handleSelectionEvent.bind(this);
@@ -215,9 +212,9 @@ class App extends Component {
   handleMessageEvent(event) {
     switch (event.data.type) {
       case HIDE_IFRAME:
+        return this.hideAthena();
       case SHOW_IFRAME:
-        this.toggleDisplayFrame();
-        break;
+        return this.showAthena();
       case HAS_MOUNTED:
         return this.postMessageToFrame({ type: GET_USER });
       case SEND_USER:
@@ -237,58 +234,43 @@ class App extends Component {
     this.props.iframe.contentWindow.postMessage(action, '*');
   }
 
+  swapAnnotes(annotes) {
+    document.querySelectorAll('athena-annote')
+      .forEach(annote => {
+        unwrapAnnote(annote);
+      });
+
+    annotes.forEach(annote => {
+      retrieveAnnote(document.body, annote, () => {
+        this.postMessageToFrame({ type: DISPLAY_ANNOTE, annoteId: annote.id });
+        this.showAthena();
+      });
+    });
+
+    this.postMessageToFrame({ type: SEND_ANNOTES, annotes });
+    return annotes;
+  }
+
   changeChannelHandler(channel) {
     if (channel.type === 'group') {
-      // fetch group annotes for this doc
+      // fetch group's annotes for this doc
       fetchGroupAnnotes(channel.id)
       .then(annotes => {
-        document.querySelectorAll('athena-annote')
-        .forEach(annote => {
-          unwrapAnnote(annote);
-        });
-
-        annotes.forEach(annote => {
-          retrieveAnnote(document.body, annote, () => {
-            this.postMessageToFrame({ type: DISPLAY_ANNOTE, annoteId: annote.id });
-            this.showAthena();
-          });
-        });
-
-        this.postMessageToFrame({ type: SEND_ANNOTES, annotes });
+        this.swapAnnotes(annotes);
       });
-    } else if (channel.type === 'user') {
+      return;
+    }
+    if (channel.type === 'user') {
       // fetch user's annotes for this doc
       fetchAnnotes(channel)
       .then(annotes => {
-        document.querySelectorAll('athena-annote')
-        .forEach(annote => {
-          unwrapAnnote(annote);
-        });
-
-        annotes.forEach(annote => {
-          retrieveAnnote(document.body, annote, () => {
-            this.postMessageToFrame({ type: DISPLAY_ANNOTE, annoteId: annote.id });
-            this.showAthena();
-          });
-        });
-
-        this.postMessageToFrame({ type: SEND_ANNOTES, annotes });
+        this.swapAnnotes(annotes);
       });
-    } else {
+      return;
+    }
       // handle error
-    }
-  }
-
-  toggleDisplayFrame() {
-    const classList = this.props.iframe.classList;
-
-    if (classList.contains(SHOW_IFRAME_CLASS)) {
-      classList.remove(SHOW_IFRAME_CLASS);
-      classList.add(HIDE_IFRAME_CLASS);
-    } else {
-      classList.remove(HIDE_IFRAME_CLASS);
-      classList.add(SHOW_IFRAME_CLASS);
-    }
+    console.log('incorrect channel type passed-in');
+    return;
   }
 
   initNote(annoteType) {

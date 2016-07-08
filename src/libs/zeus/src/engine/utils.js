@@ -70,3 +70,34 @@ export const createRange = (startNode, endNode) => {
   return range;
 };
 
+export const getText = () => {
+  const sel = window.getSelection();
+  const range = sel.getRangeAt(0);
+  const { startOffset } = range;
+  const { endOffset } = range;
+
+  const exact = range.cloneContents().textContent;
+
+  const prefix = range.startContainer
+                .textContent
+                .substring(
+                startOffset - 20,
+                startOffset
+                );
+
+  const suffix = range.endContainer
+                .textContent
+                .substring(
+                  endOffset,
+                  endOffset + 20
+                );
+
+  return {
+    range,
+    selector: {
+      exact,
+      prefix,
+      suffix,
+    },
+  };
+};
