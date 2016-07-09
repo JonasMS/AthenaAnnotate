@@ -28,11 +28,11 @@ The chrome extension is composed of one small program that injects a script tag 
 
 Here's a visual of the code injection.
 
-![image of code injection](docs/images/injection.svg)
+![image of code injection](docs/images/athena-injection.png)
 
 And a quick overview of the communication between the modules.
 
-![image of code communcation](docs/images/communication.svg)
+![image of code communcation](docs/images/athena-communication.png)
 
 For more information, read [chrome extension details page](docs/CHROME_EXTENSION.md).
 
