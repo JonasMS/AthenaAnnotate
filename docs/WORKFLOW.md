@@ -29,8 +29,8 @@ Copy `.env.example` to `.env` and set any API keys or config variables in this f
 | DATABASE_URL | postgres://postgres@localhost:5432/annotate |
 | HOST | https://localhost |
 | PORT | 3000 |
-| FACEBOOK_APP_ID ||
-| FACEBOOK_APP_SECRET ||
+| FACEBOOK_APP_ID | *(app id from facebook)* |
+| FACEBOOK_APP_SECRET | *(app secret from facebook)* |
 
 > Only set NODE_ENV in production. See [DEPLOYMENT](DEPLOYMENT.md).
 
