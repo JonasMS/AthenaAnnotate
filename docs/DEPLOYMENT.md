@@ -28,15 +28,15 @@ The Postgres Add-on installation provides a default user, password, and database
 
 ### Environment Variables
 
-Set these up in Heroku UI. The `.env` file is ignored in production.
+Set these up in Heroku UI. The `.env` file is ignored in production. Here's how we have it set up today.
 
 |Variable|Setting|
 |---|---|
 | NODE_ENV | production |
-| DATABASE_URL | |
-| HOST | *your domain (include https)* |
-| FACEBOOK_APP_ID ||
-| FACEBOOK_APP_SECRET ||
+| DATABASE_URL | postgres://postgres@localhost:5432/annotate |
+| HOST | https://athena-annotate.herokuapp.com |
+| FACEBOOK_APP_ID | *(app id from facebook)* |
+| FACEBOOK_APP_SECRET | *(app secret from facebook)* |
 
 > Do not set PORT. Heroku will set that automatically.
 
