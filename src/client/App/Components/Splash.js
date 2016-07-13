@@ -43,7 +43,7 @@ const Splash = ({ login }) => (
       <h2 className="section-header">Dashboard</h2>
       <p className="lead">View your notes and revisit sites that you've annotated.</p>
       <div className="col-lg-12">
-        <img src="http://placehold.it/800x350" alt="" />
+        <img src={`${baseUrl}/app-dashboard.png`} alt="" />
       </div>
     </div>
     {/*
