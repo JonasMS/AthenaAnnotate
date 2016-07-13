@@ -2,6 +2,10 @@ body {
   padding-top: 70px;
 }
 
+.img-responsive {
+  margin: 0 auto;
+}
+
 div.circle{
   border-radius: 50%;
   background-position-y: center;
