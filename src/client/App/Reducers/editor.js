@@ -1,7 +1,20 @@
-const editor = (state = '', action) => {
+const editor = (state = {}, action) => {
   switch (action.type) {
     case 'EDIT_TEXT':
-      return action.body;
+      return Object.assign({}, state, {
+        body: action.body,
+      });
+    case 'UPDATE_PRIVACY':
+      return Object.assign({}, state, {
+        private: action.privacy,
+      });
+    case 'UPDATE_GROUP':
+      return Object.assign({}, state, {
+        group: action.groupId,
+        groupName: action.groupName,
+      });
+    case 'LOG_OUT':
+      return {};
     default:
       return state;
   }

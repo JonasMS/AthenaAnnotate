@@ -2,13 +2,13 @@ import React, { PropTypes, Component } from 'react';
 import {
   Button,
   FormGroup,
-  ControlLabel,
   FormControl,
+  Grid,
+  Row,
+  Col,
 } from 'react-bootstrap';
-import { saveAnnote } from '../utils/annotation';
+import ChannelsMenu from '../containers/ChannelsMenu';
 import FacebookLogout from './FacebookLogout';
-
-import * as Actions from '../actions';
 
 class AnnotatePanel extends Component {
   constructor(props) {
@@ -16,33 +16,34 @@ class AnnotatePanel extends Component {
   }
 
   render () {
-    const { close, submitHandler, annotation, actions } = this.props;
+    const { submit, del, channelSelect, annotation, actions } = this.props;
     const { exact } = annotation.target.selector;
 
     return (
-      <div>
-        <Button onClick={close}> Close </Button>
-        <h1> Annotate Panel </h1>
-
+      <div className="athena">
+        <div className="heading">
+          <div className="title">Athena</div>
+        </div>
+        <ChannelsMenu channelSelect={channelSelect} />
         <form>
-          <FormGroup controlId="annoteFormId">
-            <FormControl
-              type="text"
-              value={exact}
-            />
-            <ControlLabel>Your Note</ControlLabel>
+          <div className="targetText"> {exact} </div>
+          <FormGroup controlId="annoteFormId" className="bodyText">
             <FormControl
               componentClass="textarea"
               value={annotation.body.text}
               onChange={(e) => actions.updateBody(e.target.value)}
             />
+            <Grid>
+              <Row>
+                <Col xs={4} />
+                <Col xs={4} xsOffset={4}>
+                  <button className="delBtn" onClick={del}> delete </button>
+                  <button className="submitBtn" onClick={submit}> Submit </button>
+                </Col>
+              </Row>
+            </Grid>
           </FormGroup>
         </form>
-        <Button
-          bsStyle="primary"
-          onClick={submitHandler}
-        > Submit </Button>
-        <FacebookLogout logout={actions.logout} />
       </div>
     );
   }
@@ -50,12 +51,14 @@ class AnnotatePanel extends Component {
 
 AnnotatePanel.propTypes = {
   user: PropTypes.object,
+  widget: PropTypes.object,
   actions: PropTypes.object,
   annotation: PropTypes.object,
   annotations: PropTypes.array,
+  channels: PropTypes.object,
   close: PropTypes.func.isRequired,
-  submitHandler: PropTypes.func.isRequired,
-  // exact: PropTypes.string.isRequired,
+  submit: PropTypes.func.isRequired,
+  del: PropTypes.func.isRequired,
 };
 
 export default AnnotatePanel;

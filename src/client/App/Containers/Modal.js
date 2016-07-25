@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import Modal from '../Components/Modal';
+import ModalComponent from '../Components/ModalComponent';
 import * as actions from '../Actions';
 
 const mapStatetoProps = (state) => (
@@ -31,12 +31,18 @@ const mapDispatchToProps = (dispatch) => (
     deselectUser: (name) => {
       dispatch(actions.deselectUser(name));
     },
+    inviteUsers: (array, groupId, username) => {
+      dispatch(actions.inviteUsers(array, groupId, username));
+    },
+    toggleRights: (userId, groupId, rights) => {
+      dispatch(actions.toggleRights(userId, groupId, rights));
+    },
   }
 );
 
-const GroupModal = connect(
+const Modal = connect(
   mapStatetoProps,
   mapDispatchToProps
-)(Modal);
+)(ModalComponent);
 
-export default GroupModal;
+export default Modal;

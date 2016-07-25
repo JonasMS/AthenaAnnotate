@@ -15,6 +15,7 @@ const search = (state = { users: [], selected: [] }, action) => {
         selected.push(action.name);
       }
       return Object.assign({}, state, {
+        users: [],
         selected,
       });
     case 'DESELECT_USER':
@@ -24,6 +25,13 @@ const search = (state = { users: [], selected: [] }, action) => {
       return Object.assign({}, state, {
         selected,
       });
+    case 'CLEAR_SEARCH':
+      return Object.assign({}, state, {
+        users: [],
+        selected: [],
+      });
+    case 'LOG_OUT':
+      return { users: [], selected: [] };
     default:
       return state;
   }

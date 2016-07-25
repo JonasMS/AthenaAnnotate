@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 
-const GroupList = ({ user, leaveGroupDB, setGroup, showModal, setFilter, group }) => {
+const GroupList = ({ user, leaveGroupDB, setGroup, createNewGroup, setFilter, group }) => {
   const groups = group.groups.map(groupObj => (
     <li key={groupObj.id}>
       <a
@@ -12,22 +12,19 @@ const GroupList = ({ user, leaveGroupDB, setGroup, showModal, setFilter, group }
         }}
       >
         {groupObj.name}
-        <button onClick={() => leaveGroupDB(groupObj.id, user.id)}>
-          X
-        </button>
       </a>
     </li>
   ));
   return (
     <ul className="nav nav-list" id="groups">
       {groups}
-      <li>
+      <li key="00">
         <a
           className="nav-header"
           data-target="#groups"
-          onClick={() => showModal()}
+          onClick={() => createNewGroup()}
         >
-          Create a new Group
+          + Create a new Group
         </a>
       </li>
     </ul>
@@ -39,8 +36,12 @@ GroupList.propTypes = {
   leaveGroupDB: PropTypes.func.isRequired,
   setGroup: PropTypes.func.isRequired,
   group: PropTypes.object,
-  showModal: PropTypes.func.isRequired,
+  createNewGroup: PropTypes.func.isRequired,
   setFilter: PropTypes.func.isRequired,
 };
 
 export default GroupList;
+
+// <button onClick={() => leaveGroupDB(groupObj.id, user.id)}>
+//   X
+// </button>

@@ -1,7 +1,11 @@
-import fetch from 'isomorphic-fetch';
 require('es6-promise').polyfill();
+import fetch from 'isomorphic-fetch';
 import * as types from '../constants/actionTypes';
-import { getUserFromFB } from '../../../common/auth';
+import config from '../../../../../config';
+
+const baseUrl = process.env.NODE_ENV === 'production'
+              ? config.url.host
+              : `${config.url.host}:${config.url.port}`;
 
 export const failedRequest = error => (
   {
@@ -10,7 +14,6 @@ export const failedRequest = error => (
   }
 );
 
-// Sets state.user
 export const saveUserToStore = userData => (
   {
     type: types.SAVE_USER_TO_STORE,
@@ -22,7 +25,7 @@ export const getUserFromDB = fbUser => {
   const payload = JSON.stringify(fbUser);
 
   return dispatch => {
-    fetch('/api/users', {
+    return fetch(`${baseUrl}/api/users`, {
       method: 'POST',
       headers: {
         'Content-type': 'application/json',
@@ -37,33 +40,10 @@ export const getUserFromDB = fbUser => {
   };
 };
 
-export const login = (cb) => {
-  window.FB.login(res => {
-    if (res.status === 'connected') {
-      getUserFromFB().then(user => cb(user));
-    }
-  }, { scope: 'public_profile,email' });
-};
-
-// export const login = () => (
-//   dispatch => (
-//     window.FB.login(res => {
-//       if (res.status === 'connected') {
-//         getUserFromFB().then(user => dispatch(getUserFromDB(user)));
-//       }
-//     }, { scope: 'public_profile,email' })
-//   )
-// );
-
-export const logout = () => (
-  dispatch => (
-    window.FB.logout(() => (
-      dispatch(saveUserToStore({
-        id: null,
-      }))
-    ))
-  )
-);
+export const setModify = (bool) => ({
+  type: types.SET_WIDGET_MODIFY,
+  isOnModify: bool,
+});
 
 // Updates state.annotations.body.text to given value
 export const updateBody = (text) => ({
@@ -76,6 +56,11 @@ export const clearAnnote = () => ({
   type: types.CLEAR_ANNOTATION,
 });
 
+export const setAnnoteGroup = (groupId) => ({
+  type: types.SET_GROUP,
+  groupId,
+});
+
 // Sets the value for state.annotation
 export const setAnnote = annote => ({
   type: types.SET_ANNOTATION,
@@ -86,4 +71,14 @@ export const setAnnote = annote => ({
 export const addAnnote = annote => ({
   type: types.ADD_ANNOTATION,
   annote,
+});
+
+export const setCurrentChannel = current => ({
+  type: types.SET_CURRENT_CHANNEL,
+  current,
+});
+
+export const setChannels = channels => ({
+  type: types.SET_CHANNELS,
+  channels,
 });

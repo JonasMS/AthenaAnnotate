@@ -13,6 +13,8 @@ const AnnotationList = (
     followUser,
     user,
     following,
+    setFilter,
+    setUserDB,
   }
 ) => {
   const Annotations = annotations.filter(annotation => id === annotation.doc_id);
@@ -28,10 +30,12 @@ const AnnotationList = (
       followUser={followUser}
       user={user}
       following={following}
+      setFilter={setFilter}
+      setUserDB={setUserDB}
     />
   ));
   return (
-    <ul>
+    <ul className="AnnotationList">
       {annotationList}
     </ul>
   );
@@ -48,6 +52,9 @@ AnnotationList.propTypes = {
   filter: PropTypes.string.isRequired,
   followUser: PropTypes.func.isRequired,
   following: PropTypes.object.isRequired,
+  setFilter: PropTypes.func.isRequired,
+  setUserDB: PropTypes.func.isRequired,
 };
 
 export default AnnotationList;
+

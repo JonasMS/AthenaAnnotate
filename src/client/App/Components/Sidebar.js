@@ -1,10 +1,8 @@
 import React, { PropTypes } from 'react';
-// import FacebookLogout from '../../../libs/athena/src/components/FacebookLogout';
 import GroupList from './GroupList';
 
 const Sidebar = ({
   user,
-  // logout,
   setFilter,
   showGroups,
   leaveGroupDB,
@@ -12,7 +10,7 @@ const Sidebar = ({
   group,
   createGroup,
   editGroup,
-  showModal,
+  createNewGroup,
 }) => (
   <div className="col-md-3">
     <ul className="nav nav-sidebar affix">
@@ -26,7 +24,14 @@ const Sidebar = ({
         <a onClick={() => setFilter('Following')}>Following</a>
       </li>
       <li>
-        <a onClick={() => showGroups()}>Groups</a>
+        <a onClick={() => showGroups()}>
+          {group.showGroups
+            ?
+            <span className="glyphicon glyphicon-menu-down" />
+            :
+            <span className="glyphicon glyphicon-menu-right" />
+          }Groups
+        </a>
         {group.showGroups
           ?
           <GroupList
@@ -37,14 +42,11 @@ const Sidebar = ({
             createGroup={createGroup}
             editGroup={editGroup}
             setFilter={setFilter}
-            showModal={showModal}
+            createNewGroup={createNewGroup}
           />
           :
           null
         }
-      </li>
-      <li>
-        <a>Settings</a>
       </li>
       <li>
         <a>Help</a>
@@ -56,7 +58,6 @@ const Sidebar = ({
 
 Sidebar.propTypes = {
   user: PropTypes.object,
-  // logout: PropTypes.func.isRequired,
   setFilter: PropTypes.func.isRequired,
   showGroups: PropTypes.func.isRequired,
   setGroup: PropTypes.func.isRequired,
@@ -64,11 +65,12 @@ Sidebar.propTypes = {
   group: PropTypes.object,
   createGroup: PropTypes.func.isRequired,
   editGroup: PropTypes.func.isRequired,
-  showModal: PropTypes.func.isRequired,
+  createNewGroup: PropTypes.func.isRequired,
 };
 
 export default Sidebar;
 
 /*  <li>
-      <FacebookLogout logout={logout} />
-    </li> */
+      <a>Settings</a>
+    </li>
+ */

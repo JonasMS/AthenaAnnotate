@@ -5,8 +5,10 @@ import App from '../components/App';
 
 const mapStateToProps = (state) => ({
   user: state.user,
+  widget: state.widget,
   annotation: state.annotation,
   annotations: state.annotations,
+  channels: state.channels,
   panel: state.panel,
 });
 

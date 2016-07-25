@@ -1,1 +1,3 @@
-export const API_CREATE = 'http://localhost:3000/api/create';
+import config from '../../../../../config';
+const baseUrl = `${config.url.host}:${config.url.port}`;
+export const API_CREATE = `${baseUrl}/api/create`;

@@ -5,41 +5,47 @@ import Splash from './Splash';
 import Main from './Main';
 import NavBar from './NavBar';
 import GroupModal from '../Containers/Modal';
-import { initFB, getUserFromFB, getUserStatusFromFB } from '../../../libs/common/auth';
+import { initFB, getUserFromFB } from '../../../libs/common/auth';
 
 class App extends Component {
-  componentDidMount() {
-    initFB()
-      .then(() => getUserStatusFromFB())
-      .then(status => {
-        if (status === 'connected') {
-          getUserFromFB()
-            .then(user => {
-              if (user) {
-                this.props.actions.getUserFromDB(user);
-              }
-            });
-        }
-      });
+  constructor(props) {
+    super(props);
+    this.login = this.login.bind(this);
+  }
+
+  componentWillMount() {
+    initFB();
   }
 
   componentDidUpdate() {
-    // this.props.actions.fetchDocs(this.props.user.id);
-    this.props.actions.fetchAnnotations(
-      this.props.user.id,
-      this.props.filter,
-      this.props.group.selected
-    );
-    if (!this.props.following.loaded) {
-      this.props.actions.loadFollowingDB(this.props.user.id);
+    if (this.props.user.id) {
+      this.props.actions.fetchAnnotations(
+        this.props.user.id,
+        this.props.filter,
+        this.props.group.selected,
+        this.props.following.selectedId
+      );
+      if (!this.props.following.loaded) {
+        this.props.actions.loadFollowingDB(this.props.user.id);
+      }
+      if (!this.props.group.loaded) {
+        this.props.actions.loadGroupsDB(this.props.user.id);
+      }
+      if (!this.props.invites.loaded) {
+        this.props.actions.updateInvites(this.props.user.id);
+      }
     }
-    if (!this.props.group.loaded) {
-      this.props.actions.loadGroupsDB(this.props.user.id);
+  }
+
+  login(res) {
+    if (res.status === 'connected') {
+      getUserFromFB()
+        .then(user => {
+          if (user) {
+            this.props.actions.getUserFromDB(user);
+          }
+        });
     }
-    if (!this.props.invites.loaded) {
-      this.props.actions.updateInvites(this.props.user.id);
-    }
-    // this.props.actions.fetchStuff(this.props.user.id);
   }
 
   render() {
@@ -50,8 +56,7 @@ class App extends Component {
       group,
       profile,
       actions: {
-        login,
-        logout,
+        saveUserToStore,
         setFilter,
         setGroup,
         leaveGroupDB,
@@ -59,7 +64,8 @@ class App extends Component {
         createGroup,
         editGroup,
         loadProfile,
-        showModal,
+        createNewGroup,
+        logoutAction,
       },
     } = this.props;
     return (
@@ -71,13 +77,16 @@ class App extends Component {
           ?
             <div className="row">
               <NavBar
-                logout={logout}
+                logout={() => window.FB.logout(() => {
+                  saveUserToStore({ id: null });
+                  logoutAction();
+                })}
                 user={user}
                 loadProfile={loadProfile}
+                setFilter={setFilter}
               />
               <Sidebar
                 user={user}
-                // logout={logout}
                 setFilter={setFilter}
                 filter={filter}
                 group={group}
@@ -86,12 +95,12 @@ class App extends Component {
                 showGroups={showGroups}
                 createGroup={createGroup}
                 editGroup={editGroup}
-                showModal={showModal}
+                createNewGroup={createNewGroup}
               />
               {loading ? <Loading /> : <Main profile={profile} user={user} />}
             </div>
           :
-            <Splash login={login} />
+            <Splash login={() => window.FB.login(this.login)} />
         }
       </div>
     );
@@ -103,7 +112,7 @@ App.propTypes = {
   actions: PropTypes.object,
   loading: PropTypes.bool.isRequired,
   filter: PropTypes.string,
-  profile: PropTypes.bool.isRequired,
+  profile: PropTypes.object.isRequired,
   following: PropTypes.object.isRequired,
   group: PropTypes.object.isRequired,
   invites: PropTypes.object.isRequired,

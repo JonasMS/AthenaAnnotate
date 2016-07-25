@@ -1,32 +1,39 @@
 require('isomorphic-fetch');
 require('es6-promise').polyfill();
-
+import { saveUserToStore } from '../../../libs/athena/src/actions';
+import config from '../../../../config';
 export * from '../../../libs/athena/src/actions';
 
+const baseUrl = process.env.NODE_ENV === 'production'
+              ? config.url.host
+              : `${config.url.host}:${config.url.port}`;
+
 // To load all annotations based on filter
-const requestAnnotations = () => (
+export const requestAnnotations = () => (
   {
     type: 'REQUEST_ANNOTATIONS',
   }
 );
 
-const loadAnnotations = (annotations) => (
+export const loadAnnotations = (annotations) => (
   {
     type: 'LOAD_ANNOTATIONS',
     annotations,
   }
 );
 
-export const fetchAnnotations = (id, filter, groupId) => {
+export const fetchAnnotations = (id, filter, groupId, userId) => {
   let url;
   if (filter === 'Discover') {
-    url = `http://localhost:3000/api/discover?UserId=${id}`;
+    url = `${baseUrl}/api/discover?UserId=${id}`;
   } else if (filter === 'Following') {
-    url = `http://localhost:3000/api/following?UserId=${id}`;
+    url = `${baseUrl}/api/following?UserId=${id}`;
   } else if (filter === 'Groups') {
-    url = `http://localhost:3000/api/group?GroupId=${groupId}`;
+    url = `${baseUrl}/api/group?GroupId=${groupId}`;
+  } else if (filter === 'User') {
+    url = `${baseUrl}/api/user?UserId=${userId}`;
   } else {
-    url = `http://localhost:3000/api/annotations?UserId=${id}`;
+    url = `${baseUrl}/api/annotations?UserId=${id}`;
   }
   return dispatch => {
     dispatch(requestAnnotations());
@@ -46,7 +53,7 @@ export const deleteAnnotation = id => (
   }
 );
 
-const deleteAnnotationFail = id => (
+export const deleteAnnotationFail = id => (
   {
     type: 'DELETE_ANNOTATION_FAIL',
     id,
@@ -55,7 +62,7 @@ const deleteAnnotationFail = id => (
 
 export const deleteAnnotationDB = (id, url) => (
   dispatch =>
-    fetch(`http://localhost:3000/api/annotations?id=${url}`, {
+    fetch(`${baseUrl}/api/annotations?id=${encodeURIComponent(url)}`, {
       method: 'DELETE',
     })
       .then(response => {
@@ -82,7 +89,7 @@ export const editAnnotation = id => (
   }
 );
 
-const saveEdit = (id, body) => (
+export const saveEdit = (id, body) => (
   {
     type: 'SAVE_EDIT',
     id,
@@ -90,16 +97,16 @@ const saveEdit = (id, body) => (
   }
 );
 
-const saveEditFail = id => (
+export const saveEditFail = id => (
   {
     type: 'SAVE_EDIT_FAIL',
     id,
   }
 );
 
-export const editAnnotationDB = (id, body, url) => (
+export const editAnnotationDB = (id, body, privacy, group, url) => (
   dispatch =>
-    fetch('http://localhost:3000/api/annotations', {
+    fetch(`${baseUrl}/api/annotations`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -109,6 +116,8 @@ export const editAnnotationDB = (id, body, url) => (
           text: body,
         },
         id: url,
+        private: privacy,
+        groupId: group,
       }),
     })
       .then(response => response.json())
@@ -121,14 +130,14 @@ export const editAnnotationDB = (id, body, url) => (
 );
 
 // To handle deletion of annotations from the DB
-const deleteBody = id => (
+export const deleteBody = id => (
   {
     type: 'DELETE_BODY',
     id,
   }
 );
 
-const deleteBodyFail = id => (
+export const deleteBodyFail = id => (
   {
     type: 'DELETE_BODY_FAIL',
     id,
@@ -137,7 +146,7 @@ const deleteBodyFail = id => (
 
 export const deleteBodyDB = (id, url) => (
   dispatch =>
-    fetch('http://localhost:3000/api/annotations', {
+    fetch(`${baseUrl}/api/annotations`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -158,7 +167,7 @@ export const deleteBodyDB = (id, url) => (
 );
 
 // To handle deletion of doc for a specific user
-const deleteDocFail = id => (
+export const deleteDocFail = id => (
   {
     type: 'DELETE_DOC_FAIL',
     id,
@@ -174,7 +183,7 @@ export const deleteDoc = id => (
 
 export const deleteDocDB = (docId, userId) => (
   dispatch =>
-    fetch(`http://localhost:3000/api/docs?UserId=${userId}&&DocId=${docId}`, {
+    fetch(`${baseUrl}/api/docs?UserId=${userId}&&DocId=${docId}`, {
       method: 'DELETE',
     }).then(response => {
       if (response.status === 200) {
@@ -191,16 +200,8 @@ export const switchView = () => (
   }
 );
 
-// To handle switching between different lists
-export const setFilter = filter => (
-  {
-    type: 'FILTER',
-    filter,
-  }
-);
-
 // To handle following a user
-const toggleFollowUser = (userId) => (
+export const toggleFollowUser = (userId) => (
   {
     type: 'TOGGLE_FOLLOW_USER',
     userId,
@@ -209,7 +210,7 @@ const toggleFollowUser = (userId) => (
 
 export const followUser = (userId, id) => (
   dispatch =>
-    fetch('http://localhost:3000/api/follow', {
+    fetch(`${baseUrl}/api/follow`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -230,7 +231,7 @@ export const followUser = (userId, id) => (
 );
 
 // To handle loading followers
-const loadFollowing = (following) => (
+export const loadFollowing = (following) => (
   {
     type: 'LOAD_FOLLOWING',
     following,
@@ -239,7 +240,7 @@ const loadFollowing = (following) => (
 
 export const loadFollowingDB = (id) => (
   dispatch =>
-    fetch(`http://localhost:3000/api/follow?UserId=${id}`)
+    fetch(`${baseUrl}/api/follow?UserId=${id}`)
       .then(response => response.json())
       .then(users => {
         dispatch(loadFollowing(users));
@@ -248,7 +249,7 @@ export const loadFollowingDB = (id) => (
 );
 
 // To handle loading groups
-const loadGroups = (groups) => (
+export const loadGroups = (groups) => (
   {
     type: 'LOAD_GROUPS',
     groups,
@@ -257,7 +258,7 @@ const loadGroups = (groups) => (
 
 export const loadGroupsDB = (userId) => (
   dispatch =>
-    fetch(`http://localhost:3000/api/groups?UserId=${userId}`)
+    fetch(`${baseUrl}/api/groups?UserId=${userId}`)
     .then(response => response.json())
     .then(groups => {
       dispatch(loadGroups(groups));
@@ -275,7 +276,7 @@ export const showGroups = () => (
 // To leave a Group
 export const leaveGroupDB = (groupId, userId) => (
   dispatch =>
-    fetch(`http://localhost:3000/api/groups?UserId=${userId}&&GroupId=${groupId}`, {
+    fetch(`${baseUrl}/api/groups?UserId=${userId}&&GroupId=${groupId}`, {
       method: 'DELETE',
     })
       .then(response => response.json())
@@ -293,10 +294,10 @@ export const setGroup = (groupId) => (
   }
 );
 
-// To handle creating a group
+// To handle creating a group NOTE THIS IS NOT AN ACTION CREATOR AND NEEDS TO BE MOVED
 export const createGroup = (name, userId, userName, otherUsersArray) => (
   dispatch =>
-    fetch('http://localhost:3000/api/groups', {
+    fetch(`${baseUrl}/api/groups`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -344,6 +345,14 @@ export const setModal = (modal) => (
   }
 );
 
+// To handle creating a group
+export const createNewGroup = () => (
+  dispatch => {
+    dispatch(setModal('createGroup'));
+    dispatch(showModal());
+  }
+);
+
 export const loadProfile = () => (
   {
     type: 'LOAD_PROFILE',
@@ -356,7 +365,7 @@ export const exitProfile = () => (
   }
 );
 
-const loadUserSearchResults = (users) => (
+export const loadUserSearchResults = (users) => (
   {
     type: 'LOAD_SEARCH_USERS',
     users,
@@ -366,14 +375,13 @@ const loadUserSearchResults = (users) => (
 export const searchUsers = (query, user) => (
   dispatch => {
     if (query.length < 1) {
-      dispatch(loadUserSearchResults([]));
-    } else {
-      fetch(`http://localhost:3000/api/search/users?user=${user}&&name=${query}`)
+      return dispatch(loadUserSearchResults([]));
+    }
+    return fetch(`${baseUrl}/api/search/users?user=${user}&&name=${query}`)
       .then(response => response.json())
       .then(users => {
         dispatch(loadUserSearchResults(users.slice(0, 10)));
       });
-    }
   }
 );
 
@@ -392,7 +400,7 @@ export const deselectUser = name => (
 );
 
 // To handle loading all Invites for a User
-const loadInvites = invitesArray => (
+export const loadInvites = invitesArray => (
   {
     type: 'LOAD_INVITES',
     invitesArray,
@@ -401,7 +409,7 @@ const loadInvites = invitesArray => (
 
 export const updateInvites = (userId) => (
   dispatch =>
-    fetch(`http://localhost:3000/api/invites?user=${userId}`)
+    fetch(`${baseUrl}/api/invites?user=${userId}`)
     .then(response => response.json())
     .then(invites => {
       dispatch(loadInvites(invites));
@@ -409,7 +417,7 @@ export const updateInvites = (userId) => (
 );
 
 // To handle removing an Invite after interacting with it
-const removeInvites = groupId => (
+export const removeInvites = groupId => (
   {
     type: 'REMOVE_INVITES',
     groupId,
@@ -418,7 +426,7 @@ const removeInvites = groupId => (
 
 export const acceptInvite = (groupId, userId, accept) => (
   dispatch =>
-    fetch('http://localhost:3000/api/groups/join', {
+    fetch(`${baseUrl}/api/groups/join`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -430,9 +438,213 @@ export const acceptInvite = (groupId, userId, accept) => (
       }),
     })
     .then(response => response.json())
-    .then(result => {
-      console.log(result);
+    .then(() => {
       dispatch(removeInvites(groupId));
       dispatch(loadGroupsDB(userId));
     })
+);
+
+// To handle showing members of a group
+export const loadMembers = (info) => (
+  {
+    type: 'SHOW_INFO',
+    info,
+  }
+);
+
+export const showMembers = (groupId) => (
+  dispatch => {
+    dispatch(setModal('members'));
+    return fetch(`${baseUrl}/api/groups/members?GroupId=${groupId}`)
+    .then(response => response.json())
+    .then(members => {
+      dispatch(loadMembers(members));
+      dispatch(showModal());
+    });
+  }
+);
+
+export const setUser = (user) => (
+  {
+    type: 'SET_USER',
+    user,
+  }
+);
+
+// To handle changing of privacy settings
+export const updatePrivacy = (privacy) => (
+  {
+    type: 'UPDATE_PRIVACY',
+    privacy,
+  }
+);
+
+// To handle changing of group for annotation
+export const updateGroup = (groupId, groupName) => (
+  {
+    type: 'UPDATE_GROUP',
+    groupId,
+    groupName,
+  }
+);
+
+export const clearSearch = () => (
+  {
+    type: 'CLEAR_SEARCH',
+  }
+);
+
+export const inviteUsers = (otherUsersArray, groupId, userName) => (
+  dispatch =>
+    fetch(`${baseUrl}/api/groups/invite`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        GroupId: groupId,
+        creator: userName,
+        otherUsersArray,
+      }),
+    })
+    .then(() => {
+      dispatch(clearSearch());
+    })
+);
+
+export const updateTitle = (title) => (
+  {
+    type: 'UPDATE_TITLE',
+    title,
+  }
+);
+
+export const updateName = (name) => (
+  {
+    type: 'UPDATE_NAME',
+    name,
+  }
+);
+
+export const updateProfile = (name, title, id) => (
+  dispatch =>
+    fetch(`${baseUrl}/api/users`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        name,
+        title,
+        id,
+      }),
+    })
+    .then(response => response.json())
+    .then(updatedProfile => {
+      dispatch(saveUserToStore(updatedProfile));
+    })
+    .catch(error => console.log(error))
+);
+
+// To handle switching between different lists
+export const changeFilter = filter => (
+  {
+    type: 'FILTER',
+    filter,
+  }
+);
+
+export const setFilter = filter => (
+  dispatch => {
+    dispatch(changeFilter(filter));
+    dispatch(exitProfile());
+  }
+);
+
+export const setDocPrivate = () => (
+  {
+    type: 'DOC_PRIVATE',
+  }
+);
+
+export const setDocPublic = () => (
+  {
+    type: 'DOC_PUBLIC',
+  }
+);
+
+export const updateDocPrivacy = (bool, url, userId) => (
+  dispatch =>
+    fetch(`${baseUrl}/api/annotations/doc`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        private: bool,
+        url,
+        UserId: userId,
+      }),
+    })
+    .then(response => response.json())
+    .then(() => {
+      if (bool === true) {
+        dispatch(setDocPrivate());
+      } else {
+        dispatch(setDocPublic());
+      }
+    })
+    .catch(error => console.log(error))
+);
+
+export const togglerights = (id, rights) => (
+  {
+    type: 'TOGGLE_RIGHTS',
+    id,
+    rights,
+  }
+);
+
+export const toggleRights = (userId, groupId, rights) => (
+  dispatch =>
+    fetch(`${baseUrl}/api/group/users`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        adminRights: !rights,
+        UserId: userId,
+        GroupId: groupId,
+      }),
+    })
+    .then(response => response.json())
+    .then(() => {
+      dispatch(togglerights(userId, !rights));
+    })
+    .catch(error => console.log(error))
+);
+
+export const setUserDB = (userId) => (
+  dispatch =>
+    fetch(`${baseUrl}/api/user/profile?id=${userId}`)
+    .then(response => response.json())
+    .then(user => {
+      console.log(user);
+      dispatch(setUser(user));
+      dispatch(setFilter('User'));
+    })
+);
+
+export const logoutAction = () => (
+  {
+    type: 'LOG_OUT',
+  }
+);
+
+export const selectTab = (tab) => (
+  {
+    type: 'SELECT_TAB',
+    tab,
+  }
 );

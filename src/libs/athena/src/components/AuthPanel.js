@@ -2,12 +2,13 @@ import React from 'react';
 import { Button } from 'react-bootstrap';
 import FacebookLogin from './FacebookLogin';
 
-const AuthPanel = ({ login, close }) => (
-  <div>
-    <Button onClick={close}> Close </Button>
-    <h1> Auth Panel </h1>
+const AuthPanel = ({ login }) => (
+  <div className="athena">
+    <div className="heading">
+      <div className="title">Athena</div>
+    </div>
     <div>
-      <FacebookLogin login={login} />
+      <FacebookLogin className="submitBtn" login={login} />
     </div>
   </div>
 );

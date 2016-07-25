@@ -12,6 +12,7 @@ const group = (state = { showGroups: false, loaded: false }, action) => {
     case 'SET_GROUP':
       return Object.assign({}, state, {
         selected: action.groupId,
+        loaded: false,
       });
     case 'SHOW_GROUPS':
       return Object.assign({}, state, {
@@ -21,6 +22,25 @@ const group = (state = { showGroups: false, loaded: false }, action) => {
       return Object.assign({}, state, {
         edit: '',
       });
+    case 'SHOW_INFO':
+      return Object.assign({}, state, {
+        info: action.info,
+      });
+    case 'TOGGLE_RIGHTS':
+      return Object.assign({}, state, {
+        info: Object.assign({}, state.info, {
+          members: state.info.members.map(member => {
+            if (member.data.id !== action.id) {
+              return member;
+            }
+            return Object.assign({}, member, {
+              rights: !member.rights,
+            });
+          }),
+        }),
+      });
+    case 'LOG_OUT':
+      return { showGroups: false, loaded: false };
     default:
       return state;
   }

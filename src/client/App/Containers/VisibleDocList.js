@@ -8,6 +8,8 @@ const mapStatetoProps = (state) => (
     docs: state.docs,
     listView: state.listView,
     filter: state.filter,
+    group: state.group,
+    following: state.following,
   }
 );
 
@@ -19,12 +21,21 @@ const mapDispatchToProps = (dispatch) => (
     switchView: () => {
       dispatch(actions.switchView());
     },
+    showMembers: (groupId) => {
+      dispatch(actions.showMembers(groupId));
+    },
+    updateDocPrivacy: (bool, url, userId) => {
+      dispatch(actions.updateDocPrivacy(bool, url, userId));
+    },
+    followUser: (followId, userId) => {
+      dispatch(actions.followUser(followId, userId));
+    },
   }
 );
 
 const VisibleDocList = connect(
-	mapStatetoProps,
-	mapDispatchToProps
+  mapStatetoProps,
+  mapDispatchToProps
 )(DocList);
 
 export default VisibleDocList;
