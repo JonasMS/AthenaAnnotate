@@ -80,24 +80,11 @@ export const getText = () => {
 
   const prefix = range.startContainer
                 .textContent
-                .substring(
-                startOffset - 20,
-                startOffset
-                );
+                .substring(startOffset - 20, startOffset);
 
   const suffix = range.endContainer
                 .textContent
-                .substring(
-                  endOffset,
-                  endOffset + 20
-                );
+                .substring(endOffset, endOffset + 20);
 
-  return {
-    range,
-    selector: {
-      exact,
-      prefix,
-      suffix,
-    },
-  };
+  return { range, selector: { exact, prefix, suffix } };
 };
