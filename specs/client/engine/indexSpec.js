@@ -1,23 +1,34 @@
 /* global describe it */
-
 import { expect } from 'chai';
-import cheerio from 'cheerio';
+import jsdom from 'jsdom';
 import fs from 'fs';
+import path from 'path';
+import NodeFilter from '../../componentMocks/NodeFilter';
+import parseDoc from '../../../src/libs/zeus/src/engine/./retrievers';
+import { locateAnnote } from '../../../src/libs/zeus/src/engine/./processors';
+import { createRange  } from '../../../src/libs/zeus/src/engine/./utils';
+// import { HTMLElement } from '../../componentMocks/HTMLElement';
+// import { retrieveAnnote } from '../../../src/libs/zeus/src/engine/';
 
-// import { insertAnnote, retrieveAnnote } from '../../../src/libs/zeus/src/engine/';
 
-// let webDoc;
+const filePath = path.join(__dirname, '/../../../src/server/views/spec/basic.html');
+const htmlDoc = fs.readFileSync(filePath, 'utf8');
+global.document = jsdom.jsdom(htmlDoc);
+const window = document.defaultView;
+global.NodeFilter = NodeFilter;
+// global.HTMLElement = window.HTMLElement;
+// console.log(HTMLElement);
 
-// fs.readFile('../../../src/server/views/spec/basic.html', (err, data) => {
-//   if (err) throw err;
-//   console.log('data: ', data);
-//   webDoc = data;
-// });
-
-// let $ = cheerio.load(webDoc);
-
-// describe('Annotation Engine Methods', () => {
-//   it('should be a function', () => {
-//     expect(insertAnnote).to.be.a('function');
-//   });
-// });
+describe('Annotation Engine Methods', () => {
+  describe('parseDoc method', () => {
+    it('parseDoc should be a function', () => {
+      expect(parseDoc).to.be.a('function');
+    });
+    it('parseDoc should return the correct docText and nodes', () => {
+      const { docText, nodes } = parseDoc(document);
+      console.log(nodes);
+      expect(nodes).to.be.a('array');
+      // expect(document).to.be.a('object');
+    });
+  });
+});

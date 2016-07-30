@@ -27,7 +27,11 @@ node3.childNodes = [];
 describe('Annotation Engine Methods', () => {
   it('should be a function', () => {
     expect(getNextNode).to.be.a('function');
+  });
+  it('next node should be node 2', () => {
     assert.equal(getNextNode(node1), node2);
+  });
+  it('getNextNode should filter and return a node of nodeType 3', () => {
     assert.equal(getNextNode(node1, node => node.nodeType === 3), node3);
   });
 });
