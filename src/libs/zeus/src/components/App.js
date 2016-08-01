@@ -78,16 +78,17 @@ class App extends Component {
     window.addEventListener('mouseup', e => { this.handleSelectionEvent(e); });
   }
 
-  setControllerStyles() {
-    const controller = document.querySelector('.controller');
-    const shadow = controller.createShadowRoot();
-    shadow.innerHTML += '<style> button { background-color: red; }</style>';
-  }
 
   componentWillUnmount() {
     window.removeEventListener('message');
     window.removeEventListener('keydown');
     document.removeEventListener('mouseup');
+  }
+
+  setControllerStyles() {
+    const controller = document.querySelector('.controller');
+    const shadow = controller.createShadowRoot();
+    shadow.innerHTML += '<style> button { background-color: red; }</style>';
   }
 
   getAnnoteId(idString) {
@@ -136,6 +137,7 @@ class App extends Component {
   initialLoad(fbAcc) { // TODO: change name to onSignIn ?
     this.setUser(fbAcc)
       .then(user => {
+        console.log('USER, ZEUS: ', user);
         fetchAnnotes(user)
           .then(annotes => {
             if (!!annotes.length) {

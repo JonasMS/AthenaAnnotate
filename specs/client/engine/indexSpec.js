@@ -16,6 +16,11 @@ let htmlDoc;
 let window;
 let targetStartNode;
 let targetEndNode;
+let targetStartIdx;
+let exact;
+let targetLength;
+let annoteLocation;
+
 
 describe('Annotation Engine Methods', () => {
     // TODO: before each clear variable values
@@ -29,7 +34,9 @@ describe('Annotation Engine Methods', () => {
     global.document = jsdom.jsdom(htmlDoc);
     window = document.defaultView;
     global.NodeFilter = NodeFilter;
-    const { docText, nodes } = parseDoc(document);
+    const { docText, nodes } = parseDoc(document.body);
+
+    console.log(docText.substring(775, 820));
 
     it('docText should be a string', () => { // TODO: test beforeEach
       expect(docText).to.be.a('string');
@@ -40,14 +47,39 @@ describe('Annotation Engine Methods', () => {
     });
 
     describe('Test annote01', () => {
+      annoteLocation = locateAnnote(annote01, docText, nodes);
+      const { startNode, endNode } = annoteLocation;
+      console.log(startNode);
+      console.log(endNode);
+
+      targetStartIdx = 775;
+      exact = annote01.target.selector.exact;
+      targetLength = exact.length;
+
       it('should return an object', () => {
-        expect(locateAnnote(annote01, docText, nodes)).to.be.a('object');
+        expect(annoteLocation).to.be.a('object');
       });
 
-      it('should return the correct range', () => {
+      it('startNode.start should equal 775', () => {
+        expect(startNode.start + startNode.startOffset).to.be.equal(targetStartIdx);
+      });
+      it('the "exact" string should match docText.substring', () => {
+        expect(exact).to.equal(docText.substring(targetStartIdx, targetStartIdx + targetLength));
       });
 
-      it('should return the correct parent elements', () => {
+      it('startNode should equal the given node', () => {
+
+      });
+      it('startNode.textNode should equal the given textNode', () => {
+
+      });
+      it('endNode.offset should equal 59', () => {
+
+      });
+      it('endNOde should equal the given node', () => {
+
+      });
+      it('endNode.textNode should equal the given textNode', () => {
 
       });
     });
