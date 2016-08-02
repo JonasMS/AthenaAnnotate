@@ -24,7 +24,7 @@ export const wrapAnnote = (range, annoteId, type, cb) => {
   }
   // else, make new ranges and wrap them individually
   return createSubRanges(range, subRange => {
-    const athena = createAnnoteElement(annoteId, cb);
+    const athena = createAnnoteElement(annoteId, type, cb);
     subRange.surroundContents(athena);
     subRange.detach();
   });
