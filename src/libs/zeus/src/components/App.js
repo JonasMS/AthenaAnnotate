@@ -137,11 +137,10 @@ class App extends Component {
   initialLoad(fbAcc) { // TODO: change name to onSignIn ?
     this.setUser(fbAcc)
       .then(user => {
-        console.log('USER, ZEUS: ', user);
         fetchAnnotes(user)
           .then(annotes => {
+            console.log(annotes);
             if (!!annotes.length) {
-              console.log('ANNOTES: ', annotes);
               this.annoteId = this.getAnnoteId(annotes[annotes.length - 1].id);
               annotes.forEach(annote => {
                 retrieveAnnote(document.body, annote, () => {
