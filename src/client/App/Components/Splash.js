@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react';
+import { Well } from 'react-bootstrap';
 import config from '../../../../config';
 
 const baseUrl = process.env.NODE_ENV === 'production'
@@ -10,7 +11,11 @@ const Splash = ({ login }) => (
 
     <div className="jumbotron">
       <h1 className="heading">Athena Annotate</h1>
-      <p className="lead">Annotate the interwebs!</p>
+      <p className="lead">Annotate the Web</p>
+      <Well>
+        The extension for creating and rendering annoations on web pages is not yet available to the public.
+        For now you can login / create an account with 1 click and see public annotations (go to 'Discover').
+      </Well>
       <p>
         <a className="btn btn-lg facebook" href="#" role="button" onClick={login}>
           <i className="fa fa-facebook"></i>&nbsp;
