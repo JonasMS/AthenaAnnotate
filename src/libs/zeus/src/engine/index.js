@@ -1,11 +1,11 @@
-import { createRange  } from './utils';
-import { wrapAnnote } from './actors';
+import { createRange, createAnnote, getText, getAnnoteId  } from './utils';
+import { wrapAnnote, unwrapAnnote } from './actors';
 import { locateAnnote } from './processors';
 import parseDoc from './retrievers';
 
 // Returns Range of retrieved annotation or null
 // if the annotation could not be retrieved
-export function retrieveAnnote(doc, annote, cb) {
+function retrieveAnnote(doc, annote, cb) {
   // parse document
   const { docText, nodes } = parseDoc(doc);
   // determine annote's location on document
@@ -19,3 +19,12 @@ export function retrieveAnnote(doc, annote, cb) {
   }
   return null;
 }
+
+export {
+  retrieveAnnote,
+  createAnnote,
+  getText,
+  getAnnoteId,
+  wrapAnnote,
+  unwrapAnnote,
+};

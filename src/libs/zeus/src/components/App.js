@@ -33,10 +33,29 @@ import {
   fetchDelete,
 } from '../utils/fetches';
 
-import { getText, createAnnote } from '../utils/utils';
+import {
+  retrieveAnnote,
+  createAnnote,
+  getText,
+  getAnnoteId,
+  wrapAnnote,
+  unwrapAnnote,
+} from '../engine';
+
+import {
+  handleSelectionEvent,
+  shortcutHandler,
+  setControllerStyles,
+  setController,
+  hideAthena,
+  showAthena,
+  initNote,
+  createNote,
+  createHighlight,
+} from '../utils';
+
+
 import { NOTE, HIGHLIGHT, HIGHLIGHT_NOTE } from '../../../common/annoteTypes';
-import { retrieveAnnote } from '../engine/';
-import { wrapAnnote, unwrapAnnote } from '../engine/actors';
 
 class App extends Component {
   constructor(props) {
@@ -52,15 +71,14 @@ class App extends Component {
 
     this.changeChannelHandler = this.changeChannelHandler.bind(this);
     this.getChannels = this.getChannels.bind(this);
-    this.setController = this.setController.bind(this);
+    // this.setController = this.setController.bind(this);
     this.deleteAnnote = this.deleteAnnote.bind(this);
-    this.shortcutHandler = this.shortcutHandler.bind(this);
     this.setUser = this.setUser.bind(this);
-    this.initNote = this.initNote.bind(this);
-    this.createHighlight = this.createHighlight.bind(this);
+    // this.initNote = this.initNote.bind(this);
+    // this.createHighlight = this.createHighlight.bind(this);
     this.postMessageToFrame = this.postMessageToFrame.bind(this);
     this.handleMessageEvent = this.handleMessageEvent.bind(this);
-    this.handleSelectionEvent = this.handleSelectionEvent.bind(this);
+
     this.annote = null; // TODO: necessary?
     this.annoteId = null;
     this.user = null;
@@ -71,11 +89,11 @@ class App extends Component {
 
   componentDidMount() {
     window.addEventListener('message', this.handleMessageEvent);
-    window.addEventListener('keydown', e => { this.shortcutHandler(e); });
+    window.addEventListener('keydown', e => { shortcutHandler(this, e); });
     window.addEventListener('mousedown', e => {
       this.mouseDownPos = e.clientX;
     });
-    window.addEventListener('mouseup', e => { this.handleSelectionEvent(e); });
+    window.addEventListener('mouseup', e => { handleSelectionEvent(this, e); });
   }
 
 
@@ -85,18 +103,11 @@ class App extends Component {
     document.removeEventListener('mouseup');
   }
 
-  setControllerStyles() {
-    const controller = document.querySelector('.controller');
-    const shadow = controller.createShadowRoot();
-    shadow.innerHTML += '<style> button { background-color: red; }</style>';
-  }
-
-  getAnnoteId(idString) {
-    const endIdx = idString.lastIndexOf('/');
-    const startIdx = idString.substring(0, endIdx)
-                     .lastIndexOf('e') + 1;
-    return parseInt(idString.substring(startIdx, endIdx), 10) + 1;
-  }
+  // setControllerStyles() {
+  //   const controller = document.querySelector('.controller');
+  //   const shadow = controller.createShadowRoot();
+  //   shadow.innerHTML += '<style> button { background-color: red; }</style>';
+  // }
 
   setUser(fbAcc) {
     return fetchUser(fbAcc)
@@ -120,20 +131,6 @@ class App extends Component {
     });
   }
 
-  setController(e) {
-    const top = this.mouseDownPos < e.clientX ?
-      `${window.scrollY + e.clientY + 15}px` : `${window.scrollY + e.clientY - 60}px`;
-    // const top = `${window.scrollY + e.clientY + 15}px`;
-    const left = `${window.scrollX + e.clientX - 37}px`;
-    return this.setState({
-      controls: SHOW_CONTROL_BUTTONS_CLASS,
-      pos: {
-        top,
-        left,
-      },
-    });
-  }
-
   initialLoad(fbAcc) { // TODO: change name to onSignIn ?
     this.setUser(fbAcc)
       .then(user => {
@@ -141,11 +138,11 @@ class App extends Component {
           .then(annotes => {
             console.log(annotes);
             if (!!annotes.length) {
-              this.annoteId = this.getAnnoteId(annotes[annotes.length - 1].id);
+              this.annoteId = getAnnoteId(annotes[annotes.length - 1].id);
               annotes.forEach(annote => {
                 retrieveAnnote(document.body, annote, () => {
                   this.postMessageToFrame({ type: DISPLAY_ANNOTE, annoteId: annote.id });
-                  this.showAthena();
+                  showAthena(this);
                 });
               });
               this.postMessageToFrame({ type: SEND_ANNOTES, annotes });
@@ -162,67 +159,18 @@ class App extends Component {
     return user && user.id;
   }
 
-  handleSelectionEvent(e) {
-    const range = window.getSelection().getRangeAt(0);
-    const distance = Math.abs(
-      range.endOffset - range.startOffset
-    );
-    const display = this.state.controller;
-    // IF a selection is made on mouseup
-    if (distance > 0) {
-      this.setController(e);
-      this.hasSelection = true;
-    } else {
-      const classList = this.props.iframe.classList;
-      if (classList.contains(SHOW_IFRAME_CLASS)) {
-        this.hideAthena();
-      }
-      if (display !== HIDE_CONTROL_BUTTONS_CLASS) {
-        this.setState({ controls: HIDE_CONTROL_BUTTONS_CLASS });
-      }
-      this.hasSelection = false;
-    }
-  }
-
-  shortcutHandler(e) {
-    if (e.getModifierState('Shift')) {
-      if (e.code === 'KeyN' && this.hasSelection) {
-        this.initNote(NOTE);
-      } else if (e.code === 'KeyH' && this.hasSelection) {
-        this.createHighlight();
-      }
-    } else if (e.code === 'Escape') {
-      this.hideAthena();
-    }
-  }
-  showAthena() {
-    const classList = this.props.iframe.classList;
-    if (classList.contains(HIDE_IFRAME_CLASS)) {
-      classList.remove(HIDE_IFRAME_CLASS);
-      classList.add(SHOW_IFRAME_CLASS);
-    }
-  }
-
-  hideAthena() {
-    const classList = this.props.iframe.classList;
-    if (classList.contains(SHOW_IFRAME_CLASS)) {
-      classList.remove(SHOW_IFRAME_CLASS);
-      classList.add(HIDE_IFRAME_CLASS);
-    }
-  }
-
   handleMessageEvent(event) {
     switch (event.data.type) {
       case HIDE_IFRAME:
-        return this.hideAthena();
+        return hideAthena(this);
       case SHOW_IFRAME:
-        return this.showAthena();
+        return showAthena(this);
       case HAS_MOUNTED:
         return this.postMessageToFrame({ type: GET_USER });
       case SEND_USER:
         return this.initialLoad(event.data.user);
       case MODIFY_BODY:
-        return this.createNote(event.data.data);
+        return createNote(this, event.data.data);
       case DELETE_ANNOTE:
         return this.deleteAnnote(event.data.annoteId);
       case CHANGE_CHANNEL:
@@ -236,6 +184,7 @@ class App extends Component {
     this.props.iframe.contentWindow.postMessage(action, '*');
   }
 
+  // removes all annotations on DOM, loads annotations from dif collection / channel
   swapAnnotes(annotes) {
     document.querySelectorAll('athena-annote')
       .forEach(annote => {
@@ -245,7 +194,7 @@ class App extends Component {
     annotes.forEach(annote => {
       retrieveAnnote(document.body, annote, () => {
         this.postMessageToFrame({ type: DISPLAY_ANNOTE, annoteId: annote.id });
-        this.showAthena();
+        showAthena(this);
       });
     });
 
@@ -275,52 +224,52 @@ class App extends Component {
     return;
   }
 
-  initNote(annoteType) {
-    this.showAthena();
-    if (this.isUserLoggedIn()) {
-      const { selector, range } = getText();
-      const annote = createAnnote(selector, annoteType, this.annoteId, this.user.id);
-      this.annote = annote;
-      this.postMessageToFrame({ type: CREATE_ANNOTE, annote });
-      wrapAnnote(range, annote.id, annoteType, () => {
-        this.postMessageToFrame({ type: DISPLAY_ANNOTE, annoteId: annote.id });
-        this.showAthena();
-      });
-      this.setState({ controls: HIDE_CONTROL_BUTTONS_CLASS });
-    }
-  }
+  // initNote(annoteType) {
+  //   showAthena(this);
+  //   if (this.isUserLoggedIn()) {
+  //     const { selector, range } = getText();
+  //     const annote = createAnnote(selector, annoteType, this.annoteId, this.user.id);
+  //     this.annote = annote;
+  //     this.postMessageToFrame({ type: CREATE_ANNOTE, annote });
+  //     wrapAnnote(range, annote.id, annoteType, () => {
+  //       this.postMessageToFrame({ type: DISPLAY_ANNOTE, annoteId: annote.id });
+  //       showAthena(this);
+  //     });
+  //     this.setState({ controls: HIDE_CONTROL_BUTTONS_CLASS });
+  //   }
+  // }
 
-  createNote(data) {
-    // type: 'NOTE' or 'HIGHLIGHT_NOTE'
-    const { body, groupId } = data;
-    this.annote = Object.assign({}, this.annote, {
-      body,
-      groupId,
-    });
-    saveAnnote(this.annote);
-    this.hideAthena();
-  }
+  // createNote(data) {
+  //   // type: 'NOTE' or 'HIGHLIGHT_NOTE'
+  //   const { body, groupId } = data;
+  //   this.annote = Object.assign({}, this.annote, {
+  //     body,
+  //     groupId,
+  //   });
+  //   saveAnnote(this.annote);
+  //   hideAthena(this);
+  // }
 
-  createHighlight() {
-    if (this.isUserLoggedIn()) {
-      this.setState({ controls: HIDE_CONTROL_BUTTONS_CLASS });
-      const { selector, range } = getText();
-      // type: 'HIGHLIGHT'
-      const annote = createAnnote(selector, HIGHLIGHT, this.annoteId, this.user.id);
+  // createHighlight() {
+  //   if (this.isUserLoggedIn()) {
+  //     this.setState({ controls: HIDE_CONTROL_BUTTONS_CLASS });
+  //     const { selector, range } = getText();
+  //     // type: 'HIGHLIGHT'
+  //     const annote = createAnnote(selector, HIGHLIGHT, this.annoteId, this.user.id);
 
-      saveAnnote(annote); // POST annote to server to be stored in db
-      this.postMessageToFrame({ type: ADD_ANNOTE, annote });
+  //     saveAnnote(annote); // POST annote to server to be stored in db
+  //     this.postMessageToFrame({ type: ADD_ANNOTE, annote });
 
-      wrapAnnote(range, annote.id, HIGHLIGHT, () => {
-        this.postMessageToFrame({ type: DISPLAY_ANNOTE, annoteId: annote.id });
-        this.showAthena();
-      });
+  //     wrapAnnote(range, annote.id, HIGHLIGHT, () => {
+  //       this.postMessageToFrame({ type: DISPLAY_ANNOTE, annoteId: annote.id });
+  //       showAthena(this);
+  //     });
 
-      this.annoteId++; // TODO: move into createAnnote
-    } else {
-      this.showAthena();
-    }
-  }
+  //     this.annoteId++; // TODO: move into createAnnote
+  //   } else {
+  //     showAthena(this);
+  //   }
+  // }
 
   deleteAnnote(annoteId) {
     fetchDelete(annoteId);
@@ -339,7 +288,7 @@ class App extends Component {
 
         <button
           className="fa fa-pencil control-btn control-btn-default control-btn-left"
-          onClick={() => { this.initNote(NOTE); }}
+          onClick={() => { initNote(this, NOTE); }}
         ></button>
 
         <button
