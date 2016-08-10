@@ -1,11 +1,7 @@
 import React, { PropTypes, Component } from 'react';
-import ControlButton from './ControlButton';
-
 import {
   SHOW_IFRAME,
   HIDE_IFRAME,
-  CREATE_ANNOTE,
-  ADD_ANNOTE,
   HAS_MOUNTED,
   GET_USER,
   SEND_USER,
@@ -16,46 +12,31 @@ import {
   SEND_CHANNELS,
   CHANGE_CHANNEL,
 } from '../../../common/messageTypes';
-
 import {
-  HIDE_IFRAME_CLASS,
-  SHOW_IFRAME_CLASS,
-  HIDE_CONTROL_BUTTONS_CLASS,
-  SHOW_CONTROL_BUTTONS_CLASS,
-} from '../constants';
-
-import {
-  saveAnnote,
   fetchUser,
   fetchChannels,
   fetchAnnotes,
   fetchGroupAnnotes,
   fetchDelete,
 } from '../utils/fetches';
-
-import {
-  retrieveAnnote,
-  createAnnote,
-  getText,
-  getAnnoteId,
-  wrapAnnote,
-  unwrapAnnote,
-} from '../engine';
-
 import {
   handleSelectionEvent,
   shortcutHandler,
-  setControllerStyles,
-  setController,
   hideAthena,
   showAthena,
   initNote,
   createNote,
   createHighlight,
+  deleteAnnote,
 } from '../utils';
-
-
-import { NOTE, HIGHLIGHT, HIGHLIGHT_NOTE } from '../../../common/annoteTypes';
+import {
+  retrieveAnnote,
+  getAnnoteId,
+  unwrapAnnote,
+  parseDoc,
+ } from '../engine';
+import { NOTE } from '../../../common/annoteTypes';
+import { HIDE_CONTROL_BUTTONS_CLASS } from '../constants';
 
 class App extends Component {
   constructor(props) {
@@ -71,11 +52,7 @@ class App extends Component {
 
     this.changeChannelHandler = this.changeChannelHandler.bind(this);
     this.getChannels = this.getChannels.bind(this);
-    // this.setController = this.setController.bind(this);
-    this.deleteAnnote = this.deleteAnnote.bind(this);
     this.setUser = this.setUser.bind(this);
-    // this.initNote = this.initNote.bind(this);
-    // this.createHighlight = this.createHighlight.bind(this);
     this.postMessageToFrame = this.postMessageToFrame.bind(this);
     this.handleMessageEvent = this.handleMessageEvent.bind(this);
 
@@ -85,6 +62,7 @@ class App extends Component {
     this.getUserIntevalId = null;
     this.hasSelection = false;
     this.mouseDownPos = null;
+    this.parsedDoc = parseDoc(document.body);
   }
 
   componentDidMount() {
@@ -102,12 +80,6 @@ class App extends Component {
     window.removeEventListener('keydown');
     document.removeEventListener('mouseup');
   }
-
-  // setControllerStyles() {
-  //   const controller = document.querySelector('.controller');
-  //   const shadow = controller.createShadowRoot();
-  //   shadow.innerHTML += '<style> button { background-color: red; }</style>';
-  // }
 
   setUser(fbAcc) {
     return fetchUser(fbAcc)
@@ -140,7 +112,7 @@ class App extends Component {
             if (!!annotes.length) {
               this.annoteId = getAnnoteId(annotes[annotes.length - 1].id);
               annotes.forEach(annote => {
-                retrieveAnnote(document.body, annote, () => {
+                retrieveAnnote(this.parsedDoc, annote, () => {
                   this.postMessageToFrame({ type: DISPLAY_ANNOTE, annoteId: annote.id });
                   showAthena(this);
                 });
@@ -172,7 +144,7 @@ class App extends Component {
       case MODIFY_BODY:
         return createNote(this, event.data.data);
       case DELETE_ANNOTE:
-        return this.deleteAnnote(event.data.annoteId);
+        return deleteAnnote(event.data.annoteId);
       case CHANGE_CHANNEL:
         return  this.changeChannelHandler(event.data.channel);
       default:
@@ -214,9 +186,7 @@ class App extends Component {
     if (channel.type === 'user') {
       // fetch user's annotes for this doc
       fetchAnnotes(channel)
-      .then(annotes => {
-        this.swapAnnotes(annotes);
-      });
+      .then(annotes => { this.swapAnnotes(annotes); });
       return;
     }
       // handle error
@@ -224,64 +194,13 @@ class App extends Component {
     return;
   }
 
-  // initNote(annoteType) {
-  //   showAthena(this);
-  //   if (this.isUserLoggedIn()) {
-  //     const { selector, range } = getText();
-  //     const annote = createAnnote(selector, annoteType, this.annoteId, this.user.id);
-  //     this.annote = annote;
-  //     this.postMessageToFrame({ type: CREATE_ANNOTE, annote });
-  //     wrapAnnote(range, annote.id, annoteType, () => {
-  //       this.postMessageToFrame({ type: DISPLAY_ANNOTE, annoteId: annote.id });
-  //       showAthena(this);
-  //     });
-  //     this.setState({ controls: HIDE_CONTROL_BUTTONS_CLASS });
-  //   }
-  // }
-
-  // createNote(data) {
-  //   // type: 'NOTE' or 'HIGHLIGHT_NOTE'
-  //   const { body, groupId } = data;
-  //   this.annote = Object.assign({}, this.annote, {
-  //     body,
-  //     groupId,
-  //   });
-  //   saveAnnote(this.annote);
-  //   hideAthena(this);
-  // }
-
-  // createHighlight() {
-  //   if (this.isUserLoggedIn()) {
-  //     this.setState({ controls: HIDE_CONTROL_BUTTONS_CLASS });
-  //     const { selector, range } = getText();
-  //     // type: 'HIGHLIGHT'
-  //     const annote = createAnnote(selector, HIGHLIGHT, this.annoteId, this.user.id);
-
-  //     saveAnnote(annote); // POST annote to server to be stored in db
-  //     this.postMessageToFrame({ type: ADD_ANNOTE, annote });
-
-  //     wrapAnnote(range, annote.id, HIGHLIGHT, () => {
-  //       this.postMessageToFrame({ type: DISPLAY_ANNOTE, annoteId: annote.id });
-  //       showAthena(this);
-  //     });
-
-  //     this.annoteId++; // TODO: move into createAnnote
-  //   } else {
-  //     showAthena(this);
-  //   }
-  // }
-
   deleteAnnote(annoteId) {
     fetchDelete(annoteId);
     unwrapAnnote(annoteId);
   }
 
   render() {
-    const controllerPos = {
-      top: this.state.pos.top,
-      left: this.state.pos.left,
-    };
-
+    const controllerPos = { top: this.state.pos.top, left: this.state.pos.left };
 
     return (
       <div className={`${this.state.controls} btnContainer`} style={controllerPos}>
@@ -293,7 +212,7 @@ class App extends Component {
 
         <button
           className="fa fa-paint-brush control-btn control-btn-default control-btn-right"
-          onClick={() => { this.createHighlight(); }}
+          onClick={() => { createHighlight(this); }}
         ></button>
 
       </div>

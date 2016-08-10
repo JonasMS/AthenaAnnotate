@@ -5,9 +5,9 @@ import parseDoc from './retrievers';
 
 // Returns Range of retrieved annotation or null
 // if the annotation could not be retrieved
-function retrieveAnnote(doc, annote, cb) {
+function retrieveAnnote(parsedDoc, annote, cb) {
   // parse document
-  const { docText, nodes } = parseDoc(doc);
+  const { docText, nodes } = parsedDoc;
   // determine annote's location on document
   const annoteLocation = locateAnnote(annote, docText, nodes);
   // insert annote
@@ -27,4 +27,5 @@ export {
   getAnnoteId,
   wrapAnnote,
   unwrapAnnote,
+  parseDoc,
 };
