@@ -4,9 +4,10 @@ import {
   HIDE_CONTROL_BUTTONS_CLASS,
   SHOW_CONTROL_BUTTONS_CLASS,
 } from '../constants';
-import { NOTE, HIGHLIGHT, HIGHLIGHT_NOTE } from '../../../common/annoteTypes';
+import { HIGHLIGHT } from '../../../common/annoteTypes';
 import { CREATE_ANNOTE, DISPLAY_ANNOTE, ADD_ANNOTE } from '../../../common/messageTypes';
-import { createAnnote, saveAnnote, wrapAnnote, getText } from '../engine';
+import { createAnnote, wrapAnnote, unwrapAnnote, getText } from '../engine';
+import { fetchDelete, saveAnnote } from './fetches';
 
 export const setControllerStyles = () => {
   const controller = document.querySelector('.controller');
@@ -44,6 +45,7 @@ export const hideAthena = context => {
   }
 };
 
+// displays annote on DOM
 export const initNote = (context, annoteType) => {
   showAthena(context);
   if (context.isUserLoggedIn()) {
@@ -59,6 +61,7 @@ export const initNote = (context, annoteType) => {
   }
 };
 
+// add appended notes to annotation object and sends to server
 export const createNote = (context, data) => {
   // type: 'NOTE' or 'HIGHLIGHT_NOTE'
   const { body, groupId } = data;
@@ -70,6 +73,8 @@ export const createNote = (context, data) => {
   hideAthena(context);
 };
 
+
+// displays annote on DOM and creates annote
 export const createHighlight = context => {
   if (context.isUserLoggedIn()) {
     context.setState({ controls: HIDE_CONTROL_BUTTONS_CLASS });
@@ -89,5 +94,10 @@ export const createHighlight = context => {
   } else {
     showAthena(context);
   }
+};
+
+export const deleteAnnote = annoteId => {
+  fetchDelete(annoteId);
+  unwrapAnnote(annoteId);
 };
 

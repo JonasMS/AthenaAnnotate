@@ -1,13 +1,11 @@
 import {
-  HIDE_IFRAME_CLASS,
   SHOW_IFRAME_CLASS,
   HIDE_CONTROL_BUTTONS_CLASS,
-  SHOW_CONTROL_BUTTONS_CLASS,
 } from '../constants';
 
 import { setController, hideAthena, initNote, createHighlight } from './actors';
 
-import { NOTE, HIGHLIGHT, HIGHLIGHT_NOTE } from '../../../common/annoteTypes';
+import { NOTE, HIGHLIGHT } from '../../../common/annoteTypes';
 
 export const handleSelectionEvent = (context, e) => {
   const range = window.getSelection().getRangeAt(0);

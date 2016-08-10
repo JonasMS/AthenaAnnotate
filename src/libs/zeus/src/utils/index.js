@@ -7,6 +7,7 @@ import {
   initNote,
   createNote,
   createHighlight,
+  deleteAnnote,
 } from './actors';
 
 export {
@@ -19,4 +20,5 @@ export {
   initNote,
   createNote,
   createHighlight,
+  deleteAnnote,
 };
