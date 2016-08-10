@@ -26,7 +26,8 @@ describe('Annotation Engine Methods', () => {
     htmlDoc = fs.readFileSync(filePath, 'utf8');
     global.document = jsdom.jsdom(htmlDoc);
     global.NodeFilter = NodeFilter;
-    const { docText, nodes } = parseDoc(document.body);
+    const parsedDoc = parseDoc(document.body);
+    const { docText, nodes } = parsedDoc;
 
     it('docText should be a string', () => { // TODO: test beforeEach
       expect(docText).to.be.a('string');
